@@ -105,7 +105,7 @@ class GraphDataset(DGLDataset):
         return os.path.exists(graph_path) and os.path.exists(info_path)
     
     def stats_labels(self, args):
-        print(args.label_type)
+        #print(args.label_type)
         getattr(self, f'{args.label_type}_labels')(args.data_type)
 
     def original_labels(self, _):
@@ -115,7 +115,7 @@ class GraphDataset(DGLDataset):
         self.gclasses = 2
         labels = []
         for graph in self.graphs:
-            g = graph.to_networkx()
+            g = graph.cpu().to_networkx()
             g = nx.Graph(g)
             if data_type == "regression":
                 labels.append(nx.transitivity(g))
@@ -128,7 +128,7 @@ class GraphDataset(DGLDataset):
         self.gclasses = 2
         labels = []
         for graph in self.graphs:
-            g = graph.to_networkx()
+            g = graph.cpu().to_networkx()
             g = nx.Graph(g)
             if data_type == "regression":
                 labels.append(calculate_avg_shortest_path(g))
@@ -141,7 +141,7 @@ class GraphDataset(DGLDataset):
         self.gclasses = 2
         labels = []
         for graph in self.graphs:
-            g = graph.to_networkx()
+            g = graph.cpu().to_networkx()
             g = nx.Graph(g)
             degrees = list(dict(g.degree()).values())
             if data_type == "regression":
@@ -154,7 +154,7 @@ class GraphDataset(DGLDataset):
         self.gclasses = 2
         labels = []
         for graph in self.graphs:
-            g = graph.to_networkx()
+            g = graph.cpu().to_networkx()
             g = nx.Graph(g)
             degrees = list(dict(g.degree()).values())
             if data_type == "regression":

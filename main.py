@@ -10,7 +10,7 @@ import h5py
 import networkx as nx
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
+import torch.nn as F
 from torch.utils.data import random_split
 from dgl.dataloading import GraphDataLoader
 
@@ -27,10 +27,10 @@ def parse_args():
     parser.add_argument("--output_path", type=str, default="./output", help="Output path")
     # parser.add_argument("--plot_statistics", type=bool, default=False, help="Do plots about acc/loss/boxplot")
     parser.add_argument("--verbose", type=bool, default=True, help="print details of the training True or False")
-    parser.add_argument("--device", type=str, default="cpu", help="Device cuda or cpu")
-    parser.add_argument("--architecture",type=str,default="hierarchical",choices=["hierarchical", "global", "gat", "gin", "gatv2"],help="model architect    ure",)
+    parser.add_argument("--device", type=str, default="cuda", help="Device cuda or cpu")
+    parser.add_argument("--architecture",type=str,default="hierarchical",choices=["hierarchical", "global", "gat", "gin", "gatv2"],help="model architecture",)
     parser.add_argument("--data_type", type=str, default="regression", help="regression or classifcation")
-    parser.add_argument("--label_type", type=str, default="original", choices=["original", "transitivity", "average_path", "density", "kurtosis"], help="regression or classifcation")
+    parser.add_argument("--label_type", type=str, default="original", choices=["original", "transitivity", "average_path", "density", "kurtosis"], help="choose")
     parser.add_argument("--feat_type", type=str, default="ones_feat", choices=["ones_feat", "noise_feat", "degree_feat", "identity_feat", "norm_degree_feat"], help="ones_feat/noies_feat/degree_feat/identity_feat")
     parser.add_argument("--batch_size", type=int, default=100, help="Batch size")
     parser.add_argument("--lr", type=float, default=0.01, help="Learning rate")
@@ -45,9 +45,9 @@ def parse_args():
     parser.add_argument("--num_trials", type=int, default=1, help="Number of trials")
     parser.add_argument("--k", type=int, default=4, help="For ID-GNN where control the depth of the generated ID features for helping detecting cycles of length k-1 or less")
     parser.add_argument("--multi_k", type=bool, default=False, help="multiple feature type for non identity feature True or False")
-    parser.add_argument("--output_activation", type=str, default="log_softmax", help="Output activation function")
+    parser.add_argument("--output_activation", type=str, default="LogSoftmax", help="Output activation function")
     parser.add_argument("--optimizer_name", type=str, default="Adam", help="Optimizer type default adam")
-    parser.add_argument("--loss_name", type=str, default='nll_loss', help="Choose loss function correlated to the optimization function")
+    parser.add_argument("--loss_name", type=str, default='NLLLoss', help="Choose loss function correlated to the optimization function")
     parser.add_argument("--current_epoch", type=int, default=1, help="The current epoch")
     parser.add_argument("--current_trial", type=int, default=1, help="The current trial")
     parser.add_argument("--activate", type=bool, default=False, help="Activate the saving the node feature learned in the test dataset")
@@ -101,6 +101,7 @@ def train(model: torch.nn.Module, optimizer, trainloader, args):
     model.train()
     total_loss = 0.0
     num_batches = len(trainloader)
+    loss_func = getattr(F, args.loss_name)(reduction="sum")
     for batch in trainloader:
         optimizer.zero_grad()
         batch_graphs, batch_labels = batch
@@ -108,7 +109,7 @@ def train(model: torch.nn.Module, optimizer, trainloader, args):
         batch_labels = batch_labels.long().to(args.device)
         
         out = model(batch_graphs, args)
-        loss = getattr(F, args.loss_name)(out, batch_labels)
+        loss = loss_func(out, batch_labels)
         loss.backward()
         optimizer.step()
         total_loss += loss.item()
@@ -120,14 +121,14 @@ def test_regression(model: torch.nn.Module, loader, args):
     model.eval()
     loss = 0.0
     num_graphs = 0
-
+    loss_func = getattr(F, args.loss_name)(reduction="sum")
     for batch in loader:
         batch_graphs, batch_labels = batch
         num_graphs += batch_labels.size(0)
         batch_graphs = batch_graphs.to(args.device)
         batch_labels = batch_labels.long().to(args.device)
         out = model(batch_graphs, args)
-        loss += F.nll_loss(out, batch_labels, reduction="sum").item()
+        loss += loss_func(out, batch_labels).item()
         args.current_batch += 1
 
     return loss / num_graphs
@@ -138,6 +139,7 @@ def test_classification(model: torch.nn.Module, loader, args):
     correct = 0.0
     loss = 0.0
     num_graphs = 0
+    loss_func = getattr(F, args.loss_name)(reduction="sum")
     for batch in loader:
         batch_graphs, batch_labels = batch
         num_graphs += batch_labels.size(0)
@@ -146,7 +148,7 @@ def test_classification(model: torch.nn.Module, loader, args):
        
         out = model(batch_graphs, args)
         pred = out.argmax(dim=1)
-        loss += F.nll_loss(out, batch_labels, reduction="sum").item()
+        loss += loss_func(out, batch_labels).item()
         correct += pred.eq(batch_labels).sum().item()
         args.current_batch += 1
    
@@ -157,8 +159,8 @@ def main(args, seed, save=True):
     set_random_seed(seed)
     dataset = GraphDataset(device=args.device)
     dataset2 = GraphDataset(device=args.device)
-    dataset.load(args.dataset_path, args.data_type)
-    dataset2.load(args.test_dataset_path, args.data_type)
+    dataset.load(args.dataset_path, args)
+    dataset2.load(args.test_dataset_path, args)
 
     getattr(dataset, f'add_{args.feat_type}')(args.k)
     getattr(dataset2, f'add_{args.feat_type}')(args.k)
@@ -210,10 +212,12 @@ def main(args, seed, save=True):
         if (e + 1) % args.print_every == 0 and args.verbose == True:
             log_format = ("Epoch {}: loss={:.4f}")
             print(log_format.format(e + 1, train_loss))
-    
-    test_acc = test_regression(model, test_loader, args)
-    test_acc2 = test_regression(model, test_loader2, args)
-    
+    if args.data_type == 'regression':
+        test_acc = test_regression(model, test_loader, args)
+        test_acc2 = test_regression(model, test_loader2, args)
+    else:
+        test_acc, _ = test_classification(model, test_loader, args)
+        test_acc2, _ = test_classification(model, test_loader2, args)
     if save == True:
         if args.changer == 1:
             torch.save(model.state_dict(), '{}/last_second_model_weights_trail{}_{}_{}.pth'.format(args.output_path, seed, args.dataset, args.feat_type))

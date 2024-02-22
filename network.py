@@ -2,7 +2,7 @@ import numpy as np
 
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
+import torch.nn as F
 
 import dgl
 import dgl.function as fn
@@ -56,7 +56,7 @@ class SAGNetworkHierarchical(torch.nn.Module):
         self.convpools = torch.nn.ModuleList(convpools)
 
         self.mlp = MLP(hidden_dim * 2, hidden_dim, out_dim)
-
+        self.output_activation = getattr(nn, self.output_activation)(dim=-1)
 
     def forward(self, graph: dgl.DGLGraph, args):
         feat = graph.ndata["feat"]
@@ -70,7 +70,7 @@ class SAGNetworkHierarchical(torch.nn.Module):
 
         feat = self.mlp(final_readout)
 
-        return getattr(F, self.output_activation)(feat, dim=-1)
+        return self.output_activation(feat)
 
 # hidden_dim is the feat output
 class SAGNetworkGlobal(torch.nn.Module):
@@ -114,8 +114,8 @@ class SAGNetworkGlobal(torch.nn.Module):
         self.avg_readout = AvgPooling()
         self.max_readout = MaxPooling()
 
-
         self.mlp = MLP(concat_dim * 2, hidden_dim, out_dim)
+        self.output_activation = getattr(nn, self.output_activation)(dim=-1)
 
     def forward(self, graph: dgl.DGLGraph, args):
         feat = graph.ndata["feat"]
@@ -134,7 +134,7 @@ class SAGNetworkGlobal(torch.nn.Module):
 
         feat = self.mlp(feat)
 
-        return getattr(F, self.output_activation)(feat, dim=-1)
+        return self.output_activation(feat)
 
 #hideen_feat is the output dim
 class GAT(torch.nn.Module):
@@ -210,6 +210,7 @@ class GAT(torch.nn.Module):
         # Create sum pooling module
 
         self.pool = SumPooling()
+        self.output_activation = getattr(nn, self.output_activation)(dim=-1)
 
     def forward(self, graph: dgl.DGLGraph, args):
         """
@@ -237,7 +238,7 @@ class GAT(torch.nn.Module):
         pooled_h = torch.cat(pooled_h_list, dim=-1)
         pooled_h = self.mlp(pooled_h)
 
-        return getattr(F, self.output_activation)(pooled_h, dim=-1)
+        return self.output_activation(pooled_h)
 
 class MLP(nn.Module):
     """Construct two-layer MLP-type aggreator for GIN model"""
@@ -249,10 +250,10 @@ class MLP(nn.Module):
         self.linears.append(nn.Linear(input_dim, hidden_dim, bias=False))
         self.linears.append(nn.Linear(hidden_dim, output_dim, bias=False))
         self.batch_norm = nn.BatchNorm1d((hidden_dim))
-
+        self.relu = nn.ReLU()
     def forward(self, x):
         h = x
-        h = F.relu(self.batch_norm(self.linears[0](h)))
+        h = self.relu(self.batch_norm(self.linears[0](h)))
         return self.linears[1](h)
 
 class GATv2(nn.Module):
@@ -332,6 +333,7 @@ class GATv2(nn.Module):
         # Create sum pooling module
 
         self.pool = SumPooling()
+        self.output_activation = getattr(nn, self.output_activation)(dim=-1)
 
     def forward(self, g, args):
         h = g.ndata["feat"]
@@ -342,7 +344,7 @@ class GATv2(nn.Module):
         logits = self.pool(g, logits)
         logits = self.mlp(logits)
 
-        return getattr(F, self.output_activation)(logits, dim=-1)
+        return self.output_activation(logits)
 
 
 class GIN(nn.Module):
@@ -383,6 +385,8 @@ class GIN(nn.Module):
         self.pool = (
             SumPooling()
         )  # change to mean readout (AvgPooling) on social network datasets
+        self.relu = nn.ReLU()
+        self.output_activation = getattr(nn, self.output_activation)(dim=-1)
 
     def forward(self, g, args):
         # list of hidden representation at each layer (including the input layer)
@@ -391,7 +395,7 @@ class GIN(nn.Module):
         for i, layer in enumerate(self.ginlayers):
             h = layer(g, h)
             h = self.batch_norms[i](h)
-            h = F.relu(h)
+            h = self.relu(h)
             hidden_rep.append(h)
         score_over_layer = 0
 
@@ -403,7 +407,7 @@ class GIN(nn.Module):
             score_over_layer += self.drop(self.linear_prediction[i](pooled_h))
 
         score_over_layer = self.mlp(score_over_layer)
-        return  getattr(F, self.output_activation)(score_over_layer, dim=-1)
+        return  self.output_activation(score_over_layer)
 
 
 

@@ -12,13 +12,13 @@ num_trials = 1
 epochs = 10
 epoch_search = 10
 cnt = 0
-device = 'cpu'
+device = 'cuda'
 label_type = 'density'
-data_type = 'regression'
-loss_name = 'MSELoss'
-output_activation = 'Identity'
-def find(str2, dir_path):
+data_type = 'classification'
+loss_name = 'NLLLoss' # MSELoss
+output_activation = 'LogSoftmax' # Identity
 
+def find(str2, dir_path):
   files = os.listdir(dir_path)
   file_names = [os.path.basename(file) for file in files]
 
@@ -65,8 +65,9 @@ for j, feat_type in enumerate(feat_types):
 
       torch.cuda.empty_cache()
 
-      str1 = output_path+find('model', output_path)
-      with open(str1, 'r') as f:
+      # str1 = output_path+find('model', output_path)
+      # print(str1)
+      with open(output_path+"model.log", 'r') as f:
           modell = json.load(f)
 
       model = modell['params']
