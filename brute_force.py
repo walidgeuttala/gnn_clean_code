@@ -12,11 +12,11 @@ num_trials = 1
 epochs = 10
 epoch_search = 10
 cnt = 0
-device = 'cuda'
+device = 'cpu'
 label_type = 'density'
-data_type = 'classification'
-loss_name = 'NLLLoss' # MSELoss
-output_activation = 'LogSoftmax' # Identity
+data_type = 'dodo'
+loss_name = 'MSELoss' # MSELoss NLLLoss
+output_activation = 'Identity' # Identity LogSoftmax
 
 def find(str2, dir_path):
   files = os.listdir(dir_path)
