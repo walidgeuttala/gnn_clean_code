@@ -1,0 +1,1 @@
+{"architecture": ["gin"], "hidden_dim": [16], "lr": [0.01], "num_layers": [3], "weight_decay": [0.001], "k": [4]}

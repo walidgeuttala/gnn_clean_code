@@ -3,18 +3,17 @@ import subprocess
 import json 
 import os 
 import re
-import os
 
-feat_types = ['ones_feat', 'noise_feat', 'degree_feat', 'norm_degree_feat', 'identity_feat']
-
+#feat_types = ['ones_feat', 'noise_feat', 'degree_feat', 'norm_degree_feat', 'identity_feat']
+feat_types = ['ones_feat']
 save_last_epoch_hidden_output = False
 
-num_trials = 5
-epochs = 100
-epoch_search = 40
+num_trials = 1
+epochs = 10
+epoch_search = 10
 cnt = 0
 
-def find(str2, dir_path = 'output/'):
+def find(str2, dir_path):
 
   files = os.listdir(dir_path)
   file_names = [os.path.basename(file) for file in files]
@@ -24,12 +23,14 @@ def find(str2, dir_path = 'output/'):
   # Pass the folder name to the command line
   return matching_names[0]
 
-models = ['gin', 'gat', 'global', 'hierarchical', 'gatv2']
+#models = ['gin', 'gat', 'global', 'hierarchical', 'gatv2']
+models = ['gin']
+
 search_space = {
     "architecture": ['gin'],
-    "hidden_dim": [2, 4, 8, 16, 32, 64],
+    "hidden_dim": [16],
     "lr": [1e-2],
-    "num_layers":[3, 4],
+    "num_layers":[3],
     "weight_decay": [1e-3],
     "k": [4]
 }
@@ -52,6 +53,8 @@ for j, feat_type in enumerate(feat_types):
       print('{}.{}.1--------------------------------------------Grid_Search  : {}---------------------'.format(j+2,k+1,search_space['architecture']))
       print()
       output_path = f'../gnn_outputs/version1/output{cnt}/'
+      os.makedirs(output_path, exist_ok=True)
+
       script = "python grid_search.py --feat_type {} --epochs {} --output_path {}".format(feat_type, epoch_search, output_path)
       script = script.split()
       subprocess.run(script)
