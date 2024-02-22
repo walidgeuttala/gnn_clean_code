@@ -27,8 +27,10 @@ def parse_args():
     parser.add_argument("--output_path", type=str, default="./output", help="Output path")
     # parser.add_argument("--plot_statistics", type=bool, default=False, help="Do plots about acc/loss/boxplot")
     parser.add_argument("--verbose", type=bool, default=True, help="print details of the training True or False")
-    parser.add_argument("--device", type=str, default="cuda", help="Device cuda or cpu")
+    parser.add_argument("--device", type=str, default="cpu", help="Device cuda or cpu")
     parser.add_argument("--architecture",type=str,default="hierarchical",choices=["hierarchical", "global", "gat", "gin", "gatv2"],help="model architect    ure",)
+    parser.add_argument("--data_type", type=str, default="regression", help="regression or classifcation")
+    parser.add_argument("--label_type", type=str, default="original", choices=["original", "transitivity", "average_path", "density", "kurtosis"], help="regression or classifcation")
     parser.add_argument("--feat_type", type=str, default="ones_feat", choices=["ones_feat", "noise_feat", "degree_feat", "identity_feat", "norm_degree_feat"], help="ones_feat/noies_feat/degree_feat/identity_feat")
     parser.add_argument("--batch_size", type=int, default=100, help="Batch size")
     parser.add_argument("--lr", type=float, default=0.01, help="Learning rate")
@@ -84,7 +86,7 @@ def parse_args():
         args.weight_decay,
         args.lr,
         )    
-    if args.changed == 1:
+    if args.changer == 1:
         name = "second_" + name
         
     args.output = os.path.join(args.output_path, name)
@@ -155,11 +157,11 @@ def main(args, seed, save=True):
     set_random_seed(seed)
     dataset = GraphDataset(device=args.device)
     dataset2 = GraphDataset(device=args.device)
-    dataset.load(args.dataset_path)
-    dataset2.load(args.test_dataset_path)
+    dataset.load(args.dataset_path, args.data_type)
+    dataset2.load(args.test_dataset_path, args.data_type)
 
-    getattr(dataset, f'add_{args.feat_type}_feat')(args.k)
-    getattr(dataset2, f'add_{args.feat_type}_feat')(args.k)
+    getattr(dataset, f'add_{args.feat_type}')(args.k)
+    getattr(dataset2, f'add_{args.feat_type}')(args.k)
 
     test_loader2 = GraphDataLoader(dataset2, batch_size=args.batch_size, shuffle=False)
     num_training = int(len(dataset) * 0.9)
@@ -217,7 +219,8 @@ def main(args, seed, save=True):
             torch.save(model.state_dict(), '{}/last_second_model_weights_trail{}_{}_{}.pth'.format(args.output_path, seed, args.dataset, args.feat_type))
         else:
             torch.save(model.state_dict(), '{}/last_model_weights_trail{}_{}_{}.pth'.format(args.output_path, seed, args.dataset, args.feat_type))
-    
+    else:
+        torch.save(model.state_dict(), '{}grid_search/{}_{}_{}_{}.pth'.format(args.output_path, args.architecture, args.feat_type, args.num_layers, args.hidden_dim))
     return test_acc, test_acc2, sum(train_times) / len(train_times)
 
 if __name__ == "__main__":

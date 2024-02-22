@@ -18,8 +18,33 @@ from sklearn.metrics import mean_squared_error
 from itertools import combinations
 import seaborn as sns
 import json
-from data import GraphDataset
+# from data import GraphDataset
 from torch.utils.data import random_split
+
+from scipy.stats import kurtosis
+from collections import Counter
+
+def calculate_kurtosis_from_degree_list(degree_list):
+    """
+    Calculate the kurtosis for a given list of degrees in a graph.
+
+    Parameters:
+    - degree_list (list): List of degrees in the graph.
+
+    Returns:
+    - float: Kurtosis value.
+    """
+    try:
+        # Convert the degree list into a degree distribution
+        degree_distribution = dict(Counter(degree_list))
+
+        # Calculate the kurtosis for the degree distribution
+        kurtosis_value = kurtosis(list(degree_distribution.values()))
+
+        return kurtosis_value
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
+        return None
 
 def create_data_folder(output_folder):
     # Create the output folder if it doesn't exist
@@ -43,20 +68,20 @@ def count_labels(indices, labels):
 
     return label_counts
 
-def split_data_analysis():
-    dataset = GraphDataset(device='cpu')
-    dataset.load('./data')
-    ans = []
-    for seed in range(5):
-        set_random_seed(seed)
-        num_training = int(len(dataset) * 0.9)
-        num_val = int(len(dataset) * 0.)
-        num_test = len(dataset) - num_val - num_training
-        generator = torch.Generator().manual_seed(seed)
-        train_set, val_set, test_set = random_split(dataset, [num_training, num_val, num_test], generator=generator)
-        ans.append(count_labels(train_set.indices, dataset.labels))
-        ans.append(count_labels(test_set.indices, dataset.labels))
-    return ans
+# def split_data_analysis():
+#     dataset = GraphDataset(device='cpu')
+#     dataset.load('./data')
+#     ans = []
+#     for seed in range(5):
+#         set_random_seed(seed)
+#         num_training = int(len(dataset) * 0.9)
+#         num_val = int(len(dataset) * 0.)
+#         num_test = len(dataset) - num_val - num_training
+#         generator = torch.Generator().manual_seed(seed)
+#         train_set, val_set, test_set = random_split(dataset, [num_training, num_val, num_test], generator=generator)
+#         ans.append(count_labels(train_set.indices, dataset.labels))
+#         ans.append(count_labels(test_set.indices, dataset.labels))
+#     return ans
 
 
 output_combinations = {

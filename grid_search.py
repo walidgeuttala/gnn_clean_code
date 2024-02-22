@@ -15,7 +15,7 @@ def run_experiments(args):
     res = []
     for i in range(args.num_trials):
         print("Trial {}/{}".format(i + 1, args.num_trials))
-        acc, acc2, _ = main(args, i , False)
+        _, acc2, _ = main(args, i , False)
         res.append(acc2)
 
     mean, err_bd = get_stats(res, conf_interval=True)
@@ -58,9 +58,10 @@ def grid_search(config: dict):
             best_args2 = deepcopy(vars(args))            
             ans2 = args.num_layers * args.hidden_dim
 
-    args.output_path = "output"
     if not os.path.exists(args.output_path):
         os.makedirs(args.output_path)
+        
+    os.makedirs(args.output_path+"/grid_search", exist_ok=True)
     #args.output_path = "output/model_{}_{}.log".format(save_cnt,args.dataset)
     result = {
         "params": best_args,
@@ -68,7 +69,7 @@ def grid_search(config: dict):
         "result": "{:.4f}({:.4f})".format(best_acc, err_bd),
         "result2": "{:.4f}({:.4f})".format(best_acc2, err_bd2),
     }
-    with open("output/model_{}_{}.log".format(save_cnt,args.dataset), "w") as f:
+    with open("{}/model_{}_{}.log".format(args.output_path, save_cnt,args.dataset), "w") as f:
         json.dump(result, f, sort_keys=True, indent=4)
 
 

@@ -12,7 +12,11 @@ num_trials = 1
 epochs = 10
 epoch_search = 10
 cnt = 0
-
+device = 'cpu'
+label_type = 'density'
+data_type = 'regression'
+loss_name = 'MSELoss'
+output_activation = 'Identity'
 def find(str2, dir_path):
 
   files = os.listdir(dir_path)
@@ -53,9 +57,9 @@ for j, feat_type in enumerate(feat_types):
       print('{}.{}.1--------------------------------------------Grid_Search  : {}---------------------'.format(j+2,k+1,search_space['architecture']))
       print()
       output_path = f'../gnn_outputs/version1/output{cnt}/'
-      os.makedirs(output_path, exist_ok=True)
-
-      script = "python grid_search.py --feat_type {} --epochs {} --output_path {}".format(feat_type, epoch_search, output_path)
+      # os.makedirs(output_path, exist_ok=True)
+  
+      script = f"python grid_search.py --feat_type {feat_type} --epochs {epoch_search} --output_path {output_path} --device {device} --label_type {label_type} --data_type {data_type} --loss_name {loss_name} --output_activation {output_activation}"
       script = script.split()
       subprocess.run(script)
 
