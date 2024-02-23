@@ -106,7 +106,7 @@ class SAGNetworkGlobal(torch.nn.Module):
         for i in range(num_layers):
             _i_dim = in_dim if i == 0 else hidden_dim
             _o_dim = hidden_dim
-            convs.append(GraphConv(_i_dim, _o_dim, allow_zero_in_degree=True))
+            convs.append(GraphConv(_i_dim, _o_dim, allow_zero_in_degree=True, norm='both'))
         self.convs = torch.nn.ModuleList(convs)
 
         concat_dim = num_layers * hidden_dim

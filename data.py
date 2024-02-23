@@ -25,6 +25,8 @@ class GraphDataset(DGLDataset):
         self.labels = labels 
         self.device = device
         self.data_path = None
+        self.properties = ['transitivity_labels', 'average_path_labels', 'density_labels', 'kurtosis_labels']
+        self.data_types = ['regression', 'classification']
         if labels != None:
           self.dim_nfeats = len(self.graphs[0].ndata)
           self.gclasses = len(self.labels.unique())
@@ -93,7 +95,7 @@ class GraphDataset(DGLDataset):
         if self.device == 'cuda':
             self.graphs = [g.to(self.device) for g in self.graphs]
             self.labels = self.labels.to(self.device)
-        self.stats_labels(args)
+        self.choose_labels(args, data_path+'/properties_labels.pt')
 
     def has_cache(self):
         '''
@@ -104,62 +106,122 @@ class GraphDataset(DGLDataset):
         info_path = os.path.join(f'{self.data_path}/info.pkl')
         return os.path.exists(graph_path) and os.path.exists(info_path)
     
+    def compute_all_labels(self, path):
+        results = []
+        results.append(self.labels)
+        for prop in self.properties:
+            for data_type in self.data_types:
+                getattr(self, prop)(data_type)
+                results.append(self.labels)
+        torch.save(results, path) 
+    
+    def choose_labels(self, args, file_path):
+        # started from 1 as the first labels is the original label
+        self.labels = torch.load(file_path)
+        if args.label_type == 'original':
+            self.labels = self.labels[0]
+            self.gclasses = 8
+            return
+        cnt = 1
+        if args.data_type == 'regression':
+            self.gclasses = 1
+        else:
+            self.gclasses = 2
+        for prop in self.properties:
+            for data_type in self.data_types:
+                if prop == args.label_type+'_labels' and data_type == args.data_type:
+                    self.labels = self.labels[cnt]
+                    if args.data_type == 'regression':
+                        self.labels =  self.labels.view(-1, 1).float()
+                    return 
+            cnt += 1
+
     def stats_labels(self, args):
         #print(args.label_type)
         getattr(self, f'{args.label_type}_labels')(args.data_type)
+        if args.data_type == 'regression':
+            self.labels =  self.labels.view(-1, 1).float()
+            self.labels = self.normalize_labels(self.labels)
+        else:
+            self.labels =  self.labels.long()
 
     def original_labels(self, _):
         pass
-
+    
+    def normalize_labels(self, labels):
+        """
+        Normalize labels (targets) using mean and standard deviation.
+        
+        Args:
+            labels (torch.Tensor): Tensor containing the labels to be normalized.
+        
+        Returns:
+            torch.Tensor: Normalized labels.
+        """
+        # Step 1: Compute Mean and Standard Deviation
+        mean = torch.mean(labels)
+        std = torch.std(labels)
+        
+        # Step 2: Normalize Labels
+        normalized_labels = (labels - mean) / std
+        
+        return normalized_labels
+    
     def transitivity_labels(self, data_type):
-        self.gclasses = 2
+        
         labels = []
         for graph in self.graphs:
             g = graph.cpu().to_networkx()
             g = nx.Graph(g)
             if data_type == "regression":
+                self.gclasses = 1
                 labels.append(nx.transitivity(g))
             else:
+                self.gclasses = 2
                 density = nx.density(g)
                 labels.append(nx.transitivity(g) > 10*density)
         self.labels = torch.tensor(labels)
 
     def average_path_labels(self, data_type):
-        self.gclasses = 2
         labels = []
         for graph in self.graphs:
             g = graph.cpu().to_networkx()
             g = nx.Graph(g)
             if data_type == "regression":
-                labels.append(calculate_avg_shortest_path(g))
+                self.gclasses = 1
+                labels.append(calculate_avg_shortest_path(graph))
             else:
+                self.gclasses = 2
                 n = graph.number_of_nodes()
-                labels.append(calculate_avg_shortest_path(g) > math.log2(n))
+                labels.append(calculate_avg_shortest_path(graph) > math.log2(n))
         self.labels = torch.tensor(labels)
 
     def density_labels(self, data_type):
-        self.gclasses = 2
         labels = []
         for graph in self.graphs:
             g = graph.cpu().to_networkx()
             g = nx.Graph(g)
             degrees = list(dict(g.degree()).values())
             if data_type == "regression":
+                self.gclasses = 1
                 labels.append(sum(degrees) / len(degrees))
             else:
+                self.gclasses = 2
                 labels.append(sum(degrees) / len(degrees)>6)
         self.labels = torch.tensor(labels)
+        
 
     def kurtosis_labels(self, data_type):
-        self.gclasses = 2
         labels = []
         for graph in self.graphs:
             g = graph.cpu().to_networkx()
             g = nx.Graph(g)
             degrees = list(dict(g.degree()).values())
             if data_type == "regression":
+                self.gclasses = 1
                 labels.append(calculate_kurtosis_from_degree_list(degrees))
             else:
+                self.gclasses = 2
                 labels.append(calculate_kurtosis_from_degree_list(degrees)>3)
         self.labels = torch.tensor(labels)
     

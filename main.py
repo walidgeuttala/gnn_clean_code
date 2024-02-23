@@ -35,13 +35,13 @@ def parse_args():
     parser.add_argument("--batch_size", type=int, default=100, help="Batch size")
     parser.add_argument("--lr", type=float, default=0.01, help="Learning rate")
     parser.add_argument("--weight_decay", type=float, default=0.0, help="Weight decay of the learning rate over epochs for the optimizer")
-    parser.add_argument("--pool_ratio", type=float, default=0., help="Pooling ratio")
+    parser.add_argument("--pool_ratio", type=float, default=0.5, help="Pooling ratio")
     parser.add_argument("--hidden_dim", type=int, default=64, help="Hidden size, number of neuron in every hidden layer but could change for currten type of networks")
     parser.add_argument("--dropout", type=float, default=0., help="Dropout ratio")
     parser.add_argument("--epochs", type=int, default=100, help="Max number of training epochs")
     parser.add_argument("--patience", type=int, default=-1, help="Patience for early stopping, -1 for no stop")
     parser.add_argument("--num_layers", type=int, default=3, help="Number of conv layers")
-    parser.add_argument("--print_every", type=int, default=10, help="Print train log every k epochs, -1 for silent training")
+    parser.add_argument("--print_every", type=int, default=1, help="Print train log every k epochs, -1 for silent training")
     parser.add_argument("--num_trials", type=int, default=1, help="Number of trials")
     parser.add_argument("--k", type=int, default=4, help="For ID-GNN where control the depth of the generated ID features for helping detecting cycles of length k-1 or less")
     parser.add_argument("--multi_k", type=bool, default=False, help="multiple feature type for non identity feature True or False")
@@ -100,21 +100,23 @@ def parse_args():
 def train(model: torch.nn.Module, optimizer, trainloader, args):
     model.train()
     total_loss = 0.0
+    num_graphs = 0
     num_batches = len(trainloader)
     loss_func = getattr(F, args.loss_name)(reduction="sum")
     for batch in trainloader:
         optimizer.zero_grad()
         batch_graphs, batch_labels = batch
+        num_graphs += batch_labels.size(0)
         batch_graphs = batch_graphs.to(args.device)
-        batch_labels = batch_labels.long().to(args.device)
-        
+        batch_labels = batch_labels.to(args.device)
+    
         out = model(batch_graphs, args)
         loss = loss_func(out, batch_labels)
         loss.backward()
         optimizer.step()
         total_loss += loss.item()
 
-    return total_loss / num_batches
+    return total_loss / num_graphs
 
 @torch.no_grad()
 def test_regression(model: torch.nn.Module, loader, args):
@@ -126,7 +128,7 @@ def test_regression(model: torch.nn.Module, loader, args):
         batch_graphs, batch_labels = batch
         num_graphs += batch_labels.size(0)
         batch_graphs = batch_graphs.to(args.device)
-        batch_labels = batch_labels.long().to(args.device)
+        batch_labels = batch_labels.to(args.device)
         out = model(batch_graphs, args)
         loss += loss_func(out, batch_labels).item()
         args.current_batch += 1
@@ -144,7 +146,7 @@ def test_classification(model: torch.nn.Module, loader, args):
         batch_graphs, batch_labels = batch
         num_graphs += batch_labels.size(0)
         batch_graphs = batch_graphs.to(args.device)
-        batch_labels = batch_labels.long().to(args.device)
+        batch_labels = batch_labels.to(args.device)
        
         out = model(batch_graphs, args)
         pred = out.argmax(dim=1)
@@ -198,7 +200,6 @@ def main(args, seed, save=True):
     else:
         print(f"Optimizer '{args.optimizer_name}' not found in torch.optim.")
 
-
     scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=50, gamma=0.5)
 
     # Step 4: training epoches =============================================================== #
@@ -225,6 +226,7 @@ def main(args, seed, save=True):
             torch.save(model.state_dict(), '{}/last_model_weights_trail{}_{}_{}.pth'.format(args.output_path, seed, args.dataset, args.feat_type))
     else:
         torch.save(model.state_dict(), '{}grid_search/{}_{}_{}_{}.pth'.format(args.output_path, args.architecture, args.feat_type, args.num_layers, args.hidden_dim))
+   
     return test_acc, test_acc2, sum(train_times) / len(train_times)
 
 if __name__ == "__main__":
@@ -232,7 +234,7 @@ if __name__ == "__main__":
     accs = []
     accs2 = []
     train_times = []
-    idx = None
+    idx = 0
     best_acc = -1
     stat_list = []
     # train loss, train acc, valid acc, test acc
