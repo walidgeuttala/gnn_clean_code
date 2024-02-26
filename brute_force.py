@@ -37,7 +37,7 @@ search_space = {
     "weight_decay": [1e-3],
     "k": [4]
 }
-for i, label_type in enumerate(label_types):
+for label_type in [label_types[3]]:
   cnt = 0
   new_path = f'../gnn_outputs/{label_type}/output'
   for j, feat_type in enumerate(feat_types):

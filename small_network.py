@@ -28,11 +28,11 @@ def extract_float_values(input_string):
 
 length = count_output_folders()
 print(length)
-current_path = ''
+current_path = '../gnn_outputs/average_path/'
 #keys = ['architecture', 'hidden_dim', 'num_layers', 'feat_type', 'train_loss', 'train_loss_error', 'train_acc', 'train_acc_error', 'valid_acc', 'valid_acc_error', 'test_acc', 'test_acc_error']
 keys = ['architecture', 'hidden_dim', 'num_layers', 'feat_type', 'test_acc', 'test_acc2']
 df = []
-for i in range(1, length+1):
+for i in range(1, length+1, 2):
     args_path = [f for f in os.listdir(current_path+'output{}/'.format(i)) if f.startswith('Data_dataset')][0]
     with open(current_path+'output{}/'.format(i)+args_path) as f:
         data = json.load(f)
