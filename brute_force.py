@@ -5,12 +5,13 @@ import os
 import re
 
 feat_types = ['ones_feat', 'noise_feat', 'degree_feat', 'norm_degree_feat', 'identity_feat']
+feat_types = ['ones_feat']
 
 save_last_epoch_hidden_output = False
 
-num_trials = 5
-epochs = 100
-epoch_search = 50
+num_trials = 1
+epochs = 1
+epoch_search = 1
 cnt = 0
 device = 'cpu'
 data_type = 'regression'
@@ -31,13 +32,13 @@ label_types = ['transitivity', 'average_path', 'density', 'kurtosis']
 
 search_space = {
     "architecture": ['gin'],
-    "hidden_dim": [2, 4, 8, 16, 32, 64],
+    "hidden_dim": [64],
     "lr": [1e-2],
-    "num_layers":[3, 4],
+    "num_layers":[4],
     "weight_decay": [1e-3],
     "k": [4]
 }
-for label_type in [label_types[3]]:
+for label_type in [label_types[0]]:
   cnt = 0
   new_path = f'../gnn_outputs/{label_type}/output'
   for j, feat_type in enumerate(feat_types):
