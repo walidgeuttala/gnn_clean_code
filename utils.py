@@ -285,6 +285,33 @@ def find(str2):
   # Pass the folder name to the command line
   return matching_names[0]
 
+
+def repeat_last_dim(tensor, k):
+    """
+    Repeat the last dimension of a PyTorch tensor 'k' times, where k is even.
+    
+    Args:
+    - tensor (torch.Tensor): Input tensor of shape (..., N, 2)
+    - k (int): Number of times to repeat the last dimension. Must be even.
+    
+    Returns:
+    - torch.Tensor: Tensor with the last dimension repeated 'k' times.
+    """
+    if k % 2 != 0:
+        raise ValueError("k must be even.")
+    
+    # Get the shape of the input tensor
+    shape = tensor.shape
+    
+    # Ensure the last dimension is 2
+    if shape[-1] != 2:
+        raise ValueError("Last dimension of the input tensor must be 2.")
+    
+    # Repeat the last dimension 'k' times
+    repeated_tensor = tensor.unsqueeze(-1).repeat(*(1,) * (len(shape) - 1), k)
+    
+    return repeated_tensor
+
 def calculate_avg_shortest_path(graph):
     matrix = dgl.shortest_dist(graph)
     #matrix[matrix == -1] = 0

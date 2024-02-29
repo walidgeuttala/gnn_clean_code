@@ -12,8 +12,9 @@ from dgl.nn.pytorch.conv import GINConv, GraphConv
 from dgl.nn import GATv2Conv
 
 from layer import ConvPoolBlock, SAGPool
-
+from utils import repeat_last_dim
 import h5py
+
 
 
 class SAGNetworkHierarchical(torch.nn.Module):
@@ -55,7 +56,7 @@ class SAGNetworkHierarchical(torch.nn.Module):
                 ConvPoolBlock(_i_dim, _o_dim, pool_ratio=pool_ratio)
             )
         convpools.append(
-                ConvPoolBlock(hidden_dim, 1, pool_ratio=0)
+                ConvPoolBlock(hidden_dim, 1, pool_ratio=0.)
             )
         self.convpools = torch.nn.ModuleList(convpools)
 
@@ -68,8 +69,8 @@ class SAGNetworkHierarchical(torch.nn.Module):
         final_readout = None
         for i in range(self.num_convpools+1):
             graph, feat, readout = self.convpools[i](graph, feat, args)
-            if i+1 == self.num_convpools:
-                readout = readout.squeeze(dim=-1).unsqueeze(dim=-1).expand(*readout.shape, self.hidden_dim*2)
+            if i == self.num_convpools:
+                readout = repeat_last_dim(readout, self.hidden_dim*2)
             if final_readout is None:
                 final_readout = readout
             else:
