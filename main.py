@@ -101,7 +101,6 @@ def train(model: torch.nn.Module, optimizer, trainloader, args):
     model.train()
     total_loss = 0.0
     num_graphs = 0
-    num_batches = len(trainloader)
     loss_func = getattr(F, args.loss_name)(reduction="sum")
     for batch in trainloader:
         optimizer.zero_grad()
@@ -253,7 +252,7 @@ if __name__ == "__main__":
     print("best trail model is : model_weights_trail{}_{}_{}.pth".format(idx, args.dataset, args.feat_type))
 
     mean, err_bd = get_stats(accs)
-    print("mean acc: {:.4f}, error bound: {:.4f}".format(mean, err_bd))
+    print("test mean acc: {:.4f}, error bound: {:.4f}".format(mean, err_bd))
 
     out_dict = {
         "hyper-parameters": vars(args),

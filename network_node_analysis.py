@@ -75,8 +75,7 @@ class SAGNetworkHierarchical(torch.nn.Module):
             else:
                 final_readout = final_readout + readout 
 
-        feat = self.mlp(final_readout)
-        return feat
+        return feat, graph
 
 # hidden_dim is the feat output
 class SAGNetworkGlobal(torch.nn.Module):
@@ -137,13 +136,7 @@ class SAGNetworkGlobal(torch.nn.Module):
      
         conv_res = torch.cat(conv_res, dim=-1)
         conv_res = self.one_dim_gnn(graph, conv_res)
-        graph, feat, _ = self.pool(graph, conv_res)
-        feat = torch.cat(
-            [self.avg_readout(graph, feat), self.max_readout(graph, feat)],
-            dim=-1,
-        )
-
-        feat = self.mlp(feat)
+        
 
         return conv_res
 
@@ -250,11 +243,7 @@ class GAT(torch.nn.Module):
                 feat = layer(graph, feat).flatten(1)
             self.batch_norms[i] = self.batch_norms[i].to(args.device)
             feat = self.batch_norms[i](feat)
-            pooled_h = self.pool(graph, feat)
-            pooled_h_list.append(self.linear_prediction[i](pooled_h))
-
-        pooled_h = torch.cat(pooled_h_list, dim=-1)
-        pooled_h = self.mlp(pooled_h)
+            
 
         return feat
     
@@ -359,8 +348,7 @@ class GATv2(nn.Module):
             h = self.gatv2_layers[l](g, h).flatten(1)
         # output projection
         logits = self.gatv2_layers[-1](g, h).mean(1)
-        #logits = self.pool(g, logits)
-        #logits = self.mlp(logits)
+
 
         return logits
 
@@ -422,16 +410,8 @@ class GIN(nn.Module):
             h = self.batch_norms[i](h)
             h = self.relu(h)
             hidden_rep.append(h)
-        score_over_layer = 0
-        # perform graph sum pooling over all nodes in each layer
-        pooled_h_list = []
-        for i, h in enumerate(hidden_rep):
-            pooled_h = self.pool(g, h)
-            pooled_h_list.append(pooled_h)
-            score_over_layer += self.drop(self.linear_prediction[i](pooled_h))
-
-        score_over_layer = self.mlp(score_over_layer)
-        return  hidden_rep[-1]
+        
+        return  h
 
 
 
