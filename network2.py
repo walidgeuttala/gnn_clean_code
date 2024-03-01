@@ -76,7 +76,7 @@ class SAGNetworkHierarchical(torch.nn.Module):
                 final_readout = final_readout + readout 
 
         feat = self.mlp(final_readout)
-        return self.output_activation(feat)
+        return feat
 
 # hidden_dim is the feat output
 class SAGNetworkGlobal(torch.nn.Module):
@@ -145,7 +145,7 @@ class SAGNetworkGlobal(torch.nn.Module):
 
         feat = self.mlp(feat)
 
-        return self.output_activation(feat)
+        return conv_res
 
 #hideen_feat is the output dim
 class GAT(torch.nn.Module):
@@ -256,8 +256,8 @@ class GAT(torch.nn.Module):
         pooled_h = torch.cat(pooled_h_list, dim=-1)
         pooled_h = self.mlp(pooled_h)
 
-        return self.output_activation(pooled_h)
-
+        return feat
+    
 class MLP(nn.Module):
     """Construct two-layer MLP-type aggreator for GIN model"""
 
@@ -359,10 +359,10 @@ class GATv2(nn.Module):
             h = self.gatv2_layers[l](g, h).flatten(1)
         # output projection
         logits = self.gatv2_layers[-1](g, h).mean(1)
-        logits = self.pool(g, logits)
-        logits = self.mlp(logits)
+        #logits = self.pool(g, logits)
+        #logits = self.mlp(logits)
 
-        return self.output_activation(logits)
+        return logits
 
 
 class GIN(nn.Module):
@@ -431,7 +431,7 @@ class GIN(nn.Module):
             score_over_layer += self.drop(self.linear_prediction[i](pooled_h))
 
         score_over_layer = self.mlp(score_over_layer)
-        return  self.output_activation(score_over_layer)
+        return  hidden_rep[-1]
 
 
 

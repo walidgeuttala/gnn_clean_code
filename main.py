@@ -35,7 +35,7 @@ def parse_args():
     parser.add_argument("--batch_size", type=int, default=100, help="Batch size")
     parser.add_argument("--lr", type=float, default=0.01, help="Learning rate")
     parser.add_argument("--weight_decay", type=float, default=0.0, help="Weight decay of the learning rate over epochs for the optimizer")
-    parser.add_argument("--pool_ratio", type=float, default=0.5, help="Pooling ratio")
+    parser.add_argument("--pool_ratio", type=float, default=0.2, help="Pooling ratio")
     parser.add_argument("--hidden_dim", type=int, default=64, help="Hidden size, number of neuron in every hidden layer but could change for currten type of networks")
     parser.add_argument("--dropout", type=float, default=0., help="Dropout ratio")
     parser.add_argument("--epochs", type=int, default=100, help="Max number of training epochs")

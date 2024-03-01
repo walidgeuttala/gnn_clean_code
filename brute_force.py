@@ -10,7 +10,7 @@ feat_types = ['ones_feat']
 save_last_epoch_hidden_output = False
 
 num_trials = 1
-epochs = 1
+epochs = 100
 epoch_search = 1
 cnt = 0
 device = 'cpu'
@@ -27,7 +27,7 @@ def find(str2, dir_path):
   # Pass the folder name to the command line
   return matching_names[0]
 
-models = ['gin', 'gat', 'global', 'hierarchical', 'gatv2']
+models = ['gin', 'global', 'hierarchical', 'gatv2']
 label_types = ['transitivity', 'average_path', 'density', 'kurtosis']
 
 search_space = {
@@ -38,7 +38,7 @@ search_space = {
     "weight_decay": [1e-3],
     "k": [4]
 }
-for label_type in [label_types[0]]:
+for label_type in [label_types[2]]:
   cnt = 0
   new_path = f'../gnn_outputs/{label_type}/output'
   for j, feat_type in enumerate(feat_types):
@@ -115,4 +115,4 @@ for label_type in [label_types[0]]:
         #script = script.split()
         #subprocess.run(script)
         
-        cnt += 1
+    
