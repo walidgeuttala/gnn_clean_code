@@ -296,7 +296,7 @@ class GATv2(nn.Module):
             )
         )
         # hidden layers
-        for l in range(1, num_layers):
+        for l in range(1, num_layers-2):
             # due to multi-head, the in_dim = num_hidden * num_heads
             self.gatv2_layers.append(
                 GATv2Conv(
