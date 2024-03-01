@@ -5,7 +5,6 @@ import os
 import re
 
 feat_types = ['ones_feat', 'noise_feat', 'degree_feat', 'norm_degree_feat', 'identity_feat']
-feat_types = ['ones_feat']
 
 save_last_epoch_hidden_output = False
 
