@@ -100,11 +100,12 @@ def parse_args():
 def train(model: torch.nn.Module, optimizer, trainloader, args):
     model.train()
     total_loss = 0.0
-    num_batches = len(trainloader)
+    num_graphs = 0
     loss_func = getattr(F, args.loss_name)(reduction="sum")
     for batch in trainloader:
         optimizer.zero_grad()
         batch_graphs, batch_labels = batch
+        num_graphs += batch_labels.size(0)
         batch_graphs = batch_graphs.to(args.device)
         batch_labels = batch_labels.long().to(args.device)
         
@@ -114,7 +115,7 @@ def train(model: torch.nn.Module, optimizer, trainloader, args):
         optimizer.step()
         total_loss += loss.item()
 
-    return total_loss / num_batches
+    return total_loss / num_graphs
 
 @torch.no_grad()
 def test_regression(model: torch.nn.Module, loader, args):
