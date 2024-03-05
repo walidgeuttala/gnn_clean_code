@@ -279,7 +279,7 @@ class GATv2(nn.Module):
         self.gatv2_layers = nn.ModuleList()
         self.activation = torch.nn.ReLU()
         num_hidden = hidden_dim
-        heads = [2] * num_layers
+        heads = 2
         feat_drop = 0
         attn_drop = 0
         negative_slope = 0.2
@@ -291,7 +291,7 @@ class GATv2(nn.Module):
             GATv2Conv(
                 in_dim,
                 num_hidden,
-                heads[0],
+                heads,
                 feat_drop,
                 attn_drop,
                 negative_slope,
@@ -303,13 +303,13 @@ class GATv2(nn.Module):
             )
         )
         # hidden layers
-        for l in range(1, num_layers):
+        for l in range(1, num_layers-1):
             # due to multi-head, the in_dim = num_hidden * num_heads
             self.gatv2_layers.append(
                 GATv2Conv(
-                    num_hidden * heads[l - 1],
                     num_hidden,
-                    heads[l],
+                    num_hidden,
+                    heads,
                     feat_drop,
                     attn_drop,
                     negative_slope,
@@ -323,9 +323,9 @@ class GATv2(nn.Module):
         # output projection
         self.gatv2_layers.append(
             GATv2Conv(
-                num_hidden * heads[-2],
+                num_hidden,
                 num_classes,
-                heads[-1],
+                heads,
                 feat_drop,
                 attn_drop,
                 negative_slope,
@@ -344,8 +344,8 @@ class GATv2(nn.Module):
 
     def forward(self, g, args):
         h = g.ndata["feat"]
-        for l in range(self.num_layers):
-            h = self.gatv2_layers[l](g, h).flatten(1)
+        for l in range(self.num_layers-1):
+            h = self.gatv2_layers[l](g, h).mean(1)
         # output projection
         logits = self.gatv2_layers[-1](g, h).mean(1)
 

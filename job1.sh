@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH -A p_gnn001               # Account name to be debited
 #SBATCH --job-name=gnn3         # Job name
-#SBATCH --time=0-00:30:00        # Maximum walltime (30 minutes)
+#SBATCH --time=0-10:00:00        # Maximum walltime (30 minutes)
 #SBATCH --partition=cpu           # Select the ai partition
 ##--gres=gpu:1          # Request 1 to 4 GPUs per node
 #SBATCH --mem-per-cpu=30000       # Memory per CPU core (16 GB)

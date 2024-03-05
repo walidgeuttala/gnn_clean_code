@@ -105,7 +105,7 @@ def train(model: torch.nn.Module, optimizer, trainloader, args):
     for batch in trainloader:
         optimizer.zero_grad()
         batch_graphs, batch_labels = batch
-        num_graphs += batch_labels.size(0)
+        num_graphs += args.batch_size
         batch_graphs = batch_graphs.to(args.device)
         batch_labels = batch_labels.to(args.device)
     
@@ -125,7 +125,7 @@ def test_regression(model: torch.nn.Module, loader, args):
     loss_func = getattr(F, args.loss_name)(reduction="sum")
     for batch in loader:
         batch_graphs, batch_labels = batch
-        num_graphs += batch_labels.size(0)
+        num_graphs += args.batch_size
         batch_graphs = batch_graphs.to(args.device)
         batch_labels = batch_labels.to(args.device)
         out = model(batch_graphs, args)
@@ -143,7 +143,7 @@ def test_classification(model: torch.nn.Module, loader, args):
     loss_func = getattr(F, args.loss_name)(reduction="sum")
     for batch in loader:
         batch_graphs, batch_labels = batch
-        num_graphs += batch_labels.size(0)
+        num_graphs += args.batch_size
         batch_graphs = batch_graphs.to(args.device)
         batch_labels = batch_labels.to(args.device)
        

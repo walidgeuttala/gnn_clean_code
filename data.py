@@ -96,6 +96,7 @@ class GraphDataset(DGLDataset):
             self.graphs = [g.to(self.device) for g in self.graphs]
             self.labels = self.labels.to(self.device)
         self.choose_labels(args, data_path+'/properties_labels.pt')
+        #self.add_self_loop()
 
     def has_cache(self):
         '''
@@ -106,6 +107,10 @@ class GraphDataset(DGLDataset):
         info_path = os.path.join(f'{self.data_path}/info.pkl')
         return os.path.exists(graph_path) and os.path.exists(info_path)
     
+    def add_self_loop(self):
+        for graph in self.graphs:
+            graph = graph.add_self_loop()
+
     def compute_all_labels(self, path):
         results = []
         results.append(self.labels)

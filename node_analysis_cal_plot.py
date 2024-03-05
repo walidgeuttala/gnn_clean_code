@@ -79,7 +79,7 @@ import torch
 import numpy as np
 from sklearn.decomposition import PCA
 
-number_folders = 21
+number_folders = 2
 #print(number_folders)
 current_path = '../gnn_outputs/density/'
 out = 0
@@ -249,6 +249,6 @@ for i in range(1, number_folders):
     #plt.yscale('log', base=2)
     plt.xticks(node_indices)
     
-    plt.savefig(f'{current_path}/{model_name}_{feat_name}.pdf')
+    plt.savefig(f'{current_path}/{model_name}_{feat_name}.png')
     plt.close()
 

@@ -5,6 +5,7 @@ import os
 import re
 
 feat_types = ['ones_feat', 'noise_feat', 'degree_feat', 'norm_degree_feat', 'identity_feat']
+feat_types = ['degree_feat']
 
 save_last_epoch_hidden_output = False
 
@@ -26,14 +27,15 @@ def find(str2, dir_path):
   # Pass the folder name to the command line
   return matching_names[0]
 
-models = ['gin', 'global', 'hierarchical', 'gatv2']
+models = ['gin', 'global', 'hierarchical']
+
 label_types = ['transitivity', 'average_path', 'density', 'kurtosis']
 
 search_space = {
     "architecture": ['gin'],
-    "hidden_dim": [64],
+    "hidden_dim": [32],
     "lr": [1e-2],
-    "num_layers":[4],
+    "num_layers":[3],
     "weight_decay": [1e-3],
     "k": [4]
 }
