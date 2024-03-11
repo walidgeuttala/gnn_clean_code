@@ -28,7 +28,7 @@ def find(str2, dir_path):
   return matching_names[0]
 
 models = ['gin', 'global', 'hierarchical']
-
+models = ['gin']
 label_types = ['transitivity', 'average_path', 'density', 'kurtosis']
 
 search_space = {

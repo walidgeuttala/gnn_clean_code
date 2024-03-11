@@ -63,18 +63,20 @@ class SAGNetworkHierarchical(torch.nn.Module):
         self.mlp = MLP(hidden_dim * 2, hidden_dim, out_dim)
         self.output_activation = getattr(nn, self.output_activation)(dim=-1)
 
-    def forward(self, graph: dgl.DGLGraph, args):
+    def forward(self, graph: dgl.DGLGraph):
         feat = graph.ndata["feat"]
         final_readout = None
         for i in range(self.num_convpools+1):
-            graph, feat, readout = self.convpools[i](graph, feat, args)
+            graph, feat, readout = self.convpools[i](graph, feat)
+            print(feat)
+            print(readout)
             if i == self.num_convpools:
                 readout = readout.unsqueeze(1).repeat(1, self.hidden_dim*2 // 2, 1).view(readout.shape[0], -1)
             if final_readout is None:
                 final_readout = readout
             else:
                 final_readout = final_readout + readout 
-
+        print(final_readout)
         feat = self.mlp(final_readout)
         return self.output_activation(feat)
 
@@ -116,35 +118,49 @@ class SAGNetworkGlobal(torch.nn.Module):
             _o_dim = hidden_dim
             convs.append(GraphConv(_i_dim, _o_dim, allow_zero_in_degree=True, norm='both'))
 
-        self.one_dim_gnn = GraphConv(hidden_dim * num_layers, 1, allow_zero_in_degree=True, norm='both')
+        # self.one_dim_gnn = GraphConv(hidden_dim * num_layers, 1, allow_zero_in_degree=True, norm='both')
         self.convs = torch.nn.ModuleList(convs)
 
-        concat_dim = 1
+        concat_dim = hidden_dim * num_layers
         self.pool = SAGPool(concat_dim, ratio=pool_ratio)
         self.avg_readout = AvgPooling()
         self.max_readout = MaxPooling()
 
         self.mlp = MLP(concat_dim * 2, hidden_dim, out_dim)
         self.output_activation = getattr(nn, self.output_activation)(dim=-1)
+        self.initialize_weights()
 
-    def forward(self, graph: dgl.DGLGraph, args):
+    def initialize_weights(self):
+        with torch.no_grad():
+            for name, param in self.named_parameters():
+                if 'weight' in name:
+                    param.fill_(1.0)
+                elif 'bias' in name:
+                    param.fill_(0.0)
+
+    def forward(self, graph: dgl.DGLGraph):
         feat = graph.ndata["feat"]
+        print('feat input:',feat.shape)
         conv_res = []
 
         for i in range(self.num_layers):
             feat = self.convs[i](graph, feat)
             conv_res.append(feat)
-     
+            print('layer 1 : ',feat)
         conv_res = torch.cat(conv_res, dim=-1)
-        conv_res = self.one_dim_gnn(graph, conv_res)
+        #conv_res = self.one_dim_gnn(graph, conv_res)
+        print('layer 2 : ',conv_res)
         graph, feat, _ = self.pool(graph, conv_res)
+        print('pooling results: ',feat)
         feat = torch.cat(
             [self.avg_readout(graph, feat), self.max_readout(graph, feat)],
             dim=-1,
         )
-
+        print('readout: ',feat)
         feat = self.mlp(feat)
+        print('mlp outputs : ', feat)
 
+        print('results regression : ', self.output_activation(feat))
         return self.output_activation(feat)
 
 #hideen_feat is the output dim
@@ -390,11 +406,11 @@ class GIN(nn.Module):
             )  # set to True if learning epsilon
             self.batch_norms.append(nn.BatchNorm1d(hidden_dim))
 
-        mlp = MLP(hidden_dim, hidden_dim, 1)
-        self.ginlayers.append(
-                GINConv(mlp, learn_eps=False)
-            )  # set to True if learning epsilon
-        self.batch_norms.append(nn.BatchNorm1d(1))
+        # mlp = MLP(hidden_dim, hidden_dim, 1)
+        # self.ginlayers.append(
+        #         GINConv(mlp, learn_eps=False)
+        #     )  # set to True if learning epsilon
+        # self.batch_norms.append(nn.BatchNorm1d(1))
             #if layer == 0:
             #    print(mlp.linears[0].weight)
         # linear functions for graph sum poolings of output of each layer
@@ -404,7 +420,7 @@ class GIN(nn.Module):
                 self.linear_prediction.append(nn.Linear(in_dim, hidden_dim))
             else:
                 self.linear_prediction.append(nn.Linear(hidden_dim, hidden_dim))
-        self.linear_prediction.append(nn.Linear(1, hidden_dim))
+        # self.linear_prediction.append(nn.Linear(1, hidden_dim))
         self.drop = nn.Dropout(dropout)
         self.mlp = MLP(hidden_dim, hidden_dim, out_dim)
         self.pool = (

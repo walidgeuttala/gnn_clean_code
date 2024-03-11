@@ -65,7 +65,7 @@ class ConvPoolBlock(torch.nn.Module):
         self.avgpool = AvgPooling()
         self.maxpool = MaxPooling()
 
-    def forward(self, graph, feature, args):
+    def forward(self, graph, feature):
         out = F.relu(self.conv(graph, feature))
      
         graph, out, _ = self.pool(graph, out)
