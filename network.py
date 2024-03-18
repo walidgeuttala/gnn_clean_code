@@ -38,7 +38,7 @@ class SAGNetworkHierarchical(torch.nn.Module):
         hidden_dim: int,
         out_dim: int,
         num_layers=3,
-        pool_ratio: float = 0.5,
+        pool_ratio: float = 0.9,
         dropout: float = 0.0,
         output_activation = 'log_softmax'
     ):
@@ -100,12 +100,11 @@ class SAGNetworkGlobal(torch.nn.Module):
         hidden_dim: int,
         out_dim: int,
         num_layers=3,
-        pool_ratio: float = 0.5,
+        pool_ratio: float = 0.9,
         dropout: float = 0.0,
         output_activation = 'log_softmax'
     ):
         super(SAGNetworkGlobal, self).__init__()
-        pool_ratio = 0.2
         self.dropout = dropout
         self.num_layers = num_layers
         self.output_activation = output_activation
@@ -176,7 +175,7 @@ class GAT(torch.nn.Module):
         hidden_dim: int,
         out_dim: int,
         num_layers=3,
-        pool_ratio: float = 0.5,
+        pool_ratio: float = 0.9,
         dropout: float = 0.0,
         output_activation = 'log_softmax',
     ):

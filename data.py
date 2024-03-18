@@ -96,6 +96,10 @@ class GraphDataset(DGLDataset):
             self.graphs = [g.to(self.device) for g in self.graphs]
             self.labels = self.labels.to(self.device)
         self.choose_labels(args, data_path+'/properties_labels.pt')
+        print(self.labels[:10])
+        print(self.gclasses)
+        
+
         #self.add_self_loop()
 
     def has_cache(self):
@@ -135,6 +139,7 @@ class GraphDataset(DGLDataset):
         for prop in self.properties:
             for data_type in self.data_types:
                 if prop == args.label_type+'_labels' and data_type == args.data_type:
+                    print(cnt)
                     self.labels = self.labels[cnt]
                     if args.data_type == 'regression':
                         self.labels =  self.labels.view(-1, 1).float()
@@ -146,7 +151,7 @@ class GraphDataset(DGLDataset):
         getattr(self, f'{args.label_type}_labels')(args.data_type)
         if args.data_type == 'regression':
             self.labels =  self.labels.view(-1, 1).float()
-            self.labels = self.normalize_labels(self.labels)
+            #self.labels = self.normalize_labels(self.labels)
         else:
             self.labels =  self.labels.long()
 

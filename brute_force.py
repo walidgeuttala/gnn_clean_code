@@ -10,14 +10,13 @@ feat_types = ['degree_feat']
 save_last_epoch_hidden_output = False
 
 num_trials = 1
-epochs = 100
+epochs = 1
 epoch_search = 1
 cnt = 0
-device = 'cpu'
+device = 'cuda'
 data_type = 'regression'
 loss_name = 'MSELoss' # MSELoss NLLLoss
 output_activation = 'Identity' # Identity LogSoftmax
-
 def find(str2, dir_path):
   files = os.listdir(dir_path)
   file_names = [os.path.basename(file) for file in files]
@@ -28,8 +27,8 @@ def find(str2, dir_path):
   return matching_names[0]
 
 models = ['gin', 'global', 'hierarchical']
-
-label_types = ['transitivity', 'average_path', 'density', 'kurtosis']
+models = ['gin']
+label_types = ['transitivity', 'average_path', 'density', 'kurtosis', 'original']
 
 search_space = {
     "architecture": ['gin'],
@@ -72,30 +71,31 @@ for label_type in [label_types[2]]:
         # print(str1)
         with open(output_path+"model.log", 'r') as f:
             modell = json.load(f)
-
+        
         model = modell['params']
+        print(model)
         model['epochs'] = epochs
         model['save_last_epoch_hidden_output'] = save_last_epoch_hidden_output
         model['patience'] = -1
         model['num_trials'] = num_trials 
         formatted_string = " ".join([f"--{key} {value}" for key, value in model.items()])
 
-        print()
-        print('{}.{}.2--------------------------------------------Train and Test  : {}---------------------'.format(j+2,k+1,search_space['architecture']))
-        print()
-        script = "python main.py " + formatted_string
-        script = script.split()
-        subprocess.run(script)
+        # print()
+        # print('{}.{}.2--------------------------------------------Train and Test  : {}---------------------'.format(j+2,k+1,search_space['architecture']))
+        # print()
+        # script = "python main.py " + formatted_string
+        # script = script.split()
+        # subprocess.run(script)
 
-        torch.cuda.empty_cache()
+        # torch.cuda.empty_cache()
 
-        model = modell['params2']
-        model['epochs'] = epochs
-        model['save_last_epoch_hidden_output'] = save_last_epoch_hidden_output
-        model['patience'] = -1
-        model['num_trials'] = num_trials 
-        model['changer'] = 1
-        formatted_string = " ".join([f"--{key} {value}" for key, value in model.items()])
+        # model = modell['params2']
+        # model['epochs'] = epochs
+        # model['save_last_epoch_hidden_output'] = save_last_epoch_hidden_output
+        # model['patience'] = -1
+        # model['num_trials'] = num_trials 
+        # model['changer'] = 1
+        # formatted_string = " ".join([f"--{key} {value}" for key, value in model.items()])
 
         #print()
         #print('{}.{}.2--------------------------------------------Train and Test  : {}---------------------'.format(j+2,k+1,search_space['architecture']))

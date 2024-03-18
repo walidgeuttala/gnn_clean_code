@@ -32,10 +32,10 @@ def parse_args():
     parser.add_argument("--data_type", type=str, default="regression", help="regression or classifcation")
     parser.add_argument("--label_type", type=str, default="original", choices=["original", "transitivity", "average_path", "density", "kurtosis"], help="choose")
     parser.add_argument("--feat_type", type=str, default="ones_feat", choices=["ones_feat", "noise_feat", "degree_feat", "identity_feat", "norm_degree_feat"], help="ones_feat/noies_feat/degree_feat/identity_feat")
-    parser.add_argument("--batch_size", type=int, default=100, help="Batch size")
+    parser.add_argument("--batch_szie", type=int, default=100, help="Batch size")
     parser.add_argument("--lr", type=float, default=0.01, help="Learning rate")
     parser.add_argument("--weight_decay", type=float, default=0.0, help="Weight decay of the learning rate over epochs for the optimizer")
-    parser.add_argument("--pool_ratio", type=float, default=0.2, help="Pooling ratio")
+    parser.add_argument("--pool_ratio", type=float, default=0.9, help="Pooling ratio")
     parser.add_argument("--hidden_dim", type=int, default=64, help="Hidden size, number of neuron in every hidden layer but could change for currten type of networks")
     parser.add_argument("--dropout", type=float, default=0., help="Dropout ratio")
     parser.add_argument("--epochs", type=int, default=100, help="Max number of training epochs")
@@ -101,6 +101,7 @@ def train(model: torch.nn.Module, optimizer, trainloader, args):
     model.train()
     total_loss = 0.0
     num_graphs = 0
+    
     loss_func = getattr(F, args.loss_name)(reduction="sum")
     for batch in trainloader:
         optimizer.zero_grad()
@@ -156,6 +157,7 @@ def test_classification(model: torch.nn.Module, loader, args):
     return correct / num_graphs, loss / num_graphs
 
 def main(args, seed, save=True):
+    print(args.data_type)
     # Step 1: Prepare graph data and retrieve train/validation/test index ============================= #
     set_random_seed(seed)
     dataset = GraphDataset(device=args.device)
@@ -165,7 +167,8 @@ def main(args, seed, save=True):
 
     getattr(dataset, f'add_{args.feat_type}')(args.k)
     getattr(dataset2, f'add_{args.feat_type}')(args.k)
-
+    print(dataset.graphs[0].ndata['feat'])
+    
     test_loader2 = GraphDataLoader(dataset2, batch_size=args.batch_size, shuffle=False)
     num_training = int(len(dataset) * 0.9)
     num_val = int(len(dataset) * 0.)
