@@ -24,6 +24,34 @@ from torch.utils.data import random_split
 from scipy.stats import kurtosis
 from collections import Counter
 
+class GraphFeatureNormalizer:
+    def __init__(self):
+        self.mean = None
+        self.std = None
+
+    def fit_transform(self, graph_loader):
+        # Concatenate all node features into a single tensor
+        all_feats = torch.cat([graph.ndata['feat'] for graph, _ in graph_loader], dim=0)
+        
+        # Compute mean and standard deviation
+        self.mean = torch.mean(all_feats, dim=0)
+        self.std = torch.std(all_feats, dim=0)
+        
+        # Normalize all node features across all graphs
+        for graph, _ in graph_loader:
+            graph.ndata['feat'] = (graph.ndata['feat'] - self.mean) / self.std
+
+    def transform(self, graph_loader):
+        # Check if the mean and std have been computed
+        if self.mean is None or self.std is None:
+            raise ValueError("Mean and std have not been computed. Please fit the normalizer first.")
+        
+        # Transform the node features of test data using the computed mean and std
+        for graph, _ in graph_loader:
+            graph.ndata['feat'] = (graph.ndata['feat'] - self.mean) / self.std
+
+
+
 def calculate_kurtosis_from_degree_list(degree_list):
     """
     Calculate the kurtosis for a given list of degrees in a graph.
@@ -197,10 +225,11 @@ def set_random_seed(seed=0):
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
-    torch.cuda.manual_seed(seed)
-    torch.cuda.manual_seed_all(seed)
-    torch.backends.cudnn.deterministic = True
-    torch.backends.cudnn.benchmark = False
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed(seed)
+        torch.cuda.manual_seed_all(seed)
+        torch.backends.cudnn.deterministic = True
+        torch.backends.cudnn.benchmark = False
     dgl.random.seed(seed)
 
 
@@ -317,7 +346,7 @@ def calculate_avg_shortest_path(graph):
     #matrix[matrix == -1] = 0
     # Get the dimensions of the matrix
     rows, cols = matrix.size()
-    # Create a mask for the upper half (above the diagonal)
+    # Create a mask for lower half with diag (above the diagonal)
     mask = torch.triu(torch.ones(rows, cols, dtype=torch.uint8), diagonal=1)
     # Calculate the sum of elements in the upper half
     #mask[matrix == 0] = 0

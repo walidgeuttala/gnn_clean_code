@@ -1,19 +1,15 @@
-from scipy.stats import skew
 import networkx as nx
 import dgl
 from data import GraphDataset
 import numpy as np
 from utils import *
 from test_stanford_networks import *
-from scipy.stats import entropy
-import scipy.interpolate as interp
-import random
 import math
 from collections import Counter
 from scipy.stats import kurtosis
-import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
+import pickle
 
 def read_real_graphs(result):
     names = []
@@ -55,10 +51,9 @@ def read_real_graphs(result):
 def read_synthtic_graphs(path):
     device = 'cpu'
     dataset = GraphDataset(device=device)
-    dataset.load(path)
+    dataset.load2(path)
     average_shortest_path = []
     graphs = dataset.graphs
-    
     for idx in range(len(graphs)):
         average_shortest_path.append(calculate_avg_shortest_path(graphs[idx]))
         graphs[idx] = graphs[idx]
@@ -90,7 +85,7 @@ def calculate_kurtosis_from_degree_list(degree_list):
         return None
 
 def stats0(graphs, average_shortest_path):
-    arr = [[] for _ in range(5)]
+    arr = [[] for _ in range(4)]
     arr[0] = average_shortest_path.copy()
     for idx, graph in enumerate(graphs):
         n = nx.number_of_nodes(graph)
@@ -101,12 +96,16 @@ def stats0(graphs, average_shortest_path):
         arr[1].append(nx.transitivity(graph) > 10*density)
         degrees = list(dict(graph.degree()).values())
         # return True if left skewed scale free 
-        arr[2].append(calculate_kurtosis_from_degree_list(degrees)>3)
+        # NAn values will result in False which is what I want
+        kurtosis = calculate_kurtosis_from_degree_list(degrees)
+        if math.isnan(kurtosis):
+            kurtosis = 0.
+        arr[2].append(kurtosis>3)
         # High density or no 
         arr[3].append(sum(degrees) / len(degrees)>6)
-        arr[4].append(nx.number_of_edges(graph)>1)        
+            
 
-    arr2 = [[] for _ in range(5)]
+    arr2 = [[] for _ in range(4)]
     arr2[0] = average_shortest_path
     for idx, graph in enumerate(graphs):
         n = nx.number_of_nodes(graph)
@@ -116,16 +115,14 @@ def stats0(graphs, average_shortest_path):
         arr2[1].append(nx.transitivity(graph))
         degrees = list(dict(graph.degree()).values())
         # return True if left skewed scale free 
-        arr2[2].append(calculate_kurtosis_from_degree_list(degrees))
+        kurtosis = calculate_kurtosis_from_degree_list(degrees)
+        if math.isnan(kurtosis):
+            kurtosis = 0.
+        arr2[2].append(kurtosis)
         # High density or no 
-        arr2[3].append(density)
-        arr2[4].append(nx.number_of_edges(graph))        
+        arr2[3].append(sum(degrees) / len(degrees))
+             
     return np.array(arr).T, np.array(arr2).T
-
-
-import networkx as nx
-import matplotlib.pyplot as plt
-import numpy as np
 
 def compute_density(graphs):
     """
@@ -194,9 +191,6 @@ def plot_histograms(arr, name, graph_type, samples):
     plt.savefig(f'overall_{name}_{graph_type}_histogram.png')  # Save the plot
     plt.close()
 
-
-
-
 def count_synthtic(arr, samples):
     arr = arr.reshape(-1, samples, arr.shape[1])
     return np.sum(arr, axis=1)
@@ -204,11 +198,6 @@ def count_synthtic(arr, samples):
 def average_synthtic(arr, samples):
     arr = arr.reshape(-1, samples, arr.shape[1])
     return np.mean(arr, axis=1)
-
-
-import networkx as nx
-import pickle
-
 
 def read_gem_ben_graphs():
     graphs = []
@@ -251,24 +240,52 @@ def read_gem_ben_graphs():
 #print(stat)
 #print(arr)
 
-result = download_and_extract(linkss)
-graphs, names, average_shortest_path = read_real_graphs(result)
-subnames = ['facebook_combined', 'wiki-Vote', 'p2p-Gnutella04', 'p2p-Gnutella08', 'CSphd', 'geom', 'netsience', 'adjnoun', 'football', 'hep-th', 'netscience', 'CLUSTERDataset', 'TreeGridDataset']
-subname_indices = [idx for idx, name in enumerate(names) if name in subnames]
-graphs = [graphs[idx] for idx in subname_indices]
-average_shortest_path = [average_shortest_path[idx] for idx in subname_indices]
+# result = download_and_extract(linkss)
+# graphs, names, average_shortest_path = read_real_graphs(result)
+# subnames = ['facebook_combined', 'wiki-Vote', 'p2p-Gnutella04', 'p2p-Gnutella08', 'CSphd', 'geom', 'netsience', 'adjnoun', 'football', 'hep-th', 'netscience', 'CLUSTERDataset', 'TreeGridDataset']
+# subname_indices = [idx for idx, name in enumerate(names) if name in subnames]
+# graphs = [graphs[idx] for idx in subname_indices]
+# average_shortest_path = [average_shortest_path[idx] for idx in subname_indices]
 
-stat1, arr2 = stats0(graphs, average_shortest_path)
+# stat1, arr2 = stats0(graphs, average_shortest_path)
+
+# self.properties = ['transitivity_labels', 'average_path_labels', 'density_labels', 'kurtosis_labels']
+#         self.data_types = ['regression', 'classification']
+graphs, average_shortest_path = read_synthtic_graphs('../data_folder/data')
+stat2, arr2 = stats0(graphs, average_shortest_path)
+result = list()
+result.append(torch.tensor(np.repeat(np.arange(8), 250)).view(-1, 1).to(torch.int32))
+for i in range(4):
+    result.append(torch.tensor(stat2[:, i]).view(-1, 1).to(torch.float32))
+    result.append(torch.tensor(arr2[:, i]).view(-1, 1).to(torch.float32))
+    print(torch.sum(torch.isnan(result[-2])))
+    print(torch.sum(torch.isnan(result[-1])))
+torch.save(result, "../data_folder/data/properties_labels.pt")
+
+graphs, average_shortest_path = read_synthtic_graphs('../data_folder/test')
+stat2, arr2 = stats0(graphs, average_shortest_path)
+result = list()
+result.append(torch.tensor(np.repeat(np.arange(8), 50)).view(-1, 1).to(torch.float32))
+for i in range(4):
+    result.append(torch.tensor(stat2[:, i]).view(-1, 1).to(torch.float32))
+    result.append(torch.tensor(arr2[:, i]).view(-1, 1).to(torch.float32))
+    print(torch.sum(torch.isnan(result[-2])))
+    print(torch.sum(torch.isnan(result[-1])))
+torch.save(result, "../data_folder/test/properties_labels.pt")
 
 
-#graphs, average_shortest_path = read_synthtic_graphs('data')
-#stat2, arr3 = stats0(graphs, average_shortest_path)
-#stat2 = count_synthtic(stat2, 250)
-#arr3 = average_synthtic(arr3, 250)
 
-print(stat1)
-#print(stat2)
-print(arr2)
+# for i in range (7, 8):
+#     print(np.array(labels[i].view(-1, 1).float())[-10:])
+# #print(stat2.shape())
+
+
+# stat2 = count_synthtic(stat2, 250)
+# arr3 = average_synthtic(arr3, 250)
+
+# print(stat1)
+# #print(stat2)
+# print(arr2)
 #print(arr3)
 
 #degrees = average_degree_list(graphs)

@@ -8,6 +8,7 @@ from identity import compute_identity
 import networkx as nx
 from utils import calculate_kurtosis_from_degree_list, calculate_avg_shortest_path
 import math
+from sklearn.preprocessing import StandardScaler
 
 # create a DGLDataset for our graphs and labels
 class GraphDataset(DGLDataset):
@@ -25,8 +26,8 @@ class GraphDataset(DGLDataset):
         self.labels = labels 
         self.device = device
         self.data_path = None
-        self.properties = ['transitivity_labels', 'average_path_labels', 'density_labels', 'kurtosis_labels']
-        self.data_types = ['regression', 'classification']
+        self.properties = [ 'average_path_labels', 'transitivity_labels', 'kurtosis_labels', 'density_labels']
+        self.data_types = ['classification', 'regression']
         if labels != None:
           self.dim_nfeats = len(self.graphs[0].ndata)
           self.gclasses = len(self.labels.unique())
@@ -96,11 +97,17 @@ class GraphDataset(DGLDataset):
             self.graphs = [g.to(self.device) for g in self.graphs]
             self.labels = self.labels.to(self.device)
         self.choose_labels(args, data_path+'/properties_labels.pt')
-        print(self.labels[:10])
-        print(self.gclasses)
         
 
-        #self.add_self_loop()
+    def load2(self, data_path):
+        '''
+        Loads the processed data from disk as .bin and .pkl files. The processed data consists of the graph data and the corresponding labels.
+        '''
+        # Load the graph data and labels from the .bin file
+        graph_path = os.path.join('{}/dgl_graph.bin'.format(data_path))
+        self.graphs, _ = load_graphs(graph_path)
+        
+        
 
     def has_cache(self):
         '''
@@ -139,15 +146,23 @@ class GraphDataset(DGLDataset):
         for prop in self.properties:
             for data_type in self.data_types:
                 if prop == args.label_type+'_labels' and data_type == args.data_type:
-                    print(cnt)
                     self.labels = self.labels[cnt]
                     if args.data_type == 'regression':
                         self.labels =  self.labels.view(-1, 1).float()
                     return 
-            cnt += 1
+                
+                cnt += 1
 
+    def check_identical_not_same_ref(self, tensor1, tensor2):
+        # Check if tensors have identical values
+        identical_values = torch.allclose(tensor1, tensor2)
+
+        # Check if tensors have different memory addresses
+        same_reference = tensor1.data_ptr() == tensor2.data_ptr()
+
+        return identical_values and not same_reference
+    
     def stats_labels(self, args):
-        #print(args.label_type)
         getattr(self, f'{args.label_type}_labels')(args.data_type)
         if args.data_type == 'regression':
             self.labels =  self.labels.view(-1, 1).float()
@@ -230,6 +245,8 @@ class GraphDataset(DGLDataset):
             if data_type == "regression":
                 self.gclasses = 1
                 labels.append(calculate_kurtosis_from_degree_list(degrees))
+                if labels[-1] == None:
+                    labels[-1] = 0.
             else:
                 self.gclasses = 2
                 labels.append(calculate_kurtosis_from_degree_list(degrees)>3)

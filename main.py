@@ -15,7 +15,7 @@ from torch.utils.data import random_split
 from dgl.dataloading import GraphDataLoader
 
 from network import get_network
-from utils import get_stats, boxplot, acc_loss_plot, set_random_seed
+from utils import get_stats, boxplot, acc_loss_plot, set_random_seed, GraphFeatureNormalizer
 from data import GraphDataset
 
 
@@ -32,7 +32,7 @@ def parse_args():
     parser.add_argument("--data_type", type=str, default="regression", help="regression or classifcation")
     parser.add_argument("--label_type", type=str, default="original", choices=["original", "transitivity", "average_path", "density", "kurtosis"], help="choose")
     parser.add_argument("--feat_type", type=str, default="ones_feat", choices=["ones_feat", "noise_feat", "degree_feat", "identity_feat", "norm_degree_feat"], help="ones_feat/noies_feat/degree_feat/identity_feat")
-    parser.add_argument("--batch_szie", type=int, default=100, help="Batch size")
+    parser.add_argument("--batch_size", type=int, default=100, help="Batch size")
     parser.add_argument("--lr", type=float, default=0.01, help="Learning rate")
     parser.add_argument("--weight_decay", type=float, default=0.0, help="Weight decay of the learning rate over epochs for the optimizer")
     parser.add_argument("--pool_ratio", type=float, default=0.9, help="Pooling ratio")
@@ -157,7 +157,6 @@ def test_classification(model: torch.nn.Module, loader, args):
     return correct / num_graphs, loss / num_graphs
 
 def main(args, seed, save=True):
-    print(args.data_type)
     # Step 1: Prepare graph data and retrieve train/validation/test index ============================= #
     set_random_seed(seed)
     dataset = GraphDataset(device=args.device)
@@ -167,7 +166,7 @@ def main(args, seed, save=True):
 
     getattr(dataset, f'add_{args.feat_type}')(args.k)
     getattr(dataset2, f'add_{args.feat_type}')(args.k)
-    print(dataset.graphs[0].ndata['feat'])
+    
     
     test_loader2 = GraphDataLoader(dataset2, batch_size=args.batch_size, shuffle=False)
     num_training = int(len(dataset) * 0.9)
@@ -179,6 +178,10 @@ def main(args, seed, save=True):
     train_loader = GraphDataLoader(train_set, batch_size=args.batch_size, shuffle=False)
     test_loader = GraphDataLoader(test_set, batch_size=args.batch_size, shuffle=False)
 
+    normalizer = GraphFeatureNormalizer()
+    normalizer.fit_transform(train_loader)
+    normalizer.transform(test_loader)
+    normalizer.transform(test_loader2)
     
     # Step 2: Create model =================================================================== #
     num_feature, num_classes, _ = dataset.statistics()
@@ -221,6 +224,7 @@ def main(args, seed, save=True):
     else:
         test_acc, _ = test_classification(model, test_loader, args)
         test_acc2, _ = test_classification(model, test_loader2, args)
+    print(f"small_test : {test_acc}, medium_test {test_acc2}")
     if save == True:
         if args.changer == 1:
             torch.save(model.state_dict(), '{}/last_second_model_weights_trail{}_{}_{}.pth'.format(args.output_path, seed, args.dataset, args.feat_type))

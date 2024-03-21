@@ -354,10 +354,11 @@ class GATv2(nn.Module):
 
     def forward(self, g, args):
         h = g.ndata["feat"]
-        for layer in self.gatv2_layers:
-            h = layer(g, h).mean(1)
+        for l in range(self.num_layers-1):
+            h = self.gatv2_layers[l](g, h).mean(1)
         # output projection
-        logits = self.pool(g, h)
+        logits = self.gatv2_layers[-1](g, h).mean(1)
+        logits = self.pool(g, logits)
         logits = self.mlp(logits)
 
         return self.output_activation(logits)
@@ -388,11 +389,7 @@ class GIN(nn.Module):
             )  # set to True if learning epsilon
             self.batch_norms.append(nn.BatchNorm1d(hidden_dim))
 
-        mlp = MLP(hidden_dim, hidden_dim, 1)
-        self.ginlayers.append(
-                GINConv(mlp, learn_eps=False)
-            )  # set to True if learning epsilon
-        self.batch_norms.append(nn.BatchNorm1d(1))
+
             #if layer == 0:
             #    print(mlp.linears[0].weight)
         # linear functions for graph sum poolings of output of each layer
@@ -402,7 +399,7 @@ class GIN(nn.Module):
                 self.linear_prediction.append(nn.Linear(in_dim, hidden_dim))
             else:
                 self.linear_prediction.append(nn.Linear(hidden_dim, hidden_dim))
-        self.linear_prediction.append(nn.Linear(1, hidden_dim))
+        
         self.drop = nn.Dropout(dropout)
         self.mlp = MLP(hidden_dim, hidden_dim, out_dim)
         self.pool = (

@@ -5,15 +5,13 @@ import os
 import re
 
 feat_types = ['ones_feat', 'noise_feat', 'degree_feat', 'norm_degree_feat', 'identity_feat']
-feat_types = ['degree_feat']
-
 save_last_epoch_hidden_output = False
 
 num_trials = 1
-epochs = 1
-epoch_search = 1
+epochs = 100
+epoch_search = 50
 cnt = 0
-device = 'cuda'
+device = 'cpu'
 data_type = 'regression'
 loss_name = 'MSELoss' # MSELoss NLLLoss
 output_activation = 'Identity' # Identity LogSoftmax
@@ -26,37 +24,36 @@ def find(str2, dir_path):
   # Pass the folder name to the command line
   return matching_names[0]
 
-models = ['gin', 'global', 'hierarchical']
-models = ['gin']
-label_types = ['transitivity', 'average_path', 'density', 'kurtosis', 'original']
-
+models = ['gin', 'global', 'hierarchical', 'gatv2']
+label_types = ['transitivity', 'average_path', 'density', 'kurtosis']
 search_space = {
     "architecture": ['gin'],
-    "hidden_dim": [32],
+    "hidden_dim": [4, 8, 16, 32, 64],
     "lr": [1e-2],
-    "num_layers":[3],
+    "num_layers":[3, 4],
     "weight_decay": [1e-3],
     "k": [4]
 }
-for label_type in [label_types[2]]:
+for label_type in label_types:
+  print('-------------------------------label_type : {}---------------------'.format(label_type), flush=True)
   cnt = 0
   new_path = f'../gnn_outputs/{label_type}/output'
   for j, feat_type in enumerate(feat_types):
       print()
-      print('{}-------------------------------feat_type : {}---------------------'.format(j+2 ,feat_type))
+      print('{}-------------------------------feat_type : {}---------------------'.format(j+2 ,feat_type), flush=True)
       print()
       for k, model in enumerate(models):
         cnt += 1
         search_space['architecture'] = [model]
         print()
-        print('{}.{}--------------------------------------------model name  : {}---------------------'.format(j+2,k+1,search_space['architecture']))
+        print('{}.{}--------------------------------------------model name  : {}---------------------'.format(j+2,k+1,search_space['architecture']), flush=True)
         print()
 
         with open('grid_search_config.json', 'w') as fp:
           json.dump(search_space, fp)
 
         print()
-        print('{}.{}.1--------------------------------------------Grid_Search  : {}---------------------'.format(j+2,k+1,search_space['architecture']))
+        print('{}.{}.1--------------------------------------------Grid_Search  : {}---------------------'.format(j+2,k+1,search_space['architecture']), flush=True)
         print()
         output_path = new_path+f'{cnt}/'
         # os.makedirs(output_path, exist_ok=True)
@@ -73,21 +70,20 @@ for label_type in [label_types[2]]:
             modell = json.load(f)
         
         model = modell['params']
-        print(model)
         model['epochs'] = epochs
         model['save_last_epoch_hidden_output'] = save_last_epoch_hidden_output
         model['patience'] = -1
         model['num_trials'] = num_trials 
         formatted_string = " ".join([f"--{key} {value}" for key, value in model.items()])
 
-        # print()
-        # print('{}.{}.2--------------------------------------------Train and Test  : {}---------------------'.format(j+2,k+1,search_space['architecture']))
-        # print()
-        # script = "python main.py " + formatted_string
-        # script = script.split()
-        # subprocess.run(script)
+        print()
+        print('{}.{}.2--------------------------------------------Train and Test  : {}---------------------'.format(j+2,k+1,search_space['architecture']))
+        print()
+        script = "python main.py " + formatted_string
+        script = script.split()
+        subprocess.run(script)
 
-        # torch.cuda.empty_cache()
+        torch.cuda.empty_cache()
 
         # model = modell['params2']
         # model['epochs'] = epochs
@@ -104,7 +100,7 @@ for label_type in [label_types[2]]:
         #script = script.split()
         #subprocess.run(script)
 
-        torch.cuda.empty_cache()
+        #torch.cuda.empty_cache()
 
         # plots analysis of hidden features
         #for i in range(3):
@@ -116,4 +112,3 @@ for label_type in [label_types[2]]:
         #script = script.split()
         #subprocess.run(script)
         
-    
