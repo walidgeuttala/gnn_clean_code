@@ -3,6 +3,10 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn as F
+import torch.nn.init as init
+
+import torch_geometric as pyg
+
 
 import dgl
 import dgl.function as fn
@@ -268,6 +272,10 @@ class MLP(nn.Module):
         self.linears.append(nn.Linear(hidden_dim, output_dim, bias=False))
         self.batch_norm = nn.BatchNorm1d((hidden_dim))
         self.relu = nn.ReLU()
+
+        for linear in self.linears:
+            init.xavier_uniform_(linear.weight)
+
     def forward(self, x):
         h = x
         h = self.relu(self.batch_norm(self.linears[0](h)))
@@ -399,10 +407,10 @@ class GIN(nn.Module):
         self.linear_prediction = nn.ModuleList()
         for layer in range(num_layers+1):
             if layer == 0:
-                self.linear_prediction.append(nn.Linear(in_dim, hidden_dim))
+                self.linear_prediction.append(nn.Linear(in_dim, out_dim))
             else:
-                self.linear_prediction.append(nn.Linear(hidden_dim, hidden_dim))
-        self.linear_prediction.append(nn.Linear(1, hidden_dim))
+                self.linear_prediction.append(nn.Linear(hidden_dim, out_dim))
+        self.linear_prediction.append(nn.Linear(1, out_dim))
         self.drop = nn.Dropout(dropout)
         self.mlp = MLP(hidden_dim, hidden_dim, out_dim)
         self.pool = (
@@ -428,7 +436,7 @@ class GIN(nn.Module):
             pooled_h_list.append(pooled_h)
             score_over_layer += self.drop(self.linear_prediction[i](pooled_h))
 
-        score_over_layer = self.mlp(score_over_layer)
+        #score_over_layer = self.mlp(score_over_layer)
         return  self.output_activation(score_over_layer)
 
 

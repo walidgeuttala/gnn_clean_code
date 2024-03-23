@@ -4,6 +4,7 @@ import torch.nn.functional as F
 from dgl.nn import AvgPooling, GraphConv, MaxPooling
 from utils import get_batch_id, topk
 import h5py
+import torch_geometric as pyg
 
 class SAGPool(torch.nn.Module):
     """The Self-Attention Pooling layer in paper
@@ -23,16 +24,16 @@ class SAGPool(torch.nn.Module):
         self,
         in_dim: int,
         ratio=0.5,
-        conv_op=GraphConv,
+        conv_op=pyg.nn.GCNConv,
         non_linearity=torch.tanh,
     ):
         super(SAGPool, self).__init__()
         self.in_dim = in_dim
         self.ratio = ratio
-        self.score_layer = conv_op(in_dim, 1, allow_zero_in_degree=True)
+        self.score_layer = conv_op(in_dim, 1)
         self.non_linearity = non_linearity
 
-    def forward(self, graph: dgl.DGLGraph, feature: torch.Tensor):
+    def forward(self, graph, feature: torch.Tensor):
         score = self.score_layer(graph, feature).squeeze()
         perm, next_batch_num_nodes = topk(
             score,

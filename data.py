@@ -93,10 +93,14 @@ class GraphDataset(DGLDataset):
         self.dim_nfeats = load_info(info_path)['dim_nfeats']
         #self.device = load_info(info_path)['device']
         self.data_path = data_path
+        self.choose_labels(args, data_path+'/properties_labels.pt')
+        getattr(self, f'add_{args.feat_type}')(args.k)
         if self.device == 'cuda':
+            print('hello')
             self.graphs = [g.to(self.device) for g in self.graphs]
             self.labels = self.labels.to(self.device)
-        self.choose_labels(args, data_path+'/properties_labels.pt')
+            
+        
         
 
     def load2(self, data_path):
@@ -255,28 +259,28 @@ class GraphDataset(DGLDataset):
     def add_ones_feat(self, k):
         self.dim_nfeats = k
         for g in self.graphs:
-            g.ndata['feat'] = torch.ones(g.num_nodes(), k).float().to(self.device)
+            g.ndata['feat'] = torch.ones(g.num_nodes(), k).float()
     def add_noise_feat(self, k):
         self.dim_nfeats = k
         for g in self.graphs: 
-            g.ndata['feat'] = torch.rand(g.num_nodes(), k).float().to(self.device)
+            g.ndata['feat'] = torch.rand(g.num_nodes(), k).float()
     
     def add_degree_feat(self, k):
         self.dim_nfeats = k
         for g in self.graphs:
-            degrees = g.in_degrees().unsqueeze(1).float().to(self.device)
+            degrees = g.in_degrees().unsqueeze(1).float()
             repeated_degrees = degrees.repeat(1, k)  # Repeat degree 'k' times
             g.ndata['feat'] = repeated_degrees
 
     def add_identity_feat(self, k):
         self.dim_nfeats = k
         for g in self.graphs:
-            g.ndata['feat'] = compute_identity(torch.stack(g.edges(), dim=0), g.number_of_nodes(), k).float().to(self.device)
+            g.ndata['feat'] = compute_identity(torch.stack(g.edges(), dim=0), g.number_of_nodes(), k).float()
 
     def add_norm_degree_feat(self, k):
         self.dim_nfeats = k
         for g in self.graphs:
-            degrees = g.in_degrees().unsqueeze(1).float().to(self.device)
+            degrees = g.in_degrees().unsqueeze(1).float()
             repeated_degrees = degrees.repeat(1, k) / (g.number_of_nodes() - 1) # Repeat degree 'k' times
             g.ndata['feat'] = repeated_degrees
     

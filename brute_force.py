@@ -1,3 +1,5 @@
+import os
+os.environ['CUBLAS_WORKSPACE_CONFIG'] = ':4096:8'
 import torch
 import subprocess
 import json 
@@ -7,11 +9,11 @@ import re
 feat_types = ['ones_feat', 'noise_feat', 'degree_feat', 'norm_degree_feat', 'identity_feat']
 save_last_epoch_hidden_output = False
 
-num_trials = 1
+num_trials = 5
 epochs = 100
 epoch_search = 50
 cnt = 0
-device = 'cpu'
+device = 'cuda'
 data_type = 'regression'
 loss_name = 'MSELoss' # MSELoss NLLLoss
 output_activation = 'Identity' # Identity LogSoftmax
@@ -34,6 +36,24 @@ search_space = {
     "weight_decay": [1e-3],
     "k": [4]
 }
+
+# device = 'cuda'
+# num_trials = 1
+# epochs = 100
+# epoch_search = 100
+# feat_types = ['ones_feat']
+# models = ['gin']
+# label_types = ['density']
+# search_space = {
+#     "architecture": ['gin'],
+#     "hidden_dim": [4],
+#     "lr": [1e-2],
+#     "num_layers":[3],
+#     "weight_decay": [1e-3],
+#     "k": [4]
+# }
+
+
 for label_type in label_types:
   print('-------------------------------label_type : {}---------------------'.format(label_type), flush=True)
   cnt = 0

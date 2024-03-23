@@ -5,18 +5,16 @@ import os
 from time import time
 
 import numpy as np
-import dgl
-import h5py
-import networkx as nx
 import torch
-import torch.nn as nn
 import torch.nn as F
 from torch.utils.data import random_split
 from dgl.dataloading import GraphDataLoader
-
+import random
 from network import get_network
 from utils import get_stats, boxplot, acc_loss_plot, set_random_seed, GraphFeatureNormalizer
 from data import GraphDataset
+import multiprocessing
+
 
 
 def parse_args():
@@ -32,7 +30,7 @@ def parse_args():
     parser.add_argument("--data_type", type=str, default="regression", help="regression or classifcation")
     parser.add_argument("--label_type", type=str, default="original", choices=["original", "transitivity", "average_path", "density", "kurtosis"], help="choose")
     parser.add_argument("--feat_type", type=str, default="ones_feat", choices=["ones_feat", "noise_feat", "degree_feat", "identity_feat", "norm_degree_feat"], help="ones_feat/noies_feat/degree_feat/identity_feat")
-    parser.add_argument("--batch_size", type=int, default=100, help="Batch size")
+    parser.add_argument("--batch_size", type=int, default=128, help="Batch size")
     parser.add_argument("--lr", type=float, default=0.01, help="Learning rate")
     parser.add_argument("--weight_decay", type=float, default=0.0, help="Weight decay of the learning rate over epochs for the optimizer")
     parser.add_argument("--pool_ratio", type=float, default=0.9, help="Pooling ratio")
@@ -41,7 +39,7 @@ def parse_args():
     parser.add_argument("--epochs", type=int, default=100, help="Max number of training epochs")
     parser.add_argument("--patience", type=int, default=-1, help="Patience for early stopping, -1 for no stop")
     parser.add_argument("--num_layers", type=int, default=3, help="Number of conv layers")
-    parser.add_argument("--print_every", type=int, default=1, help="Print train log every k epochs, -1 for silent training")
+    parser.add_argument("--print_every", type=int, default=10, help="Print train log every k epochs, -1 for silent training")
     parser.add_argument("--num_trials", type=int, default=1, help="Number of trials")
     parser.add_argument("--k", type=int, default=4, help="For ID-GNN where control the depth of the generated ID features for helping detecting cycles of length k-1 or less")
     parser.add_argument("--multi_k", type=bool, default=False, help="multiple feature type for non identity feature True or False")
@@ -107,9 +105,6 @@ def train(model: torch.nn.Module, optimizer, trainloader, args):
         optimizer.zero_grad()
         batch_graphs, batch_labels = batch
         num_graphs += args.batch_size
-        batch_graphs = batch_graphs.to(args.device)
-        batch_labels = batch_labels.to(args.device)
-    
         out = model(batch_graphs, args)
         loss = loss_func(out, batch_labels)
         loss.backward()
@@ -127,8 +122,6 @@ def test_regression(model: torch.nn.Module, loader, args):
     for batch in loader:
         batch_graphs, batch_labels = batch
         num_graphs += args.batch_size
-        batch_graphs = batch_graphs.to(args.device)
-        batch_labels = batch_labels.to(args.device)
         out = model(batch_graphs, args)
         loss += loss_func(out, batch_labels).item()
         args.current_batch += 1
@@ -145,9 +138,6 @@ def test_classification(model: torch.nn.Module, loader, args):
     for batch in loader:
         batch_graphs, batch_labels = batch
         num_graphs += args.batch_size
-        batch_graphs = batch_graphs.to(args.device)
-        batch_labels = batch_labels.to(args.device)
-       
         out = model(batch_graphs, args)
         pred = out.argmax(dim=1)
         loss += loss_func(out, batch_labels).item()
@@ -163,20 +153,26 @@ def main(args, seed, save=True):
     dataset2 = GraphDataset(device=args.device)
     dataset.load(args.dataset_path, args)
     dataset2.load(args.test_dataset_path, args)
+    
+    num_cpus = multiprocessing.cpu_count()
 
-    getattr(dataset, f'add_{args.feat_type}')(args.k)
-    getattr(dataset2, f'add_{args.feat_type}')(args.k)
-    
-    
-    test_loader2 = GraphDataLoader(dataset2, batch_size=args.batch_size, shuffle=False)
+    test_loader2 = GraphDataLoader(dataset2, batch_size=args.batch_size, shuffle=False, pin_memory=True)
     num_training = int(len(dataset) * 0.9)
     num_val = int(len(dataset) * 0.)
     num_test = len(dataset) - num_val - num_training
-    generator = torch.Generator().manual_seed(seed)
-    train_set, _, test_set = random_split(dataset, [num_training, num_val, num_test], generator=generator)
+    def seed_worker(worker_id):
+        worker_seed = torch.initial_seed() % 2**32
+        np.random.seed(worker_seed)
+        random.seed(worker_seed)
 
-    train_loader = GraphDataLoader(train_set, batch_size=args.batch_size, shuffle=False)
-    test_loader = GraphDataLoader(test_set, batch_size=args.batch_size, shuffle=False)
+    g = torch.Generator()
+    g.manual_seed(seed)
+
+    train_set, _, test_set = random_split(dataset, [num_training, num_val, num_test], generator=g)
+
+    train_loader = GraphDataLoader(train_set, batch_size=args.batch_size, shuffle=False, worker_init_fn=seed_worker, pin_memory=True)
+    test_loader = GraphDataLoader(test_set, batch_size=args.batch_size, shuffle=False, worker_init_fn=seed_worker, pin_memory=True)
+
 
     normalizer = GraphFeatureNormalizer()
     normalizer.fit_transform(train_loader)
