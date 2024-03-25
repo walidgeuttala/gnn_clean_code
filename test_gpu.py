@@ -16,11 +16,35 @@ import math
 
 import argparse
 import logging
-from time import time
 
-import networkx as nx
 from torch.utils.data import random_split
 from dgl.dataloading import GraphDataLoader
+
+def parse_args():
+    parser = argparse.ArgumentParser(description="GNN for network classification", allow_abbrev=False)
+    parser.add_argument("--dataset_path", type=str, default="../data_folder/data", help="Path to dataset")
+    parser.add_argument("--test_path", type=str, default="../data_folder/test")
+    parser.add_argument("--weight_path", type=str, default="../weights", help="Output path")
+    parser.add_argument("--device", type=str, default="cpu", help="Device cuda or cpu")
+    parser.add_argument("--batch_size", type=int, default=100, help="Batch size")
+    parser.add_argument("--lr", type=float, default=0.01, help="Learning rate")
+    parser.add_argument("--weight_decay", type=float, default=0.0, help="Weight decay of the learning rate over epochs for the optimizer")
+    parser.add_argument("--hidden_dim", type=int, default=64, help="Hidden size, number of neuron in every hidden layer but could change for currten type of networks")
+    parser.add_argument("--dropout", type=float, default=0., help="Dropout ratio")
+    parser.add_argument("--epochs", type=int, default=100, help="Max number of training epochs")
+    parser.add_argument("--num_layers", type=int, default=3, help="Number of conv layers")
+    parser.add_argument("--print_every", type=int, default=10, help="Print train log every k epochs, -1 for silent training")
+    parser.add_argument("--output_activation", type=str, default="Identity", help="Output activation function")
+    parser.add_argument("--optimizer_name", type=str, default="Adam", help="Optimizer type default adam")
+    parser.add_argument("--loss_name", type=str, default='MSELoss', help="Choose loss function correlated to the optimization function")
+
+    args, _ = parser.parse_known_args()
+
+    if not torch.cuda.is_available():
+        logging.warning("CUDA is not available, use CPU for training.")
+        args.device = "cpu"
+
+    return args
 
 def set_random_seed(seed=0):
     random.seed(seed)
@@ -79,18 +103,16 @@ class GIN(nn.Module):
                 GINConv(mlp, learn_eps=False)
             )  # set to True if learning epsilon
         self.batch_norms.append(nn.BatchNorm1d(1))
-            #if layer == 0:
-            #    print(mlp.linears[0].weight)
         # linear functions for graph sum poolings of output of each layer
         self.linear_prediction = nn.ModuleList()
         for layer in range(num_layers+1):
             if layer == 0:
-                self.linear_prediction.append(nn.Linear(in_dim, hidden_dim))
+                self.linear_prediction.append(nn.Linear(in_dim, out_dim))
             else:
-                self.linear_prediction.append(nn.Linear(hidden_dim, hidden_dim))
-        self.linear_prediction.append(nn.Linear(1, hidden_dim))
+                self.linear_prediction.append(nn.Linear(hidden_dim, out_dim))
+        self.linear_prediction.append(nn.Linear(1, out_dim))
         self.drop = nn.Dropout(dropout)
-        self.mlp = MLP(hidden_dim, hidden_dim, out_dim)
+        #self.mlp = MLP(hidden_dim, hidden_dim, out_dim)
         self.pool = (
             SumPooling()
         )  # change to mean readout (AvgPooling) on social network datasets
@@ -114,7 +136,7 @@ class GIN(nn.Module):
             pooled_h_list.append(pooled_h)
             score_over_layer += self.drop(self.linear_prediction[i](pooled_h))
 
-        score_over_layer = self.mlp(score_over_layer)
+        #score_over_layer = self.mlp(score_over_layer)
         return  self.output_activation(score_over_layer)
     
 
@@ -128,8 +150,6 @@ def train(model: torch.nn.Module, optimizer, trainloader, args):
         optimizer.zero_grad()
         batch_graphs, batch_labels = batch
         num_graphs += args.batch_size
-        batch_graphs = batch_graphs.to(args.device)
-        batch_labels = batch_labels.to(args.device)
     
         out = model(batch_graphs, args)
         loss = loss_func(out, batch_labels)
@@ -138,6 +158,20 @@ def train(model: torch.nn.Module, optimizer, trainloader, args):
         total_loss += loss.item()
 
     return total_loss / num_graphs
+
+@torch.no_grad()
+def test_regression(model: torch.nn.Module, loader, args):
+    model.eval()
+    loss = 0.0
+    num_graphs = 0
+    loss_func = getattr(F, args.loss_name)(reduction="sum")
+    for batch in loader:
+        batch_graphs, batch_labels = batch
+        num_graphs += args.batch_size
+        out = model(batch_graphs, args)
+        loss += loss_func(out, batch_labels).item()
+
+    return loss / num_graphs
 
 class GraphDataset(DGLDataset):
 
@@ -180,9 +214,7 @@ class GraphDataset(DGLDataset):
         self.labels = self.labels[4]
         if self.device == 'cuda':
             self.graphs = [g.to(self.device) for g in self.graphs]
-            self.labels = self.labels.to(self.device)
-        
-        
+            self.labels = self.labels.to(self.device)        
 
     def has_cache(self):
         '''
@@ -200,33 +232,6 @@ class GraphDataset(DGLDataset):
     def add_ones_feat(self):
         for g in self.graphs:
             g.ndata['feat'] = torch.ones(g.num_nodes(), 1).float().to(self.device)
-    
-
-def parse_args():
-    parser = argparse.ArgumentParser(description="GNN for network classification", allow_abbrev=False)
-    parser.add_argument("--dataset_path", type=str, default="../data_folder/data", help="Path to dataset")
-    parser.add_argument("--weight_path", type=str, default="../weights", help="Output path")
-    parser.add_argument("--device", type=str, default="cuda", help="Device cuda or cpu")
-    parser.add_argument("--batch_size", type=int, default=100, help="Batch size")
-    parser.add_argument("--lr", type=float, default=0.01, help="Learning rate")
-    parser.add_argument("--weight_decay", type=float, default=0.0, help="Weight decay of the learning rate over epochs for the optimizer")
-    parser.add_argument("--hidden_dim", type=int, default=64, help="Hidden size, number of neuron in every hidden layer but could change for currten type of networks")
-    parser.add_argument("--dropout", type=float, default=0., help="Dropout ratio")
-    parser.add_argument("--epochs", type=int, default=100, help="Max number of training epochs")
-    parser.add_argument("--num_layers", type=int, default=3, help="Number of conv layers")
-    parser.add_argument("--print_every", type=int, default=1, help="Print train log every k epochs, -1 for silent training")
-    parser.add_argument("--output_activation", type=str, default="Identity", help="Output activation function")
-    parser.add_argument("--optimizer_name", type=str, default="Adam", help="Optimizer type default adam")
-    parser.add_argument("--loss_name", type=str, default='MSELoss', help="Choose loss function correlated to the optimization function")
-
-    args, _ = parser.parse_known_args()
-
-    if not torch.cuda.is_available():
-        logging.warning("CUDA is not available, use CPU for training.")
-        args.device = "cpu"
-
-    return args
-
 
 def main(args, seed):
     # Step 1: Prepare graph data and retrieve train/validation/test index ============================= #
@@ -234,6 +239,7 @@ def main(args, seed):
     dataset = GraphDataset(device=args.device)
     dataset.load(args.dataset_path, args)
     dataset.add_ones_feat()
+    
     num_training = int(len(dataset) * 0.9)
     num_val = int(len(dataset) * 0.)
     num_test = len(dataset) - num_val - num_training
@@ -241,8 +247,7 @@ def main(args, seed):
     train_set, _, test_set = random_split(dataset, [num_training, num_val, num_test], generator=generator)
 
     train_loader = GraphDataLoader(train_set, batch_size=args.batch_size, shuffle=False)
-
-
+    test_loader = GraphDataLoader(test_set, batch_size=args.batch_size, shuffle=False)
     # Step 2: Create model =================================================================== #
     num_feature, num_classes, _ = dataset.statistics()
     args.num_feature = int(num_feature)
@@ -251,9 +256,9 @@ def main(args, seed):
     weight_path = f"{args.weight_path}/trial_{seed+1}_{args.hidden_dim}_{args.num_layers}_{args.lr}_{args.weight_decay}_{args.dropout}_{args.output_activation}_weights.pth"
 
     model = GIN(
-        in_dim=args.num_feature,
+        in_dim=1,
         hidden_dim=args.hidden_dim,
-        out_dim=args.num_classes,
+        out_dim=1,
         num_layers=args.num_layers,
         dropout=args.dropout,
         output_activation = args.output_activation
@@ -276,18 +281,16 @@ def main(args, seed):
     scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.5)
 
     # Step 4: training epoches =============================================================== #
-    train_times = []
     for e in range(args.epochs):
-        s_time = time()
         train_loss = train(model, optimizer, train_loader, args)
         scheduler.step()
-        train_times.append(time() - s_time)
+        
 
-        if (e + 1) % args.print_every == 0 and args.verbose == True:
+        if (e + 1) % args.print_every == 0:
             log_format = ("Epoch {}: loss={:.4f}")
             print(log_format.format(e + 1, train_loss))
-    
-    
+    test_loss1 = test_regression(model, test_loader, args)
+    print(f'test1 loss : {test_loss1}')
 args = parse_args()
 
 main(args, 1)
