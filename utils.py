@@ -231,7 +231,7 @@ def set_random_seed(seed=0):
         torch.backends.cudnn.deterministic = True
         torch.backends.cudnn.benchmark = False
     dgl.random.seed(seed)
-
+    torch.use_deterministic_algorithms(True)
 
 def get_batch_id(num_nodes: torch.Tensor):
     """Convert the num_nodes array obtained from batch graph to batch_id array

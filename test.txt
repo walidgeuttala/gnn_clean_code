@@ -1,0 +1,4 @@
+import dgl
+empty_graph = dgl.graph (([],[]))
+print(empty_graph)
+import dgl.graphbolt as gb

@@ -27,9 +27,11 @@ def extract_float_values(input_string):
         return None
 
 length = 21
-current_path = '../gnn_outputs/density/'
+#label_types = ['transitivity', 'average_path', 'density', 'kurtosis']
+
+current_path = '../gnn_outputs/version1/kurtosis/'
 #keys = ['architecture', 'hidden_dim', 'num_layers', 'feat_type', 'train_loss', 'train_loss_error', 'train_acc', 'train_acc_error', 'valid_acc', 'valid_acc_error', 'test_acc', 'test_acc_error']
-keys = ['architecture', 'hidden_dim', 'num_layers', 'feat_type', 'test_acc', 'test_acc2']
+keys = ['architecture', 'hidden_dim', 'num_layers', 'feat_type', 'small_test_acc', 'medium_test_acc']
 df = []
 for i in range(1, length):
     args_path = [f for f in os.listdir(current_path+'output{}/'.format(i)) if f.startswith('Data_dataset')][0]

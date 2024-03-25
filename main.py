@@ -25,6 +25,7 @@ def parse_args():
     parser.add_argument("--dataset_path", type=str, default="../data_folder/data", help="Path to dataset")
     parser.add_argument("--test_dataset_path", type=str, default="../data_folder/test", help="Path to test dataset")
     parser.add_argument("--output_path", type=str, default="./output", help="Output path")
+    parser.add_argument("--weight_path", type=str, default="../weights", help="Output path")
     # parser.add_argument("--plot_statistics", type=bool, default=False, help="Do plots about acc/loss/boxplot")
     parser.add_argument("--verbose", type=bool, default=True, help="print details of the training True or False")
     parser.add_argument("--device", type=str, default="cuda", help="Device cuda or cpu")
@@ -41,7 +42,7 @@ def parse_args():
     parser.add_argument("--epochs", type=int, default=100, help="Max number of training epochs")
     parser.add_argument("--patience", type=int, default=-1, help="Patience for early stopping, -1 for no stop")
     parser.add_argument("--num_layers", type=int, default=3, help="Number of conv layers")
-    parser.add_argument("--print_every", type=int, default=1, help="Print train log every k epochs, -1 for silent training")
+    parser.add_argument("--print_every", type=int, default=10, help="Print train log every k epochs, -1 for silent training")
     parser.add_argument("--num_trials", type=int, default=1, help="Number of trials")
     parser.add_argument("--k", type=int, default=4, help="For ID-GNN where control the depth of the generated ID features for helping detecting cycles of length k-1 or less")
     parser.add_argument("--multi_k", type=bool, default=False, help="multiple feature type for non identity feature True or False")
@@ -53,6 +54,7 @@ def parse_args():
     parser.add_argument("--activate", type=bool, default=False, help="Activate the saving the node feature learned in the test dataset")
     parser.add_argument("--current_batch", type=int, default=1, help="The current batch")
     parser.add_argument("--changer", type=int, default=0, help="The current batch")
+
     # parser.add_argument("--save_hidden_output_train", type=bool, default=False, help="Saving the output before output_activation applied for the model in training")
     # parser.add_argument("--save_hidden_output_test", type=bool, default=False, help="Saving the output before output_activation applied for the model testing/validation")
     # parser.add_argument("--save_last_epoch_hidden_output", type=bool, default=False, help="Saving the last epoch hidden output only if it is false that means save for all epochs this applied to train and test if they are True")
@@ -107,8 +109,6 @@ def train(model: torch.nn.Module, optimizer, trainloader, args):
         optimizer.zero_grad()
         batch_graphs, batch_labels = batch
         num_graphs += args.batch_size
-        batch_graphs = batch_graphs.to(args.device)
-        batch_labels = batch_labels.to(args.device)
     
         out = model(batch_graphs, args)
         loss = loss_func(out, batch_labels)
@@ -127,8 +127,6 @@ def test_regression(model: torch.nn.Module, loader, args):
     for batch in loader:
         batch_graphs, batch_labels = batch
         num_graphs += args.batch_size
-        batch_graphs = batch_graphs.to(args.device)
-        batch_labels = batch_labels.to(args.device)
         out = model(batch_graphs, args)
         loss += loss_func(out, batch_labels).item()
         args.current_batch += 1
@@ -145,8 +143,6 @@ def test_classification(model: torch.nn.Module, loader, args):
     for batch in loader:
         batch_graphs, batch_labels = batch
         num_graphs += args.batch_size
-        batch_graphs = batch_graphs.to(args.device)
-        batch_labels = batch_labels.to(args.device)
        
         out = model(batch_graphs, args)
         pred = out.argmax(dim=1)
@@ -163,10 +159,9 @@ def main(args, seed, save=True):
     dataset2 = GraphDataset(device=args.device)
     dataset.load(args.dataset_path, args)
     dataset2.load(args.test_dataset_path, args)
-
+    
     getattr(dataset, f'add_{args.feat_type}')(args.k)
     getattr(dataset2, f'add_{args.feat_type}')(args.k)
-    
     
     test_loader2 = GraphDataLoader(dataset2, batch_size=args.batch_size, shuffle=False)
     num_training = int(len(dataset) * 0.9)
@@ -187,7 +182,9 @@ def main(args, seed, save=True):
     num_feature, num_classes, _ = dataset.statistics()
     args.num_feature = int(num_feature)
     args.num_classes = int(num_classes)
-    set_random_seed(seed)
+    #set_random_seed(seed)
+    weight_path = f"{args.weight_path}/trial_{seed+1}_{args.feat_type}_{args.architecture}_{args.hidden_dim}_{args.num_layers}_{args.lr}_{args.weight_decay}_{args.k}_{args.dropout}_{args.pool_ratio}_{args.output_activation}_{args.data_type}_weights.pth"
+
     model_op = get_network(args.architecture)
     model = model_op(
         in_dim=args.num_feature,
@@ -198,14 +195,22 @@ def main(args, seed, save=True):
         dropout=args.dropout,
         output_activation = args.output_activation
     ).to(args.device)
-    
+
+    # Try to load model weights
+    try:
+        model.load_state_dict(torch.load(weight_path))
+        print(f"Weights loaded successfully.")
+    except FileNotFoundError:
+        print(f"Could not find weights, initializing model with random weights, and saving it.")
+        torch.save(model.state_dict(), weight_path)
+
     # Step 3: Create training components ===================================================== #
     if hasattr(torch.optim, args.optimizer_name):
         optimizer = getattr(torch.optim, args.optimizer_name)(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)  # Replace `parameters` with your specific parameters
     else:
         print(f"Optimizer '{args.optimizer_name}' not found in torch.optim.")
 
-    scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=50, gamma=0.5)
+    scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.5)
 
     # Step 4: training epoches =============================================================== #
     train_times = []

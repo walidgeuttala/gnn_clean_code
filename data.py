@@ -3,7 +3,7 @@ import torch
 import dgl 
 from dgl.data import DGLDataset
 from dgl import save_graphs, load_graphs
-from dgl.data.utils import makedirs, save_info, load_info
+from dgl.data.utils import save_info, load_info
 from identity import compute_identity
 import networkx as nx
 from utils import calculate_kurtosis_from_degree_list, calculate_avg_shortest_path
@@ -93,10 +93,12 @@ class GraphDataset(DGLDataset):
         self.dim_nfeats = load_info(info_path)['dim_nfeats']
         #self.device = load_info(info_path)['device']
         self.data_path = data_path
+        self.choose_labels(args, data_path+'/properties_labels.pt')
+        
         if self.device == 'cuda':
             self.graphs = [g.to(self.device) for g in self.graphs]
             self.labels = self.labels.to(self.device)
-        self.choose_labels(args, data_path+'/properties_labels.pt')
+        
         
 
     def load2(self, data_path):
