@@ -42,7 +42,7 @@ def parse_args():
     parser.add_argument("--epochs", type=int, default=100, help="Max number of training epochs")
     parser.add_argument("--patience", type=int, default=-1, help="Patience for early stopping, -1 for no stop")
     parser.add_argument("--num_layers", type=int, default=3, help="Number of conv layers")
-    parser.add_argument("--print_every", type=int, default=10, help="Print train log every k epochs, -1 for silent training")
+    parser.add_argument("--print_every", type=int, default=1, help="Print train log every k epochs, -1 for silent training")
     parser.add_argument("--num_trials", type=int, default=1, help="Number of trials")
     parser.add_argument("--k", type=int, default=4, help="For ID-GNN where control the depth of the generated ID features for helping detecting cycles of length k-1 or less")
     parser.add_argument("--multi_k", type=bool, default=False, help="multiple feature type for non identity feature True or False")

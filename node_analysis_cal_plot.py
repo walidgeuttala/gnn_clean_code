@@ -78,16 +78,22 @@ import numpy as np
 import torch
 import numpy as np
 from sklearn.decomposition import PCA
-
-number_folders = 2
-#print(number_folders)
-current_path = '../gnn_outputs/density/'
-out = 0
-device = 'cpu'
-
+import dgl
+import numpy as np
+import matplotlib.pyplot as plt
 import os
 import json
 from main import parse_args
+
+
+
+number_folders = 21
+#print(number_folders)
+current_path = '../gnn_outputs/version1/kurtosis/'
+out = 0
+device = 'cpu'
+
+
 
 hidden_outputs = []
 
@@ -123,10 +129,6 @@ def test2(model: torch.nn.Module, loader, device):
         break
 
     return out, degrees
-
-import dgl
-import numpy as np
-import matplotlib.pyplot as plt
 
 def plot_degree_distribution(graph):
     # Calculate the degree of each node in the graph

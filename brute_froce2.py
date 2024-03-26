@@ -25,31 +25,16 @@ def find(str2, dir_path):
   return matching_names[0]
 
 models = ['gin', 'global', 'hierarchical', 'gatv2']
-label_types = ['transitivity', 'average_path', 'density', 'kurtosis']
+label_types = ['average_path']
 search_space = {
     "architecture": ['gin'],
-    "hidden_dim": [4, 8, 16, 32, 64],
+    "hidden_dim": [64],
     "lr": [1e-2],
-    "num_layers":[3, 4],
+    "num_layers":[6, 7],
     "weight_decay": [1e-3],
     "k": [4]
 }
 
-# num_trials = 1
-# device = 'cpu'
-# epochs = 1
-# epoch_search = 1
-# feat_types = ['degree_feat']
-# models = ['gin']
-# label_types = ['transitivity']
-# search_space = {
-#     "architecture": ['gin'],
-#     "hidden_dim": [32],
-#     "lr": [1e-2],
-#     "num_layers":[3],
-#     "weight_decay": [1e-3],
-#     "k": [4]
-# }
 
 for label_type in label_types:
   print('-------------------------------label_type : {}---------------------'.format(label_type), flush=True)

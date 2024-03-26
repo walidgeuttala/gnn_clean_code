@@ -39,6 +39,8 @@ def grid_search(config: dict):
     os.makedirs(args.output_path+"/grid_search/", exist_ok=True)
 
     if args.data_type == 'regression':
+        best_acc, err_bd = 10000000000., 10000000000.
+        best_acc2, err_bd2 = 10000000000., 10000000000.
         for combination in combinations:
             param_dict = dict(zip(keys, combination))
             for key, value in param_dict.items():
