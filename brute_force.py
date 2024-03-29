@@ -7,11 +7,11 @@ import re
 feat_types = ['ones_feat', 'noise_feat', 'degree_feat', 'norm_degree_feat', 'identity_feat']
 save_last_epoch_hidden_output = False
 
-num_trials = 1
+num_trials = 5
 epochs = 100
 epoch_search = 50
 cnt = 0
-device = 'cpu'
+device = 'cuda'
 data_type = 'regression'
 loss_name = 'MSELoss' # MSELoss NLLLoss
 output_activation = 'Identity' # Identity LogSoftmax
@@ -36,10 +36,10 @@ search_space = {
 }
 
 # num_trials = 1
-# device = 'cpu'
+# device = 'cuda'
 # epochs = 1
 # epoch_search = 1
-# feat_types = ['degree_feat']
+# feat_types = ['identity_feat']
 # models = ['gin']
 # label_types = ['transitivity']
 # search_space = {
