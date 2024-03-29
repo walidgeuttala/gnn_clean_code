@@ -7,7 +7,7 @@ import re
 feat_types = ['ones_feat', 'noise_feat', 'degree_feat', 'norm_degree_feat', 'identity_feat']
 save_last_epoch_hidden_output = False
 
-num_trials = 5
+num_trials = 1
 epochs = 100
 epoch_search = 50
 cnt = 0

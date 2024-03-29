@@ -19,13 +19,32 @@ import logging
 
 from torch.utils.data import random_split
 from dgl.dataloading import GraphDataLoader
+import torch.nn.init as init
+from dgl.nn import GATv2Conv
+
+import argparse
+
+import numpy as np
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+import torch.optim as optim
+
+from dgl.data import GINDataset
+from dgl.dataloading import GraphDataLoader
+from dgl.nn.pytorch.conv import GINConv
+from dgl.nn.pytorch.glob import SumPooling
+from sklearn.model_selection import StratifiedKFold
+from torch.utils.data.sampler import SubsetRandomSampler
+import random 
+import dgl
 
 def parse_args():
     parser = argparse.ArgumentParser(description="GNN for network classification", allow_abbrev=False)
     parser.add_argument("--dataset_path", type=str, default="../data_folder/data", help="Path to dataset")
     parser.add_argument("--test_path", type=str, default="../data_folder/test")
-    parser.add_argument("--weight_path", type=str, default="../weights", help="Output path")
-    parser.add_argument("--device", type=str, default="cpu", help="Device cuda or cpu")
+    parser.add_argument("--weight_path", type=str, default="../weights2", help="Output path")
+    parser.add_argument("--device", type=str, default="cuda", help="Device cuda or cpu")
     parser.add_argument("--batch_size", type=int, default=100, help="Batch size")
     parser.add_argument("--lr", type=float, default=0.01, help="Learning rate")
     parser.add_argument("--weight_decay", type=float, default=0.0, help="Weight decay of the learning rate over epochs for the optimizer")
@@ -68,56 +87,39 @@ class MLP(nn.Module):
         self.linears.append(nn.Linear(input_dim, hidden_dim, bias=False))
         self.linears.append(nn.Linear(hidden_dim, output_dim, bias=False))
         self.batch_norm = nn.BatchNorm1d((hidden_dim))
-        self.relu = nn.ReLU()
+
     def forward(self, x):
         h = x
-        h = self.relu(self.batch_norm(self.linears[0](h)))
+        h = F.relu(self.batch_norm(self.linears[0](h)))
         return self.linears[1](h)
     
 class GIN(nn.Module):
-    def __init__(self, in_dim,
-                 hidden_dim,
-                 out_dim,
-                 num_layers = 5,
-                 dropout=0.,
-                 output_activation = 'log_softmax'):
-
+    def __init__(self, input_dim, hidden_dim, output_dim):
         super().__init__()
         self.ginlayers = nn.ModuleList()
         self.batch_norms = nn.ModuleList()
-        self.output_activation = output_activation
-
+        num_layers = 5
         # five-layer GCN with two-layer MLP aggregator and sum-neighbor-pooling scheme
-        for layer in range(num_layers):  # excluding the input layer
+        for layer in range(num_layers - 1):  # excluding the input layer
             if layer == 0:
-                mlp = MLP(in_dim, hidden_dim, hidden_dim)
+                mlp = MLP(input_dim, hidden_dim, hidden_dim)
             else:
                 mlp = MLP(hidden_dim, hidden_dim, hidden_dim)
             self.ginlayers.append(
                 GINConv(mlp, learn_eps=False)
             )  # set to True if learning epsilon
             self.batch_norms.append(nn.BatchNorm1d(hidden_dim))
-
-        mlp = MLP(hidden_dim, hidden_dim, 1)
-        self.ginlayers.append(
-                GINConv(mlp, learn_eps=False)
-            )  # set to True if learning epsilon
-        self.batch_norms.append(nn.BatchNorm1d(1))
         # linear functions for graph sum poolings of output of each layer
         self.linear_prediction = nn.ModuleList()
-        for layer in range(num_layers+1):
+        for layer in range(num_layers):
             if layer == 0:
-                self.linear_prediction.append(nn.Linear(in_dim, out_dim))
+                self.linear_prediction.append(nn.Linear(input_dim, output_dim))
             else:
-                self.linear_prediction.append(nn.Linear(hidden_dim, out_dim))
-        self.linear_prediction.append(nn.Linear(1, out_dim))
-        self.drop = nn.Dropout(dropout)
-        #self.mlp = MLP(hidden_dim, hidden_dim, out_dim)
+                self.linear_prediction.append(nn.Linear(hidden_dim, output_dim))
+        self.drop = nn.Dropout(0.)
         self.pool = (
             SumPooling()
         )  # change to mean readout (AvgPooling) on social network datasets
-        self.relu = nn.ReLU()
-        self.output_activation = getattr(nn, self.output_activation)(dim=-1)
 
     def forward(self, g, args):
         # list of hidden representation at each layer (including the input layer)
@@ -126,18 +128,14 @@ class GIN(nn.Module):
         for i, layer in enumerate(self.ginlayers):
             h = layer(g, h)
             h = self.batch_norms[i](h)
-            h = self.relu(h)
+            h = F.relu(h)
             hidden_rep.append(h)
         score_over_layer = 0
         # perform graph sum pooling over all nodes in each layer
-        pooled_h_list = []
         for i, h in enumerate(hidden_rep):
             pooled_h = self.pool(g, h)
-            pooled_h_list.append(pooled_h)
             score_over_layer += self.drop(self.linear_prediction[i](pooled_h))
-
-        #score_over_layer = self.mlp(score_over_layer)
-        return  self.output_activation(score_over_layer)
+        return score_over_layer
     
 
 def train(model: torch.nn.Module, optimizer, trainloader, args):
@@ -145,7 +143,7 @@ def train(model: torch.nn.Module, optimizer, trainloader, args):
     total_loss = 0.0
     num_graphs = 0
     
-    loss_func = getattr(F, args.loss_name)(reduction="sum")
+    loss_func = getattr(torch.nn, args.loss_name)(reduction="sum")
     for batch in trainloader:
         optimizer.zero_grad()
         batch_graphs, batch_labels = batch
@@ -164,7 +162,7 @@ def test_regression(model: torch.nn.Module, loader, args):
     model.eval()
     loss = 0.0
     num_graphs = 0
-    loss_func = getattr(F, args.loss_name)(reduction="sum")
+    loss_func = getattr(torch.nn, args.loss_name)(reduction="sum")
     for batch in loader:
         batch_graphs, batch_labels = batch
         num_graphs += args.batch_size
@@ -211,7 +209,7 @@ class GraphDataset(DGLDataset):
         #self.device = load_info(info_path)['device']
         self.data_path = data_path
         self.labels = torch.load('../data_folder/data/properties_labels.pt')
-        self.labels = self.labels[4]
+        self.labels = self.labels[4] #4
         if self.device == 'cuda':
             self.graphs = [g.to(self.device) for g in self.graphs]
             self.labels = self.labels.to(self.device)        
@@ -232,6 +230,95 @@ class GraphDataset(DGLDataset):
     def add_ones_feat(self):
         for g in self.graphs:
             g.ndata['feat'] = torch.ones(g.num_nodes(), 1).float().to(self.device)
+
+class GATv2(nn.Module):
+    def __init__(
+        self,
+        in_dim: int,
+        hidden_dim: int,
+        out_dim: int,
+        num_layers=3,
+        dropout: float = 0.0,
+        output_activation = 'log_softmax',
+    ):
+        super(GATv2, self).__init__()
+        self.num_layers = num_layers
+        self.gatv2_layers = nn.ModuleList()
+        self.activation = torch.nn.ReLU()
+        num_hidden = hidden_dim
+        heads = 2
+        feat_drop = 0
+        attn_drop = 0
+        negative_slope = 0.2
+        residual = False
+        num_classes = out_dim
+        self.output_activation = output_activation
+        # input projection (no residual)
+        self.gatv2_layers.append(
+            GATv2Conv(
+                in_dim,
+                num_hidden,
+                heads,
+                feat_drop,
+                attn_drop,
+                negative_slope,
+                False,
+                self.activation,
+                allow_zero_in_degree=True,
+                bias=False,
+                share_weights=True,
+            )
+        )
+        # hidden layers
+        for l in range(1, num_layers-1):
+            # due to multi-head, the in_dim = num_hidden * num_heads
+            self.gatv2_layers.append(
+                GATv2Conv(
+                    num_hidden,
+                    num_hidden,
+                    heads,
+                    feat_drop,
+                    attn_drop,
+                    negative_slope,
+                    residual,
+                    self.activation,
+                    bias=False,
+                    allow_zero_in_degree=True,
+                    share_weights=True,
+                )
+            )
+        # output projection
+        self.gatv2_layers.append(
+            GATv2Conv(
+                num_hidden,
+                num_classes,
+                heads,
+                feat_drop,
+                attn_drop,
+                negative_slope,
+                residual,
+                None,
+                allow_zero_in_degree=True,
+                bias=False,
+                share_weights=True,
+            )
+        )
+        self.mlp = MLP(num_classes, num_classes, out_dim)
+        # Create sum pooling module
+
+        self.pool = SumPooling()
+        self.output_activation = getattr(nn, self.output_activation)(dim=-1)
+
+    def forward(self, g, args):
+        h = g.ndata["feat"]
+        for layer in self.gatv2_layers:
+            h = layer(g, h).mean(1)
+        # output projection
+        logits = self.pool(g, h)
+        logits = self.mlp(logits)
+
+        return self.output_activation(logits)
+
 
 def main(args, seed):
     # Step 1: Prepare graph data and retrieve train/validation/test index ============================= #
@@ -254,14 +341,11 @@ def main(args, seed):
     args.num_classes = int(num_classes)
     #set_random_seed(seed)
     weight_path = f"{args.weight_path}/trial_{seed+1}_{args.hidden_dim}_{args.num_layers}_{args.lr}_{args.weight_decay}_{args.dropout}_{args.output_activation}_weights.pth"
-
+    set_random_seed(seed)
     model = GIN(
-        in_dim=1,
+        input_dim=1,
         hidden_dim=args.hidden_dim,
-        out_dim=1,
-        num_layers=args.num_layers,
-        dropout=args.dropout,
-        output_activation = args.output_activation
+        output_dim=1,
     ).to(args.device)
 
     # Try to load model weights
@@ -271,6 +355,21 @@ def main(args, seed):
     except FileNotFoundError:
         print(f"Could not find weights, initializing model with random weights, and saving it.")
         torch.save(model.state_dict(), weight_path)
+
+    set_random_seed(seed)
+    model2 = GIN(
+        input_dim=1,
+        hidden_dim=args.hidden_dim,
+        output_dim=1,
+    ).to(args.device)
+
+    # Try to load model2 weights
+    try:
+        model2.load_state_dict(torch.load(weight_path))
+        print(f"Weights loaded successfully.")
+    except FileNotFoundError:
+        print(f"Could not find weights, initializing model2 with random weights, and saving it.")
+        torch.save(model2.state_dict(), weight_path)
 
     # Step 3: Create training components ===================================================== #
     if hasattr(torch.optim, args.optimizer_name):
@@ -291,7 +390,27 @@ def main(args, seed):
             print(log_format.format(e + 1, train_loss))
     test_loss1 = test_regression(model, test_loader, args)
     print(f'test1 loss : {test_loss1}')
+
+
+    # Step 3: Create training components ===================================================== #
+    if hasattr(torch.optim, args.optimizer_name):
+        optimizer = getattr(torch.optim, args.optimizer_name)(model2.parameters(), lr=args.lr, weight_decay=args.weight_decay)  # Replace `parameters` with your specific parameters
+    else:
+        print(f"Optimizer '{args.optimizer_name}' not found in torch.optim.")
+
+    scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.5)
+
+    # Step 4: training epoches =============================================================== #
+    for e in range(args.epochs):
+        train_loss = train(model2, optimizer, train_loader, args)
+        scheduler.step()
+        
+
+        if (e + 1) % args.print_every == 0:
+            log_format = ("Epoch {}: loss={:.4f}")
+            print(log_format.format(e + 1, train_loss))
+    test_loss1 = test_regression(model, test_loader, args)
+    print(f'test1 loss : {test_loss1}')
 args = parse_args()
 
-main(args, 1)
 main(args, 1)
