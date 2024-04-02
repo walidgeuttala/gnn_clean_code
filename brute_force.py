@@ -32,24 +32,24 @@ search_space = {
     "lr": [1e-2],
     "num_layers":[3, 4],
     "weight_decay": [1e-3],
-    "k": [4]
+    "k": [16]
 }
 
-# num_trials = 1
-# device = 'cuda'
-# epochs = 1
-# epoch_search = 1
-# feat_types = ['identity_feat']
-# models = ['gin']
-# label_types = ['transitivity']
-# search_space = {
-#     "architecture": ['gin'],
-#     "hidden_dim": [32],
-#     "lr": [1e-2],
-#     "num_layers":[3],
-#     "weight_decay": [1e-3],
-#     "k": [4]
-# }
+num_trials = 1
+device = 'cuda'
+epochs = 100
+epoch_search = 1
+feat_types = ['identity_feat']
+models = ['gine']
+label_types = ['average_path']
+search_space = {
+    "architecture": ['gine'],
+    "hidden_dim": [32],
+    "lr": [1e-2],
+    "num_layers":[1],
+    "weight_decay": [1e-3],
+    "k": [4]
+}
 
 for label_type in label_types:
   print('-------------------------------label_type : {}---------------------'.format(label_type), flush=True)

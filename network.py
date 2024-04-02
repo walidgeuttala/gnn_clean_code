@@ -8,7 +8,7 @@ import dgl
 import dgl.function as fn
 from dgl.nn import AvgPooling, MaxPooling
 from dgl.nn.pytorch.glob import SumPooling
-from dgl.nn.pytorch.conv import GINConv, GraphConv
+from dgl.nn.pytorch.conv import GINConv, GraphConv, GINEConv
 from dgl.nn import GATv2Conv
 
 from layer import ConvPoolBlock, SAGPool
@@ -289,36 +289,23 @@ class GATv2(nn.Module):
         self.gatv2_layers = nn.ModuleList()
         self.activation = torch.nn.ReLU()
         num_hidden = hidden_dim
-        heads = 2
+        heads = 4
         feat_drop = 0
         attn_drop = 0
         negative_slope = 0.2
         residual = False
-        num_classes = out_dim
         self.output_activation = output_activation
-        # input projection (no residual)
-        self.gatv2_layers.append(
-            GATv2Conv(
-                in_dim,
-                num_hidden,
-                heads,
-                feat_drop,
-                attn_drop,
-                negative_slope,
-                False,
-                self.activation,
-                allow_zero_in_degree=True,
-                bias=False,
-                share_weights=True,
-            )
-        )
-        # hidden layers
-        for l in range(1, num_layers-1):
+        
+        input_shape = in_dim
+        output_shape = hidden_dim
+
+        for l in range(0, num_layers+1):
+            
             # due to multi-head, the in_dim = num_hidden * num_heads
             self.gatv2_layers.append(
                 GATv2Conv(
-                    num_hidden,
-                    num_hidden,
+                    input_shape,
+                    output_shape,
                     heads,
                     feat_drop,
                     attn_drop,
@@ -330,23 +317,13 @@ class GATv2(nn.Module):
                     share_weights=True,
                 )
             )
-        # output projection
-        self.gatv2_layers.append(
-            GATv2Conv(
-                num_hidden,
-                num_classes,
-                heads,
-                feat_drop,
-                attn_drop,
-                negative_slope,
-                residual,
-                None,
-                allow_zero_in_degree=True,
-                bias=False,
-                share_weights=True,
-            )
-        )
-        self.mlp = MLP(num_classes, num_classes, out_dim)
+
+            input_shape = hidden_dim * heads
+            if num_layers == l+1:
+                output_shape = out_dim
+                heads = 1
+       
+        self.mlp = MLP(out_dim, hidden_dim, out_dim)
         # Create sum pooling module
 
         self.pool = SumPooling()
@@ -354,8 +331,9 @@ class GATv2(nn.Module):
 
     def forward(self, g, args):
         h = g.ndata["feat"]
-        for layer in self.gatv2_layers:
-            h = layer(g, h).mean(1)
+        for layer in self.gatv2_layers[:-1]:
+            h = layer(g, h).flatten(1)  
+        h = self.gatv2_layers[-1](g, h).mean(1)
         # output projection
         logits = self.pool(g, h)
         logits = self.mlp(logits)
@@ -432,6 +410,70 @@ class GIN(nn.Module):
         return  self.output_activation(score_over_layer)
 
 
+class GINE(nn.Module):
+    def __init__(self, in_dim,
+                 hidden_dim,
+                 out_dim,
+                 num_layers = 5,
+                 pool_ratio=0,
+                 dropout=0.,
+                 output_activation = 'log_softmax'):
+
+        super().__init__()
+        self.ginlayers = nn.ModuleList()
+        self.batch_norms = nn.ModuleList()
+        self.output_activation = output_activation
+
+        # five-layer GCN with two-layer MLP aggregator and sum-neighbor-pooling scheme
+        for layer in range(num_layers):  # excluding the input layer
+            if layer == 0:
+                mlp = MLP(in_dim, hidden_dim, hidden_dim)
+            else:
+                mlp = MLP(hidden_dim, hidden_dim, hidden_dim)
+            self.ginlayers.append(
+                GINEConv(mlp, learn_eps=False)
+            )  # set to True if learning epsilon
+            self.batch_norms.append(nn.BatchNorm1d(hidden_dim))
+
+        
+            #if layer == 0:
+            #    print(mlp.linears[0].weight)
+        # linear functions for graph sum poolings of output of each layer
+        self.linear_prediction = nn.ModuleList()
+        for layer in range(num_layers+1):
+            if layer == 0:
+                self.linear_prediction.append(nn.Linear(in_dim, hidden_dim))
+            else:
+                self.linear_prediction.append(nn.Linear(hidden_dim, hidden_dim))
+        self.drop = nn.Dropout(dropout)
+        self.mlp = MLP(hidden_dim, hidden_dim, out_dim)
+        self.pool = (
+            SumPooling()
+        )  # change to mean readout (AvgPooling) on social network datasets
+        self.relu = nn.ReLU()
+        self.output_activation = getattr(nn, self.output_activation)(dim=-1)
+
+    def forward(self, g, args):
+        # list of hidden representation at each layer (including the input layer)
+        h = g.ndata["feat"]
+        efeat = torch.ones(g.num_edges(), 4).to(args.device)
+        hidden_rep = [h]
+        for i, layer in enumerate(self.ginlayers):
+            h = layer(g, h, efeat)
+            h = self.batch_norms[i](h)
+            h = self.relu(h)
+            hidden_rep.append(h)
+        score_over_layer = 0
+        # perform graph sum pooling over all nodes in each layer
+        pooled_h_list = []
+        for i, h in enumerate(hidden_rep):
+            pooled_h = self.pool(g, h)
+            pooled_h_list.append(pooled_h)
+            score_over_layer += self.drop(self.linear_prediction[i](pooled_h))
+
+        score_over_layer = self.mlp(score_over_layer)
+        return  self.output_activation(score_over_layer)
+
 
 
 def get_network(net_type: str = "hierarchical"):
@@ -445,6 +487,8 @@ def get_network(net_type: str = "hierarchical"):
         return GIN
     elif net_type == 'gatv2':
         return GATv2
+    elif net_type == 'gine':
+        return GINE
     else:
         raise ValueError(
             "Network type {} is not supported.".format(net_type)

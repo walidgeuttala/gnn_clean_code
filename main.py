@@ -25,11 +25,11 @@ def parse_args():
     parser.add_argument("--dataset_path", type=str, default="../data_folder/data", help="Path to dataset")
     parser.add_argument("--test_dataset_path", type=str, default="../data_folder/test", help="Path to test dataset")
     parser.add_argument("--output_path", type=str, default="./output", help="Output path")
-    parser.add_argument("--weight_path", type=str, default="../weights", help="Output path")
+    parser.add_argument("--weight_path", type=str, default="../weights", help="intput weights")
     # parser.add_argument("--plot_statistics", type=bool, default=False, help="Do plots about acc/loss/boxplot")
     parser.add_argument("--verbose", type=bool, default=True, help="print details of the training True or False")
     parser.add_argument("--device", type=str, default="cuda", help="Device cuda or cpu")
-    parser.add_argument("--architecture",type=str,default="hierarchical",choices=["hierarchical", "global", "gat", "gin", "gatv2"],help="model architecture",)
+    parser.add_argument("--architecture",type=str,default="hierarchical",choices=["hierarchical", "global", "gat", "gin", "gine", "gatv2"],help="model architecture",)
     parser.add_argument("--data_type", type=str, default="regression", help="regression or classifcation")
     parser.add_argument("--label_type", type=str, default="original", choices=["original", "transitivity", "average_path", "density", "kurtosis"], help="choose")
     parser.add_argument("--feat_type", type=str, default="ones_feat", choices=["ones_feat", "noise_feat", "degree_feat", "identity_feat", "norm_degree_feat"], help="ones_feat/noies_feat/degree_feat/identity_feat")
@@ -182,9 +182,9 @@ def main(args, seed, save=True):
     num_feature, num_classes, _ = dataset.statistics()
     args.num_feature = int(num_feature)
     args.num_classes = int(num_classes)
-    #set_random_seed(seed)
-    weight_path = f"{args.weight_path}/trial_{seed+1}_{args.feat_type}_{args.architecture}_{args.hidden_dim}_{args.num_layers}_{args.lr}_{args.weight_decay}_{args.k}_{args.dropout}_{args.pool_ratio}_{args.output_activation}_{args.data_type}_weights.pth"
-
+    
+    weight_path = f"{args.weight_path}/{args.feat_type}_{args.architecture}_{args.hidden_dim}_{args.num_layers}_{args.lr}_{args.weight_decay}_{args.k}_{args.dropout}_{args.pool_ratio}_{args.output_activation}_{args.data_type}_weights.pth"
+    set_random_seed(seed)
     model_op = get_network(args.architecture)
     model = model_op(
         in_dim=args.num_feature,
@@ -196,13 +196,13 @@ def main(args, seed, save=True):
         output_activation = args.output_activation
     ).to(args.device)
 
-    # Try to load model weights
-    try:
-        model.load_state_dict(torch.load(weight_path))
-        print(f"Weights loaded successfully.")
-    except FileNotFoundError:
-        print(f"Could not find weights, initializing model with random weights, and saving it.")
-        torch.save(model.state_dict(), weight_path)
+    # # Try to load model weights
+    # try:
+    #     model.load_state_dict(torch.load(weight_path))
+    #     print(f"Weights loaded successfully.")
+    # except FileNotFoundError:
+    #     print(f"Could not find weights, initializing model with random weights, and saving it.")
+    #     torch.save(model.state_dict(), weight_path)
 
     # Step 3: Create training components ===================================================== #
     if hasattr(torch.optim, args.optimizer_name):

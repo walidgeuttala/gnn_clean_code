@@ -99,7 +99,6 @@ class GraphDataset(DGLDataset):
             self.graphs = [g.to(self.device) for g in self.graphs]
             self.labels = self.labels.to(self.device)
         
-        
 
     def load2(self, data_path):
         '''

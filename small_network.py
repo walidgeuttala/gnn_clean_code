@@ -26,10 +26,10 @@ def extract_float_values(input_string):
         print("Pattern not found in the string.")
         return None
 
-length = 21
+length = 6
 #label_types = ['transitivity', 'average_path', 'density', 'kurtosis']
 
-current_path = '../gnn_outputs/version1/kurtosis/'
+current_path = '../gnn_outputs/density_new_gatv2/'
 #keys = ['architecture', 'hidden_dim', 'num_layers', 'feat_type', 'train_loss', 'train_loss_error', 'train_acc', 'train_acc_error', 'valid_acc', 'valid_acc_error', 'test_acc', 'test_acc_error']
 keys = ['architecture', 'hidden_dim', 'num_layers', 'feat_type', 'small_test_acc', 'medium_test_acc']
 df = []

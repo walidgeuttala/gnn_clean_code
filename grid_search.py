@@ -12,14 +12,8 @@ def load_config(path="./grid_search_config.json"):
 
 
 def run_experiments(args):
-    res = []
-    for i in range(args.num_trials):
-        print("Trial {}/{}".format(i + 1, args.num_trials))
-        _, acc2, _ = main(args, i , False)
-        res.append(acc2)
-
-    mean, err_bd = get_stats(res, conf_interval=True)
-    return mean, err_bd
+    _, acc2, _ = main(args, 0 , False)
+    return acc2
 
 
 def grid_search(config: dict):
@@ -30,7 +24,8 @@ def grid_search(config: dict):
     best_args2 = vars(args)
     best_acc2, err_bd2 = 0.0, 0.0
     if args.feat_type != 'identity_feat':
-        config.pop('k')
+        args.k = 1
+    print(args.k)
     keys = list(config.keys())
     values = [config[key] for key in keys]
     combinations = list(itertools.product(*values))
@@ -45,17 +40,14 @@ def grid_search(config: dict):
             param_dict = dict(zip(keys, combination))
             for key, value in param_dict.items():
                 setattr(args, key, value)
-            acc, bd = run_experiments(args)
+            acc = run_experiments(args)
             cnt += 1
             if acc < best_acc:
                 best_acc = acc
-                err_bd = bd
                 best_args = deepcopy(vars(args))
-                save_cnt = cnt
                 ans = args.num_layers * args.hidden_dim
             elif acc == best_acc and args.num_layers * args.hidden_dim < ans:
-                best_args = deepcopy(vars(args))
-                save_cnt = cnt
+                best_args = deepcopy(vars(args))                
                 ans = args.num_layers * args.hidden_dim
                                 
             if acc <= 0.01 and args.num_layers * args.hidden_dim < ans2:
@@ -67,17 +59,14 @@ def grid_search(config: dict):
             param_dict = dict(zip(keys, combination))
             for key, value in param_dict.items():
                 setattr(args, key, value)
-            acc, bd = run_experiments(args)
+            acc = run_experiments(args)
             cnt += 1
             if acc > best_acc:
                 best_acc = acc
-                err_bd = bd
                 best_args = deepcopy(vars(args))
-                save_cnt = cnt
                 ans = args.num_layers * args.hidden_dim
             elif acc == best_acc and args.num_layers * args.hidden_dim < ans:
                 best_args = deepcopy(vars(args))
-                save_cnt = cnt
                 ans = args.num_layers * args.hidden_dim
                                 
             if acc >= 0.95 and args.num_layers * args.hidden_dim < ans2:
