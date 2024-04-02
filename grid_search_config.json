@@ -1,1 +1,1 @@
-{"architecture": ["gine"], "hidden_dim": [64], "lr": [0.01], "num_layers": [6], "weight_decay": [0.001], "k": [4]}
+{"architecture": ["gine"], "hidden_dim": [32], "lr": [0.01], "num_layers": [1], "weight_decay": [0.001], "k": [32]}

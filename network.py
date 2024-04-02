@@ -456,7 +456,7 @@ class GINE(nn.Module):
     def forward(self, g, args):
         # list of hidden representation at each layer (including the input layer)
         h = g.ndata["feat"]
-        efeat = torch.ones(g.num_edges(), 4).to(args.device)
+        efeat = torch.ones(g.num_edges(), 32).to(args.device)
         hidden_rep = [h]
         for i, layer in enumerate(self.ginlayers):
             h = layer(g, h, efeat)

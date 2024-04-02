@@ -46,23 +46,31 @@ def parse_args2():
         help="args json file for the model that we trained with",
     )
     parser.add_argument(
+        "--real_network_folder",
+        type=str,
+        default="../data_folder/",
+        help="args json file for the model that we trained with",
+    )
+    
+    parser.add_argument(
+        "--output_path",
+        type=str,
+        default=None,
+        help="args json file for the model that we trained with",
+    )
+    parser.add_argument(
         "--dist_draw",
         type=bool,
         default=False,
         help="dist draw for networks list",
     )
     parser.add_argument(
-        "--dataset_path",
+        "--link_data",
         type=str,
-        default='data',
-        help="dataset path",
+        default="../data_folder/",
+        help="args json file for the model that we trained with",
     )
-    parser.add_argument(
-        "--feat_type",
-        type=str,
-        default='ones_feat',
-        help="feature type",
-    )
+   
 
     return parser.parse_args()
 def make_graph_bidirectional(graph):
@@ -246,10 +254,10 @@ def stanford_degree_dist_plots(result, draw = True):
 
 
 
-def download_Stanford_network(url, save_as = "/txt.txt"):
+def download_Stanford_network(url, real_network_folder):
     
-    input_file = url.split("/")[-1]
-    subprocess.run(['wget', url, '-O', input_file])
+    input_file = real_network_folder+url.split("/")[-1]
+    # subprocess.run(['wget', url, '-O', input_file])
     
     data = np.loadtxt(input_file, dtype=int)
 
@@ -267,37 +275,43 @@ def download_Stanford_network(url, save_as = "/txt.txt"):
     return graph, input_file
 
 @torch.no_grad()
-def test_network_diff_nfeat(model, graph, name, device, feat_type, k, param):
+def test_network_diff_nfeat(model, graph, name, args):
     try:
         model.eval()
         ans = [] 
         softmax = torch.nn.Softmax(dim=1)
         #graph = dgl.add_self_loop(graph)
-        graph = graph.to(device)
+        graph = graph.to(args.device)
         print(name + ' number of nodes is : ', graph.num_nodes())
         print(name + ' number of edges is : ', graph.num_edges())
         
-        if feat_type == 'ones_feat':
-            graph.ndata['feat'] = torch.ones(graph.num_nodes(), 1).float().to(device)
-        elif feat_type == 'noise_feat':
-            graph.ndata['feat'] = torch.randn(graph.num_nodes(), 1).float().to(device)
-        elif feat_type == 'identity_feat':
-            graph.ndata['feat'] = compute_identity(torch.stack(graph.edges(), dim=0), graph.number_of_nodes(), k).float().to(device)
-        elif feat_type == 'degree_feat':
-            degrees = graph.in_degrees().unsqueeze(1).float().to(device)
+        if args.feat_type == 'ones_feat':
+            graph.ndata['feat'] = torch.ones(graph.num_nodes(), 1).float().to(args.device)
+        elif args.feat_type == 'noise_feat':
+            graph.ndata['feat'] = torch.randn(graph.num_nodes(), 1).float().to(args.device)
+        elif args.feat_type == 'identity_feat':
+            graph.ndata['feat'] = compute_identity(torch.stack(graph.edges(), dim=0), graph.number_of_nodes(), args.k).float().to(args.device)
+        elif args.feat_type == 'degree_feat':
+            degrees = graph.in_degrees().unsqueeze(1).float().to(args.device)
             graph.ndata['feat'] = degrees.repeat(1, 1)
         else:
-            degrees = graph.in_degrees().unsqueeze(1).float().to(device)
+            degrees = graph.in_degrees().unsqueeze(1).float().to(args.device)
             graph.ndata['feat'] = degrees.repeat(1, 1)/(graph.number_of_nodes() - 1)
 
-        args = parse_args()
-        logits, _ = model(graph, args)
-        result = softmax(logits)
+        logits = model(graph, args)
+        if args.data_type == "regression":
+            result = logits
+        else:
+            result = softmax(logits)
         ans.append(result[0])
-        print('{} {} : '.format(name, feat_type), end='')
-        for i, key in enumerate(['low', 'high']):
-            print('{}. {:.4f} '.format(key, result[0][i]), end='')
-        print()
+        print('{} {} : '.format(name, args.feat_type), end='')
+        if args.data_type == "regression":
+            print('loss : {:.4f} '.format(result[0].item()), end='')
+            print()
+        else:
+            for i, key in enumerate(['low', 'high']):
+                print('{}. {:.4f} '.format(key, result[0][i]), end='')
+            print()
     except Exception as e:
         print(f"An error occurred: {e}")
         ans = None
@@ -343,13 +357,13 @@ def test_networks2(model, args, param):
     # Add 2000 nodes to the graph
     G.add_nodes_from(range(1, 2001))
     G = dgl.from_networkx(G)         
-    value = test_network_diff_nfeat(model, G, 'graph1', args['device'], args['feat_type'], args['k'], param)
+    value = test_network_diff_nfeat(model, G, 'graph1', args)
     print(value)
     G = nx.complete_graph(250)
 
     # Transfer the NetworkX graph to a DGL graph
     G = dgl.from_networkx(G)         
-    value = test_network_diff_nfeat(model, G, 'graph2', args['device'], args['feat_type'], args['k'], param)
+    value = test_network_diff_nfeat(model, G, 'graph2', args)
     print(value)
     
 def test_networks3(model, args, param):
@@ -373,23 +387,23 @@ def test_networks3(model, args, param):
     ans_train = []
     ans_test = []
     for i in indices: 
-        value = test_network_diff_nfeat(model, dataset.graphs[i], 'train', args['device'], args['feat_type'], args['k'], param)
+        value = test_network_diff_nfeat(model, dataset.graphs[i], 'train', args)
         value.append(dataset.labels[i].value())
         ans_train.append(value)
 
     for i in range(len(dataset2)):
-        value = test_network_diff_nfeat(model, dataset.graphs[i], 'test', args['device'], args['feat_type'], args['k'], param)
+        value = test_network_diff_nfeat(model, dataset.graphs[i], 'test', args)
         value.append(dataset.labels[i].value())
         ans_test.append(value)
     
     print(ans_train)
     print(ans_test)      
     
-def test_networks(model, args, param, result):
+def test_networks(model, args, result, data_folder):
     # Open the file in read mode
     ans = []
     names = []
-    with open('./links.txt', 'r') as file:
+    with open('../data_folder/links.txt', 'r') as file:
         # Iterate over each line in the file
         f = 0
         for line in file:
@@ -402,8 +416,8 @@ def test_networks(model, args, param, result):
                     print("field : "+line)
                     f = 0
                 else:
-                    graph, name = download_Stanford_network(line[:-1])
-                    value = test_network_diff_nfeat(model, graph, name, args['device'], args['feat_type'], args['k'], param)
+                    graph, name = download_Stanford_network(line[:-1], data_folder)
+                    value = test_network_diff_nfeat(model, graph, name, args)
                     if value != None:
                         ans.append(value[0].tolist())
                         names.append(name[:-7])
@@ -413,7 +427,7 @@ def test_networks(model, args, param, result):
     for file_path in result:
         graph, name = read_graph(file_path)
         graph = dgl.from_networkx(graph)
-        value = test_network_diff_nfeat(model, graph, name, args['device'], args['feat_type'], args['k'], param)
+        value = test_network_diff_nfeat(model, graph, name, args)
         if value != None:
             ans.append(value[0].tolist())
             names.append(name)
@@ -422,16 +436,19 @@ def test_networks(model, args, param, result):
     for list_name in list_names:
         graph = read_graph2(list_name)
         name = list_name[-1]
-        value = test_network_diff_nfeat(model, graph, name, args['device'], args['feat_type'], args['k'], param)
+        value = test_network_diff_nfeat(model, graph, name, args)
         if value != None:
             ans.append(value[0].tolist())
             names.append(name)
         torch.cuda.empty_cache() 
 
-    index = [(args['architecture'], args['feat_type'], name) for name in names]
+    index = [(args.architecture, args.feat_type, name) for name in names]
     index = pd.MultiIndex.from_tuples(index, names=['model', 'feat_type', 'network_name'])
-    df = pd.DataFrame(ans, columns=['Low', 'High'], index=index)
-    df.to_csv("{}/{}_stanford_output_testing.csv".format(args['output_path'], args['feat_type']), index=True)
+    if args.data_type == "regression":
+        df = pd.DataFrame(ans, columns=['Loss'], index=index)
+    else:
+        df = pd.DataFrame(ans, columns=['Low', 'High'], index=index)
+    df.to_csv("{}/{}_stanford_output_testing.csv".format(args.output_path, args.feat_type), index=True)
     
     #radar_plot(ans, names, args['output_path'], args['feat_type'], param)    
 
@@ -446,7 +463,7 @@ def extract_name_from_string(input_string):
     else:
         return None  # Return None if no match is found
 
-def download_and_extract(links, output_dir="./extracted_folders"):
+def download_and_extract(links, output_dir="../data_folder/extracted_folders"):
     os.makedirs(output_dir, exist_ok=True)
 
     net_files = []
@@ -476,6 +493,10 @@ def download_and_extract(links, output_dir="./extracted_folders"):
                         break
 
     return net_files
+
+def get_files_names(folder_path):
+    return [folder_path+file for file in os.listdir(folder_path) if file.endswith(".gz.txt")]
+
 
 def extract_numbers_from_string(input_string):
     # Use regular expression to find all numbers in the string
@@ -640,10 +661,15 @@ def graph_statistics(result, draw = False):
 
     return names, density, transitivity, avg_short_path
 
+def fill_arg_parser(parser, args_dict):
+    for key, value in args_dict.items():
+        if hasattr(parser, key.lstrip('-')):
+            setattr(parser, key.lstrip('-'), value)
+    return parser
+
 if __name__ == "__main__":
     
     args2 = parse_args2()
-    param = torch.load('{}/parameters_generated_data.pth'.format(args2.dataset_path))
 
     if args2.dist_draw == True:
         result = download_and_extract(linkss)
@@ -652,21 +678,27 @@ if __name__ == "__main__":
     else:
         with open(args2.args_file, 'r') as f:
             args = json.load(f)
-        args = args['params']
-        model_op = get_network(args['architecture'])
+        args_dict = args['params']
+
+        args = parse_args()
+        for key, value in args_dict.items():
+            setattr(args, key, value)
+        args.output_path = args2.output_path
+        model_op = get_network(args.architecture)
         model = model_op(
-            in_dim=args['num_feature'],
-            hidden_dim=args['hidden_dim'],
-            out_dim=args['num_classes'],
-            num_layers=args['num_layers'],
-            pool_ratio=args['pool_ratio'],
-            dropout=args['dropout'],
-        ).to(args['device'])
+            in_dim=args.num_feature,
+            hidden_dim=args.hidden_dim,
+            out_dim=args.num_classes,
+            num_layers=args.num_layers,
+            pool_ratio=args.pool_ratio,
+            dropout=args.dropout,
+            output_activation = args.output_activation
+        ).to(args.device)
         model.load_state_dict(torch.load(args2.model_weights_path))
         #args['feat_type'] = args2.feat_type
-        print('args : ', args['feat_type'])
         result = download_and_extract(linkss)
-        test_networks(model, args, param, result)
+        #result = get_files_names(args2.link_data)
+        test_networks(model, args, result, args2.real_network_folder)
         #test_networks3(model, args, param)
         
         

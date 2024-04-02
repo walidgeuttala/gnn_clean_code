@@ -32,7 +32,7 @@ search_space = {
     "lr": [1e-2],
     "num_layers":[3, 4],
     "weight_decay": [1e-3],
-    "k": [16]
+    "k": [32]
 }
 
 num_trials = 1
@@ -48,7 +48,7 @@ search_space = {
     "lr": [1e-2],
     "num_layers":[1],
     "weight_decay": [1e-3],
-    "k": [4]
+    "k": [32]
 }
 
 for label_type in label_types:
