@@ -10,12 +10,12 @@ from scipy.stats import kurtosis
 import matplotlib.pyplot as plt
 import numpy as np
 import pickle
-
-def read_real_graphs(result):
+    
+def read_real_graphs(result, data_folder = "../data_folder/"):
     names = []
     graphs = []
     average_shortest_path = []
-    with open('links.txt', 'r') as file:
+    with open('../data_folder/links.txt', 'r') as file:
         f = 0
         for line in file:
             if len(line) == 1:
@@ -24,11 +24,11 @@ def read_real_graphs(result):
                 if f == 1:
                     f = 0
                 else:
-                    graph, name =  download_Stanford_network(line[:-1])
+                    graph, name =  download_Stanford_network(line[:-1], data_folder)
                     average_shortest_path.append(calculate_avg_shortest_path(graph))
                     graph = dgl.to_networkx(graph)
                     graph = nx.Graph(graph)
-                    names.append(name[:-7])
+                    names.append(name.split('/')[-1][:-7])
                     graphs.append(graph)
 
     for file_path in result:
@@ -62,6 +62,18 @@ def read_synthtic_graphs(path):
 
     return graphs, average_shortest_path
 
+def read_dgl_graphs(dataset):
+    average_shortest_path = []
+    graphs = list()
+    for idx in range(len(dataset)):
+        graphs.append(dataset[idx][0])
+    for idx in range(len(graphs)):
+        average_shortest_path.append(calculate_avg_shortest_path(graphs[idx]))
+        graphs[idx] = dgl.to_networkx(graphs[idx])
+        graphs[idx] = nx.Graph(graphs[idx])
+
+    return graphs, average_shortest_path
+
 def calculate_kurtosis_from_degree_list(degree_list):
     """
     Calculate the kurtosis for a given list of degrees in a graph.
@@ -86,23 +98,23 @@ def calculate_kurtosis_from_degree_list(degree_list):
 
 def stats0(graphs, average_shortest_path):
     arr = [[] for _ in range(4)]
-    arr[0] = average_shortest_path.copy()
-    for idx, graph in enumerate(graphs):
-        n = nx.number_of_nodes(graph)
-        # High shortest path or no
-        arr[0][idx] = math.log2(n) < arr[0][idx]
-        density = nx.density(graph)
-        # high or low transitivity
-        arr[1].append(nx.transitivity(graph) > 10*density)
-        degrees = list(dict(graph.degree()).values())
-        # return True if left skewed scale free 
-        # NAn values will result in False which is what I want
-        kurtosis = calculate_kurtosis_from_degree_list(degrees)
-        if math.isnan(kurtosis):
-            kurtosis = 0.
-        arr[2].append(kurtosis>3)
-        # High density or no 
-        arr[3].append(sum(degrees) / len(degrees)>6)
+    # arr[0] = average_shortest_path.copy()
+    # for idx, graph in enumerate(graphs):
+    #     n = nx.number_of_nodes(graph)
+    #     # High shortest path or no
+    #     arr[0][idx] = math.log2(n) < arr[0][idx]
+    #     density = nx.density(graph)
+    #     # high or low transitivity
+    #     arr[1].append(nx.transitivity(graph) > 10*density)
+    #     degrees = list(dict(graph.degree()).values())
+    #     # return True if left skewed scale free 
+    #     # NAn values will result in False which is what I want
+    #     kurtosis = calculate_kurtosis_from_degree_list(degrees)
+    #     if math.isnan(kurtosis):
+    #         kurtosis = 0.
+    #     arr[2].append(kurtosis>3)
+    #     # High density or no 
+    #     arr[3].append(sum(degrees) / len(degrees)>6)
             
 
     arr2 = [[] for _ in range(4)]
@@ -224,54 +236,77 @@ def read_gem_ben_graphs():
     
 
 
-#graphs, df, average_shortest_path,average_degree = read_gem_ben_graphs()
-#print(average_shortest_path)
+# graphs, df, average_shortest_path,average_degree = read_gem_ben_graphs()
+# print(average_shortest_path)
 
-#stat, arr = stats0(graphs, average_shortest_path)
+# stat, arr = stats0(graphs, average_shortest_path)
 
-#names = ['average_shortest_path', 'transtivity', 'kurtosis', 'density', 'edges']
+# names = ['average_shortest_path', 'transtivity', 'kurtosis', 'density']
 
-#for i in range(5):
+# for i in range(5):
 #    df[names[i]+'_value'] = stat[:, i]
 #    df[names[i]] = arr[:, i]
-#df['avg_degree2'] = np.array(average_degree)
-#df.to_csv('gemben.csv', index=False)    
-#print(df[names])
-#print(stat)
-#print(arr)
+# df['avg_degree2'] = np.array(average_degree)
+# df.to_csv('gemben.csv', index=False)    
+# print(df[names])
+# print(stat)
+# print(arr)
 
-# result = download_and_extract(linkss)
-# graphs, names, average_shortest_path = read_real_graphs(result)
-# subnames = ['facebook_combined', 'wiki-Vote', 'p2p-Gnutella04', 'p2p-Gnutella08', 'CSphd', 'geom', 'netsience', 'adjnoun', 'football', 'hep-th', 'netscience', 'CLUSTERDataset', 'TreeGridDataset']
-# subname_indices = [idx for idx, name in enumerate(names) if name in subnames]
-# graphs = [graphs[idx] for idx in subname_indices]
-# average_shortest_path = [average_shortest_path[idx] for idx in subname_indices]
+result = download_and_extract(linkss)
+graphs, names, average_shortest_path = read_real_graphs(result)
+subnames = ['facebook_combined', 'wiki-Vote', 'p2p-Gnutella04', 'p2p-Gnutella08', 'CSphd', 'geom', 'netsience', 'adjnoun', 'football', 'hep-th', 'CLUSTERDataset', 'TreeGridDataset']
+subname_indices = [idx for idx, name in enumerate(names) if name in subnames]
+graphs = [graphs[idx] for idx in subname_indices]
+average_shortest_path = [average_shortest_path[idx] for idx in subname_indices]
 
-# stat1, arr2 = stats0(graphs, average_shortest_path)
+stat1, arr2 = stats0(graphs, average_shortest_path)
+arr2 = pd.DataFrame(arr2, columns=['average_path', 'transitivity','kurtosis', 'density'])
+arr2['network_name'] = subnames
+arr2.to_csv('real_network.csv')    
 
+##############################################################################################################################################################################
 # self.properties = ['transitivity_labels', 'average_path_labels', 'density_labels', 'kurtosis_labels']
 #         self.data_types = ['regression', 'classification']
-graphs, average_shortest_path = read_synthtic_graphs('../data_folder/data')
-stat2, arr2 = stats0(graphs, average_shortest_path)
-result = list()
-result.append(torch.tensor(np.repeat(np.arange(8), 250)).view(-1, 1).to(torch.int32))
-for i in range(4):
-    result.append(torch.tensor(stat2[:, i]).view(-1, 1).to(torch.float32))
-    result.append(torch.tensor(arr2[:, i]).view(-1, 1).to(torch.float32))
-    print(torch.sum(torch.isnan(result[-2])))
-    print(torch.sum(torch.isnan(result[-1])))
-torch.save(result, "../data_folder/data/properties_labels.pt")
+# graphs, average_shortest_path = read_synthtic_graphs('../data_folder/data')
+# stat2, arr2 = stats0(graphs, average_shortest_path)
+# result = list()
+# result.append(torch.tensor(np.repeat(np.arange(8), 250)).view(-1, 1).to(torch.int32))
+# for i in range(4):
+#     result.append(torch.tensor(stat2[:, i]).view(-1, 1).to(torch.float32))
+#     result.append(torch.tensor(arr2[:, i]).view(-1, 1).to(torch.float32))
+#     print(torch.sum(torch.isnan(result[-2])))
+#     print(torch.sum(torch.isnan(result[-1])))
+# torch.save(result, "../data_folder/data/properties_labels.pt")
 
-graphs, average_shortest_path = read_synthtic_graphs('../data_folder/test')
-stat2, arr2 = stats0(graphs, average_shortest_path)
-result = list()
-result.append(torch.tensor(np.repeat(np.arange(8), 50)).view(-1, 1).to(torch.float32))
-for i in range(4):
-    result.append(torch.tensor(stat2[:, i]).view(-1, 1).to(torch.float32))
-    result.append(torch.tensor(arr2[:, i]).view(-1, 1).to(torch.float32))
-    print(torch.sum(torch.isnan(result[-2])))
-    print(torch.sum(torch.isnan(result[-1])))
-torch.save(result, "../data_folder/test/properties_labels.pt")
+# graphs, average_shortest_path = read_synthtic_graphs('../data_folder/test')
+# stat2, arr2 = stats0(graphs, average_shortest_path)
+# result = list()
+# result.append(torch.tensor(np.repeat(np.arange(8), 50)).view(-1, 1).to(torch.float32))
+# for i in range(4):
+#     result.append(torch.tensor(stat2[:, i]).view(-1, 1).to(torch.float32))
+#     result.append(torch.tensor(arr2[:, i]).view(-1, 1).to(torch.float32))
+#     print(torch.sum(torch.isnan(result[-2])))
+#     print(torch.sum(torch.isnan(result[-1])))
+# torch.save(result, "../data_folder/test/properties_labels.pt")
+
+
+##############################################################################################################################################################################
+# self.properties = ['transitivity_labels', 'average_path_labels', 'density_labels', 'kurtosis_labels']
+# self.data_types = ['regression', 'classification']
+# import dgl
+# data_names = ['MUTAG', 'COLLAB', "ENZYMES"]
+# for data_name in data_names:
+#     dataset = dgl.data.TUDataset(data_name)
+#     graphs, average_shortest_path = read_dgl_graphs(dataset)
+#     stat2, arr2 = stats0(graphs, average_shortest_path)
+#     result = list()
+#     result.append([0])
+#     for i in range(4):
+#         result.append(torch.tensor(stat2[:, i]).view(-1, 1).to(torch.float32))
+#         result.append(torch.tensor(arr2[:, i]).view(-1, 1).to(torch.float32))
+#         print(torch.sum(torch.isnan(result[-2])))
+#         print(torch.sum(torch.isnan(result[-1])))
+#     torch.save(result, f"../data_folder/dgl_graph_labels/{data_name}_properties_labels.pt")
 
 
 

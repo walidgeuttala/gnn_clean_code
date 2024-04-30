@@ -1,0 +1,26 @@
+   model      feat_type       network_name  ...          y  num_nodes  num_edges
+0    gin  identity_feat  facebook_combined  ...  43.691013       4039      88234
+1    gin  identity_feat          wiki-Vote  ...  28.323823       7115     103689
+3    gin  identity_feat     p2p-Gnutella04  ...   7.354542      10876      39994
+4    gin  identity_feat     p2p-Gnutella08  ...   6.594826       6301      20777
+6    gin  identity_feat              CSphd  ...   1.849097       1882       3480
+8    gin  identity_feat               geom  ...   3.240637       7343      23796
+9    gin  identity_feat          netsience  ...   3.451227       1589       5484
+13   gin  identity_feat            adjnoun  ...   7.589286        112        850
+14   gin  identity_feat           football  ...  10.660870        115       1226
+17   gin  identity_feat             hep-th  ...   3.767731       8361      31502
+19   gin  identity_feat     CLUSTERDataset  ...  35.076923        117       4104
+21   gin  identity_feat    TreeGridDataset  ...   2.770106       1231       1705
+
+[12 rows x 7 columns]
+Traceback (most recent call last):
+  File "/project/p_gnn001/code/gnn_clean_code/merge_real_networks.py", line 35, in <module>
+    sns.boxplot(x='num_nodes', y='Loss', data=df)
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/seaborn/categorical.py", line 2231, in boxplot
+    plotter = _BoxPlotter(x, y, hue, data, order, hue_order,
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/seaborn/categorical.py", line 785, in __init__
+    self.establish_variables(x, y, hue, data, orient, order, hue_order)
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/seaborn/categorical.py", line 541, in establish_variables
+    raise ValueError(err)
+ValueError: Could not interpret input 'Loss'

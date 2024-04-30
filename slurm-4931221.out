@@ -1,0 +1,500 @@
+
+field : Social networks
+
+../data_folder/facebook_combined.txt.gz
+None
+loss : 1.0000 
+
+../data_folder/wiki-Vote.txt.gz
+None
+loss : 1.0000 
+
+
+field : Networks with ground-truth communities
+
+../data_folder/email-Eu-core.txt.gz
+None
+loss : 1.0000 
+
+
+field : Internet peer-to-peer networks
+
+../data_folder/p2p-Gnutella04.txt.gz
+None
+loss : 1.0000 
+
+../data_folder/p2p-Gnutella08.txt.gz
+None
+loss : 1.0000 
+
+
+field : Collaboration networks
+
+../data_folder/ca-GrQc.txt.gz
+None
+loss : 1.0000 
+
+CSphd
+4    1.849097
+Name: density, dtype: float64
+An error occurred: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+YeastS
+None
+loss : 1.0000 
+geom
+5    3.240637
+Name: density, dtype: float64
+An error occurred: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+netsience
+6    3.451227
+Name: density, dtype: float64
+An error occurred: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+Erdos02
+None
+loss : 1.0000 
+karate
+None
+loss : 1.0000 
+lesmis
+None
+loss : 1.0000 
+adjnoun
+7    7.589286
+Name: density, dtype: float64
+An error occurred: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+football
+8    10.66087
+Name: density, dtype: float64
+An error occurred: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+dolphins
+None
+loss : 1.0000 
+polbooks
+None
+loss : 1.0000 
+hep-th
+9    3.767731
+Name: density, dtype: float64
+An error occurred: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+power
+None
+loss : 1.0000 
+CLUSTERDataset
+10    35.076923
+Name: density, dtype: float64
+An error occurred: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+PATTERNDataset
+None
+loss : 1.0000 
+Done loading data from cached files.
+TreeGridDataset
+11    2.770106
+Name: density, dtype: float64
+An error occurred: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+Done loading data from cached files.
+TreeCycleDataset
+None
+loss : 1.0000 
+Traceback (most recent call last):
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/internals/construction.py", line 939, in _finalize_columns_and_data
+    columns = _validate_or_indexify_columns(contents, columns)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/internals/construction.py", line 986, in _validate_or_indexify_columns
+    raise AssertionError(
+AssertionError: 2 columns passed, passed data had 1 columns
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/project/p_gnn001/code/gnn_clean_code/test_stanford_networks.py", line 721, in <module>
+    test_networks(model, args, result, args2.real_network_folder)
+  File "/project/p_gnn001/code/gnn_clean_code/test_stanford_networks.py", line 466, in test_networks
+    df = pd.DataFrame(ans, columns=['pred_y', 'y'], index=index)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/frame.py", line 840, in __init__
+    arrays, columns, index = nested_data_to_arrays(
+                             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/internals/construction.py", line 520, in nested_data_to_arrays
+    arrays, columns = to_arrays(data, columns, dtype=dtype)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/internals/construction.py", line 845, in to_arrays
+    content, columns = _finalize_columns_and_data(arr, columns, dtype)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/internals/construction.py", line 942, in _finalize_columns_and_data
+    raise ValueError(err) from err
+ValueError: 2 columns passed, passed data had 1 columns
+
+field : Social networks
+
+../data_folder/facebook_combined.txt.gz
+None
+loss : 1.0000 
+
+../data_folder/wiki-Vote.txt.gz
+None
+loss : 1.0000 
+
+
+field : Networks with ground-truth communities
+
+../data_folder/email-Eu-core.txt.gz
+None
+loss : 1.0000 
+
+
+field : Internet peer-to-peer networks
+
+../data_folder/p2p-Gnutella04.txt.gz
+None
+loss : 1.0000 
+
+../data_folder/p2p-Gnutella08.txt.gz
+None
+loss : 1.0000 
+
+
+field : Collaboration networks
+
+../data_folder/ca-GrQc.txt.gz
+None
+loss : 1.0000 
+
+CSphd
+4    0.003623
+Name: transitivity, dtype: float64
+An error occurred: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+YeastS
+None
+loss : 1.0000 
+geom
+5    0.24043
+Name: transitivity, dtype: float64
+An error occurred: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+netsience
+6    0.693441
+Name: transitivity, dtype: float64
+An error occurred: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+Erdos02
+None
+loss : 1.0000 
+karate
+None
+loss : 1.0000 
+lesmis
+None
+loss : 1.0000 
+adjnoun
+7    0.156935
+Name: transitivity, dtype: float64
+An error occurred: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+football
+8    0.40724
+Name: transitivity, dtype: float64
+An error occurred: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+dolphins
+None
+loss : 1.0000 
+polbooks
+None
+loss : 1.0000 
+hep-th
+9    0.329576
+Name: transitivity, dtype: float64
+An error occurred: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+power
+None
+loss : 1.0000 
+CLUSTERDataset
+10    0.315569
+Name: transitivity, dtype: float64
+An error occurred: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+PATTERNDataset
+None
+loss : 1.0000 
+Done loading data from cached files.
+TreeGridDataset
+11    0.0
+Name: transitivity, dtype: float64
+An error occurred: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+Done loading data from cached files.
+TreeCycleDataset
+None
+loss : 1.0000 
+Traceback (most recent call last):
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/internals/construction.py", line 939, in _finalize_columns_and_data
+    columns = _validate_or_indexify_columns(contents, columns)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/internals/construction.py", line 986, in _validate_or_indexify_columns
+    raise AssertionError(
+AssertionError: 2 columns passed, passed data had 1 columns
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/project/p_gnn001/code/gnn_clean_code/test_stanford_networks.py", line 721, in <module>
+    test_networks(model, args, result, args2.real_network_folder)
+  File "/project/p_gnn001/code/gnn_clean_code/test_stanford_networks.py", line 466, in test_networks
+    df = pd.DataFrame(ans, columns=['pred_y', 'y'], index=index)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/frame.py", line 840, in __init__
+    arrays, columns, index = nested_data_to_arrays(
+                             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/internals/construction.py", line 520, in nested_data_to_arrays
+    arrays, columns = to_arrays(data, columns, dtype=dtype)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/internals/construction.py", line 845, in to_arrays
+    content, columns = _finalize_columns_and_data(arr, columns, dtype)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/internals/construction.py", line 942, in _finalize_columns_and_data
+    raise ValueError(err) from err
+ValueError: 2 columns passed, passed data had 1 columns
+
+field : Social networks
+
+../data_folder/facebook_combined.txt.gz
+None
+loss : 1.0000 
+
+../data_folder/wiki-Vote.txt.gz
+None
+loss : 1.0000 
+
+
+field : Networks with ground-truth communities
+
+../data_folder/email-Eu-core.txt.gz
+None
+loss : 1.0000 
+
+
+field : Internet peer-to-peer networks
+
+../data_folder/p2p-Gnutella04.txt.gz
+None
+loss : 1.0000 
+
+../data_folder/p2p-Gnutella08.txt.gz
+None
+loss : 1.0000 
+
+
+field : Collaboration networks
+
+../data_folder/ca-GrQc.txt.gz
+None
+loss : 1.0000 
+
+CSphd
+4    13.984305
+Name: kurtosis, dtype: float64
+An error occurred: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+YeastS
+None
+loss : 1.0000 
+geom
+5    16.879221
+Name: kurtosis, dtype: float64
+An error occurred: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+netsience
+6    1.428629
+Name: kurtosis, dtype: float64
+An error occurred: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+Erdos02
+None
+loss : 1.0000 
+karate
+None
+loss : 1.0000 
+lesmis
+None
+loss : 1.0000 
+adjnoun
+7   -1.2931
+Name: kurtosis, dtype: float64
+An error occurred: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+football
+8    0.115008
+Name: kurtosis, dtype: float64
+An error occurred: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+dolphins
+None
+loss : 1.0000 
+polbooks
+None
+loss : 1.0000 
+hep-th
+9    6.039269
+Name: kurtosis, dtype: float64
+An error occurred: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+power
+None
+loss : 1.0000 
+CLUSTERDataset
+10   -0.845169
+Name: kurtosis, dtype: float64
+An error occurred: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+PATTERNDataset
+None
+loss : 1.0000 
+Done loading data from cached files.
+TreeGridDataset
+11   -0.435806
+Name: kurtosis, dtype: float64
+An error occurred: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+Done loading data from cached files.
+TreeCycleDataset
+None
+loss : 1.0000 
+Traceback (most recent call last):
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/internals/construction.py", line 939, in _finalize_columns_and_data
+    columns = _validate_or_indexify_columns(contents, columns)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/internals/construction.py", line 986, in _validate_or_indexify_columns
+    raise AssertionError(
+AssertionError: 2 columns passed, passed data had 1 columns
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/project/p_gnn001/code/gnn_clean_code/test_stanford_networks.py", line 721, in <module>
+    test_networks(model, args, result, args2.real_network_folder)
+  File "/project/p_gnn001/code/gnn_clean_code/test_stanford_networks.py", line 466, in test_networks
+    df = pd.DataFrame(ans, columns=['pred_y', 'y'], index=index)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/frame.py", line 840, in __init__
+    arrays, columns, index = nested_data_to_arrays(
+                             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/internals/construction.py", line 520, in nested_data_to_arrays
+    arrays, columns = to_arrays(data, columns, dtype=dtype)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/internals/construction.py", line 845, in to_arrays
+    content, columns = _finalize_columns_and_data(arr, columns, dtype)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/internals/construction.py", line 942, in _finalize_columns_and_data
+    raise ValueError(err) from err
+ValueError: 2 columns passed, passed data had 1 columns
+
+field : Social networks
+
+../data_folder/facebook_combined.txt.gz
+None
+loss : 1.0000 
+
+../data_folder/wiki-Vote.txt.gz
+None
+loss : 1.0000 
+
+
+field : Networks with ground-truth communities
+
+../data_folder/email-Eu-core.txt.gz
+None
+loss : 1.0000 
+
+
+field : Internet peer-to-peer networks
+
+../data_folder/p2p-Gnutella04.txt.gz
+None
+loss : 1.0000 
+
+../data_folder/p2p-Gnutella08.txt.gz
+None
+loss : 1.0000 
+
+
+field : Collaboration networks
+
+../data_folder/ca-GrQc.txt.gz
+None
+loss : 1.0000 
+
+CSphd
+4    2.795812
+Name: average_path, dtype: float64
+An error occurred: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+YeastS
+None
+loss : 1.0000 
+geom
+5    0.535896
+Name: average_path, dtype: float64
+An error occurred: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+netsience
+6   -0.588242
+Name: average_path, dtype: float64
+An error occurred: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+Erdos02
+None
+loss : 1.0000 
+karate
+None
+loss : 1.0000 
+lesmis
+None
+loss : 1.0000 
+adjnoun
+7    2.535553
+Name: average_path, dtype: float64
+An error occurred: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+football
+8    2.508162
+Name: average_path, dtype: float64
+An error occurred: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+dolphins
+None
+loss : 1.0000 
+polbooks
+None
+loss : 1.0000 
+hep-th
+9    2.909184
+Name: average_path, dtype: float64
+An error occurred: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+power
+None
+loss : 1.0000 
+CLUSTERDataset
+10    1.697613
+Name: average_path, dtype: float64
+An error occurred: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+PATTERNDataset
+None
+loss : 1.0000 
+Done loading data from cached files.
+TreeGridDataset
+11   -0.964333
+Name: average_path, dtype: float64
+An error occurred: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+Done loading data from cached files.
+TreeCycleDataset
+None
+loss : 1.0000 
+Traceback (most recent call last):
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/internals/construction.py", line 939, in _finalize_columns_and_data
+    columns = _validate_or_indexify_columns(contents, columns)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/internals/construction.py", line 986, in _validate_or_indexify_columns
+    raise AssertionError(
+AssertionError: 2 columns passed, passed data had 1 columns
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/project/p_gnn001/code/gnn_clean_code/test_stanford_networks.py", line 721, in <module>
+    test_networks(model, args, result, args2.real_network_folder)
+  File "/project/p_gnn001/code/gnn_clean_code/test_stanford_networks.py", line 466, in test_networks
+    df = pd.DataFrame(ans, columns=['pred_y', 'y'], index=index)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/frame.py", line 840, in __init__
+    arrays, columns, index = nested_data_to_arrays(
+                             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/internals/construction.py", line 520, in nested_data_to_arrays
+    arrays, columns = to_arrays(data, columns, dtype=dtype)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/internals/construction.py", line 845, in to_arrays
+    content, columns = _finalize_columns_and_data(arr, columns, dtype)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/internals/construction.py", line 942, in _finalize_columns_and_data
+    raise ValueError(err) from err
+ValueError: 2 columns passed, passed data had 1 columns

@@ -1,0 +1,16 @@
+Done loading data from cached files.
+Done loading data from cached files.
+Traceback (most recent call last):
+  File "/project/p_gnn001/code/gnn_clean_code/test_stat0.py", line 264, in <module>
+    arr2['network_name'] = subnames
+    ~~~~^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/frame.py", line 4299, in __setitem__
+    self._set_item(key, value)
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/frame.py", line 4512, in _set_item
+    value, refs = self._sanitize_column(value)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/frame.py", line 5253, in _sanitize_column
+    com.require_length_match(value, self.index)
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/common.py", line 573, in require_length_match
+    raise ValueError(
+ValueError: Length of values (13) does not match length of index (12)

@@ -26,28 +26,30 @@ def find_highest_accuracy_index(combined_lists):
     return highest_accuracy_index
 
 number_folders = 1
-dir_path = '../gnn_outputs/version3_gpu/density/'
+
 real_network_folder = "../data_folder/"
-for i in range(1, number_folders+1): 
-    current_folder_name = 'output{}'.format(i)
-    #os.rename(current_folder_name, 'output')
-    files_names = os.listdir(dir_path+current_folder_name)
-    folder_path = dir_path+current_folder_name+"/"
-    #str1 = 'output/'+find('last', 'output/')
-    str3 = folder_path+[file for file in files_names if file.startswith("Data_dataset_Hidden")][0]
-    with open(str3) as f:
-        data = json.load(f)
-    index = data['results'][1].index(min(data['results'][1]))
-    str1 = folder_path+[file for file in files_names if file.startswith(f"last_model_weights_trail{index}")][0]
-    str2 = folder_path+"model.log"
+for name in ['density', 'transitivity', 'kurtosis', 'average_path']:
+    dir_path = f'../gnn_outputs/{name}/'    
+    for i in range(1, number_folders+1): 
+        current_folder_name = 'output{}'.format(i)
+        #os.rename(current_folder_name, 'output')
+        files_names = os.listdir(dir_path+current_folder_name)
+        folder_path = dir_path+current_folder_name+"/"
+        #str1 = 'output/'+find('last', 'output/')
+        str3 = folder_path+[file for file in files_names if file.startswith("Data_dataset_Hidden")][0]
+        with open(str3) as f:
+            data = json.load(f)
+        index = data['results'][1].index(min(data['results'][1]))
+        str1 = folder_path+[file for file in files_names if file.startswith(f"last_model_weights_trail{index}")][0]
+        str2 = folder_path+"model.log"
 
-    #str2 = 'output/'+find('Data_', 'output/')
-    #with open(str2, 'r') as f:
-    #    args = json.load(f) # dodo
-    #args = args['hyper-parameters']
+        #str2 = 'output/'+find('Data_', 'output/')
+        #with open(str2, 'r') as f:
+        #    args = json.load(f) # dodo
+        #args = args['hyper-parameters']
 
-    script = "python test_stanford_networks.py --model_weights_path {} --args_file {} --real_network_folder {} --output_path {}".format(str1, str2, real_network_folder, folder_path)
+        script = "python test_stanford_networks.py --model_weights_path {} --args_file {} --real_network_folder {} --output_path {}".format(str1, str2, real_network_folder, folder_path)
 
-    script = script.split()    
-    subprocess.run(script)
+        script = script.split()    
+        subprocess.run(script)
     

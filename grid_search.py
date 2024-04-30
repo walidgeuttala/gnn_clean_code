@@ -25,7 +25,6 @@ def grid_search(config: dict):
     best_acc2, err_bd2 = 0.0, 0.0
     if args.feat_type != 'identity_feat':
         args.k = 1
-    print(args.k)
     keys = list(config.keys())
     values = [config[key] for key in keys]
     combinations = list(itertools.product(*values))

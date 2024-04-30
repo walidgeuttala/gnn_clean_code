@@ -100,13 +100,20 @@ class GraphDataset(DGLDataset):
             self.labels = self.labels.to(self.device)
         
 
-    def load2(self, data_path):
+    def load2(self, data_name, args):
         '''
         Loads the processed data from disk as .bin and .pkl files. The processed data consists of the graph data and the corresponding labels.
         '''
         # Load the graph data and labels from the .bin file
-        graph_path = os.path.join('{}/dgl_graph.bin'.format(data_path))
-        self.graphs, _ = load_graphs(graph_path)
+        dataset = dgl.data.TUDataset(data_name)
+        self.graphs = []
+        for idx in range(len(dataset)):
+            self.graphs.append(dataset[idx][0])
+        self.choose_labels(args, f"../data_folder/dgl_graph_labels/{data_name}_properties_labels.pt")
+        
+        if self.device == 'cuda':
+            self.graphs = [g.to(self.device) for g in self.graphs]
+            self.labels = self.labels.to(self.device)
         
         
 
@@ -261,7 +268,11 @@ class GraphDataset(DGLDataset):
         self.dim_nfeats = k
         for g in self.graphs: 
             g.ndata['feat'] = torch.rand(g.num_nodes(), k).float().to(self.device)
-    
+    def add_random_walk(self, k):
+        self.dim_nfeats = k
+        for g in self.graphs:
+            g.ndata['feat'] = dgl.random_walk_pe(g, k)
+            
     def add_degree_feat(self, k):
         self.dim_nfeats = k
         for g in self.graphs:

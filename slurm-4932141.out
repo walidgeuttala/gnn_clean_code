@@ -1,0 +1,280 @@
+
+field : Social networks
+
+loss : 5212.7056 
+
+loss : 7535.2720 
+
+
+field : Networks with ground-truth communities
+
+loss : 769.9376 
+
+
+field : Internet peer-to-peer networks
+
+loss : 5320.6650 
+
+loss : 2486.9170 
+
+
+field : Collaboration networks
+
+loss : 500.4831 
+
+loss : 261.3594 
+loss : 1168.6335 
+loss : 1060.4978 
+loss : 281.3045 
+loss : 3683.4761 
+loss : 10.9342 
+loss : 6.7099 
+loss : 73.6786 
+loss : 29.6245 
+loss : 17.3496 
+loss : 42.3460 
+loss : 797.4991 
+loss : 627.7594 
+loss : 91.4150 
+loss : 66.7322 
+Done loading data from cached files.
+loss : 1062.9098 
+Done loading data from cached files.
+loss : 654.8431 
+                                            pred_y  ... num_edges
+model feat_type     network_name                    ...          
+gin   identity_feat facebook_combined  5212.705566  ...     88234
+                    wiki-Vote          7535.271973  ...    103689
+                    email-Eu-core       769.937561  ...     25571
+                    p2p-Gnutella04     5320.665039  ...     39994
+                    p2p-Gnutella08     2486.916992  ...     20777
+                    ca-GrQc             500.483124  ...     28980
+                    CSphd               261.359406  ...      3480
+                    YeastS             1168.633545  ...     13828
+                    geom               1060.497803  ...     23796
+                    netsience           281.304535  ...      5484
+                    Erdos02            3683.476074  ...     23700
+                    karate               10.934156  ...       156
+                    lesmis                6.709863  ...       508
+                    adjnoun              73.678589  ...       850
+                    football             29.624531  ...      1226
+                    dolphins             17.349625  ...       318
+                    polbooks             42.346039  ...       882
+                    hep-th              797.499084  ...     31502
+                    power               627.759399  ...     13188
+                    CLUSTERDataset       91.414978  ...      4104
+                    PATTERNDataset       66.732231  ...      4884
+                    TreeGridDataset    1062.909790  ...      1705
+                    TreeCycleDataset    654.843079  ...       966
+
+[23 rows x 4 columns]
+
+field : Social networks
+
+loss : 91.5494 
+
+loss : -33.2036 
+
+
+field : Networks with ground-truth communities
+
+loss : 16.9228 
+
+
+field : Internet peer-to-peer networks
+
+loss : -141.6978 
+
+loss : -120.0005 
+
+
+field : Collaboration networks
+
+loss : -117.7071 
+
+loss : 0.7789 
+loss : -68.1901 
+loss : -139.5178 
+loss : -22.4033 
+loss : 1058.1411 
+loss : 0.2992 
+loss : -1.1469 
+loss : -1.3566 
+loss : -4.7294 
+loss : -1.7355 
+loss : -1.8317 
+loss : -231.2903 
+loss : -43.3121 
+loss : 6.8559 
+loss : 4.5290 
+Done loading data from cached files.
+loss : -35.4273 
+Done loading data from cached files.
+loss : -37.5019 
+                                            pred_y  ... num_edges
+model feat_type     network_name                    ...          
+gin   identity_feat facebook_combined    91.549393  ...     88234
+                    wiki-Vote           -33.203613  ...    103689
+                    email-Eu-core        16.922791  ...     25571
+                    p2p-Gnutella04     -141.697815  ...     39994
+                    p2p-Gnutella08     -120.000488  ...     20777
+                    ca-GrQc            -117.707092  ...     28980
+                    CSphd                 0.778854  ...      3480
+                    YeastS              -68.190063  ...     13828
+                    geom               -139.517822  ...     23796
+                    netsience           -22.403267  ...      5484
+                    Erdos02            1058.141113  ...     23700
+                    karate                0.299178  ...       156
+                    lesmis               -1.146909  ...       508
+                    adjnoun              -1.356632  ...       850
+                    football             -4.729415  ...      1226
+                    dolphins             -1.735539  ...       318
+                    polbooks             -1.831728  ...       882
+                    hep-th             -231.290344  ...     31502
+                    power               -43.312057  ...     13188
+                    CLUSTERDataset        6.855905  ...      4104
+                    PATTERNDataset        4.528988  ...      4884
+                    TreeGridDataset     -35.427299  ...      1705
+                    TreeCycleDataset    -37.501888  ...       966
+
+[23 rows x 4 columns]
+
+field : Social networks
+
+loss : -205.0517 
+
+loss : -634.1779 
+
+
+field : Networks with ground-truth communities
+
+loss : -270.7429 
+
+
+field : Internet peer-to-peer networks
+
+loss : -1019.7176 
+
+loss : -644.6412 
+
+
+field : Collaboration networks
+
+loss : -2119.0034 
+
+loss : -273.0064 
+loss : -926.1399 
+loss : -2472.7046 
+loss : -219.8066 
+loss : -2260.9229 
+loss : -2.1825 
+loss : -24.3094 
+loss : -40.6522 
+loss : -26.6025 
+loss : -13.6012 
+loss : -27.9225 
+loss : -3046.1348 
+loss : -963.0077 
+loss : -10.4721 
+loss : -4.6206 
+Done loading data from cached files.
+loss : -101.3925 
+Done loading data from cached files.
+loss : -85.2981 
+                                            pred_y  ... num_edges
+model feat_type     network_name                    ...          
+gin   identity_feat facebook_combined  -205.051727  ...     88234
+                    wiki-Vote          -634.177856  ...    103689
+                    email-Eu-core      -270.742889  ...     25571
+                    p2p-Gnutella04    -1019.717590  ...     39994
+                    p2p-Gnutella08     -644.641174  ...     20777
+                    ca-GrQc           -2119.003418  ...     28980
+                    CSphd              -273.006378  ...      3480
+                    YeastS             -926.139893  ...     13828
+                    geom              -2472.704590  ...     23796
+                    netsience          -219.806610  ...      5484
+                    Erdos02           -2260.922852  ...     23700
+                    karate               -2.182479  ...       156
+                    lesmis              -24.309357  ...       508
+                    adjnoun             -40.652187  ...       850
+                    football            -26.602505  ...      1226
+                    dolphins            -13.601175  ...       318
+                    polbooks            -27.922474  ...       882
+                    hep-th            -3046.134766  ...     31502
+                    power              -963.007690  ...     13188
+                    CLUSTERDataset      -10.472070  ...      4104
+                    PATTERNDataset       -4.620643  ...      4884
+                    TreeGridDataset    -101.392548  ...      1705
+                    TreeCycleDataset    -85.298111  ...       966
+
+[23 rows x 4 columns]
+
+field : Social networks
+
+loss : 155.6155 
+
+loss : 209.4826 
+
+
+field : Networks with ground-truth communities
+
+loss : 34.2169 
+
+
+field : Internet peer-to-peer networks
+
+loss : 43.1050 
+
+loss : 213.2851 
+
+
+field : Collaboration networks
+
+loss : 1013.7792 
+
+loss : 619.9650 
+loss : 750.0283 
+loss : 1498.2909 
+loss : 301.5327 
+loss : 2362.8633 
+loss : 5.0747 
+loss : 8.4481 
+loss : 14.6231 
+loss : 4.2784 
+loss : 8.0825 
+loss : 18.8246 
+loss : 1745.2902 
+loss : 1146.9136 
+loss : 8.4629 
+loss : 5.6994 
+Done loading data from cached files.
+loss : 33.2649 
+Done loading data from cached files.
+loss : 20.2705 
+                                            pred_y  ... num_edges
+model feat_type     network_name                    ...          
+gin   identity_feat facebook_combined   155.615540  ...     88234
+                    wiki-Vote           209.482635  ...    103689
+                    email-Eu-core        34.216949  ...     25571
+                    p2p-Gnutella04       43.105000  ...     39994
+                    p2p-Gnutella08      213.285080  ...     20777
+                    ca-GrQc            1013.779236  ...     28980
+                    CSphd               619.965027  ...      3480
+                    YeastS              750.028259  ...     13828
+                    geom               1498.290894  ...     23796
+                    netsience           301.532715  ...      5484
+                    Erdos02            2362.863281  ...     23700
+                    karate                5.074727  ...       156
+                    lesmis                8.448112  ...       508
+                    adjnoun              14.623051  ...       850
+                    football              4.278395  ...      1226
+                    dolphins              8.082453  ...       318
+                    polbooks             18.824627  ...       882
+                    hep-th             1745.290161  ...     31502
+                    power              1146.913574  ...     13188
+                    CLUSTERDataset        8.462916  ...      4104
+                    PATTERNDataset        5.699359  ...      4884
+                    TreeGridDataset      33.264927  ...      1705
+                    TreeCycleDataset     20.270521  ...       966
+
+[23 rows x 4 columns]

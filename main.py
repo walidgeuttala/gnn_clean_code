@@ -32,7 +32,7 @@ def parse_args():
     parser.add_argument("--architecture",type=str,default="hierarchical",choices=["hierarchical", "global", "gat", "gin", "gine", "gatv2"],help="model architecture",)
     parser.add_argument("--data_type", type=str, default="regression", help="regression or classifcation")
     parser.add_argument("--label_type", type=str, default="original", choices=["original", "transitivity", "average_path", "density", "kurtosis"], help="choose")
-    parser.add_argument("--feat_type", type=str, default="ones_feat", choices=["ones_feat", "noise_feat", "degree_feat", "identity_feat", "norm_degree_feat"], help="ones_feat/noies_feat/degree_feat/identity_feat")
+    parser.add_argument("--feat_type", type=str, default="ones_feat", choices=["ones_feat", "noise_feat", "degree_feat", "identity_feat", "norm_degree_feat", 'random_walk'], help="ones_feat/noies_feat/degree_feat/identity_feat")
     parser.add_argument("--batch_size", type=int, default=100, help="Batch size")
     parser.add_argument("--lr", type=float, default=0.01, help="Learning rate")
     parser.add_argument("--weight_decay", type=float, default=0.0, help="Weight decay of the learning rate over epochs for the optimizer")
@@ -42,7 +42,7 @@ def parse_args():
     parser.add_argument("--epochs", type=int, default=100, help="Max number of training epochs")
     parser.add_argument("--patience", type=int, default=-1, help="Patience for early stopping, -1 for no stop")
     parser.add_argument("--num_layers", type=int, default=3, help="Number of conv layers")
-    parser.add_argument("--print_every", type=int, default=1, help="Print train log every k epochs, -1 for silent training")
+    parser.add_argument("--print_every", type=int, default=10, help="Print train log every k epochs, -1 for silent training")
     parser.add_argument("--num_trials", type=int, default=1, help="Number of trials")
     parser.add_argument("--k", type=int, default=4, help="For ID-GNN where control the depth of the generated ID features for helping detecting cycles of length k-1 or less")
     parser.add_argument("--multi_k", type=bool, default=False, help="multiple feature type for non identity feature True or False")
@@ -157,8 +157,8 @@ def main(args, seed, save=True):
     set_random_seed(seed)
     dataset = GraphDataset(device=args.device)
     dataset2 = GraphDataset(device=args.device)
-    dataset.load(args.dataset_path, args)
-    dataset2.load(args.test_dataset_path, args)
+    dataset.load2("MUTAG", args)
+    dataset2.load(args.dataset_path, args)
     
     getattr(dataset, f'add_{args.feat_type}')(args.k)
     getattr(dataset2, f'add_{args.feat_type}')(args.k)
@@ -229,7 +229,7 @@ def main(args, seed, save=True):
     else:
         test_acc, _ = test_classification(model, test_loader, args)
         test_acc2, _ = test_classification(model, test_loader2, args)
-    print(f"small_test : {test_acc}, medium_test {test_acc2}")
+    #print(f"small_test : {test_acc}, medium_test {test_acc2}")
     if save == True:
         if args.changer == 1:
             torch.save(model.state_dict(), '{}/last_second_model_weights_trail{}_{}_{}.pth'.format(args.output_path, seed, args.dataset, args.feat_type))
@@ -237,7 +237,7 @@ def main(args, seed, save=True):
             torch.save(model.state_dict(), '{}/last_model_weights_trail{}_{}_{}.pth'.format(args.output_path, seed, args.dataset, args.feat_type))
     else:
         torch.save(model.state_dict(), '{}grid_search/{}_{}_{}_{}.pth'.format(args.output_path, args.architecture, args.feat_type, args.num_layers, args.hidden_dim))
-   
+    
     return test_acc, test_acc2, sum(train_times) / len(train_times)
 
 if __name__ == "__main__":

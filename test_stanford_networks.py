@@ -112,7 +112,7 @@ def stanford_degree_dist_plots(result, draw = True):
     transitivity_density = []
     skewed = []
     from scipy.stats import skew
-    with open('links.txt', 'r') as file:
+    with open('../links.txt', 'r') as file:
         # Iterate over each line in the file
         f = 0
         for line in file:
@@ -282,8 +282,8 @@ def test_network_diff_nfeat(model, graph, name, args):
         softmax = torch.nn.Softmax(dim=1)
         #graph = dgl.add_self_loop(graph)
         graph = graph.to(args.device)
-        print(name + ' number of nodes is : ', graph.num_nodes())
-        print(name + ' number of edges is : ', graph.num_edges())
+        # print(name + ' number of nodes is : ', graph.num_nodes())
+        # print(name + ' number of edges is : ', graph.num_edges())
         
         if args.feat_type == 'ones_feat':
             graph.ndata['feat'] = torch.ones(graph.num_nodes(), 1).float().to(args.device)
@@ -299,12 +299,24 @@ def test_network_diff_nfeat(model, graph, name, args):
             graph.ndata['feat'] = degrees.repeat(1, 1)/(graph.number_of_nodes() - 1)
 
         logits = model(graph, args)
+        
+        real_name = name.split('/')[-1].split('.')[0]
+        
+        df = pd.read_csv('real_network.csv',)
+        if real_name in df['network_name'].values:
+            label = df[df['network_name'] == real_name][args.label_type].values.tolist()[0]
+        else:
+            label = None
+        
+        print("label : ",label)
         if args.data_type == "regression":
             result = logits
+            #print([[result[0], abs(result[0]-label)]])
+            ans.append([result[0].cpu().item(), label])
         else:
             result = softmax(logits)
-        ans.append(result[0])
-        print('{} {} : '.format(name, args.feat_type), end='')
+            ans.append(result[0])
+        #print('{} {} : '.format(name, args.feat_type), end='')
         if args.data_type == "regression":
             print('loss : {:.4f} '.format(result[0].item()), end='')
             print()
@@ -315,6 +327,7 @@ def test_network_diff_nfeat(model, graph, name, args):
     except Exception as e:
         print(f"An error occurred: {e}")
         ans = None
+    print(ans[0])
     return ans
 
 def radar_plot(ans, names, output_path, feat_type, param):
@@ -403,6 +416,7 @@ def test_networks(model, args, result, data_folder):
     # Open the file in read mode
     ans = []
     names = []
+    network_size = []
     with open('../data_folder/links.txt', 'r') as file:
         # Iterate over each line in the file
         f = 0
@@ -417,39 +431,46 @@ def test_networks(model, args, result, data_folder):
                     f = 0
                 else:
                     graph, name = download_Stanford_network(line[:-1], data_folder)
+                    network_size.append([graph.num_nodes(), graph.num_edges()])
                     value = test_network_diff_nfeat(model, graph, name, args)
                     if value != None:
-                        ans.append(value[0].tolist())
-                        names.append(name[:-7])
+                        ans.append(value[0])
+                        names.append(name.split('/')[-1][:-7])
                     print()
             torch.cuda.empty_cache()
 
     for file_path in result:
         graph, name = read_graph(file_path)
         graph = dgl.from_networkx(graph)
+        network_size.append([graph.num_nodes(), graph.num_edges()])
         value = test_network_diff_nfeat(model, graph, name, args)
         if value != None:
-            ans.append(value[0].tolist())
+            ans.append(value[0])
             names.append(name)
         torch.cuda.empty_cache()
 
     for list_name in list_names:
         graph = read_graph2(list_name)
         name = list_name[-1]
+        network_size.append([graph.num_nodes(), graph.num_edges()])
         value = test_network_diff_nfeat(model, graph, name, args)
         if value != None:
-            ans.append(value[0].tolist())
+            ans.append(value[0])
             names.append(name)
         torch.cuda.empty_cache() 
 
     index = [(args.architecture, args.feat_type, name) for name in names]
     index = pd.MultiIndex.from_tuples(index, names=['model', 'feat_type', 'network_name'])
+    list1, list2 = zip(*network_size)
+    
     if args.data_type == "regression":
-        df = pd.DataFrame(ans, columns=['Loss'], index=index)
+        df = pd.DataFrame(ans, columns=['pred_y', 'y'], index=index)
     else:
         df = pd.DataFrame(ans, columns=['Low', 'High'], index=index)
-    df.to_csv("{}/{}_stanford_output_testing.csv".format(args.output_path, args.feat_type), index=True)
-    
+    df['num_nodes'] = list1
+    df['num_edges'] = list2
+    df.to_csv("{}/{}_stanford_output_testing2.csv".format(args.output_path, args.feat_type), index=True)
+    print(df)
     #radar_plot(ans, names, args['output_path'], args['feat_type'], param)    
 
 def extract_name_from_string(input_string):

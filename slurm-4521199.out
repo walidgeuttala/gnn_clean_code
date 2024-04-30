@@ -1,0 +1,468 @@
+-------------------------------label_type : transitivity---------------------
+
+2-------------------------------feat_type : identity_feat---------------------
+
+
+2.1--------------------------------------------model name  : ['gin']---------------------
+
+
+2.1.1--------------------------------------------Grid_Search  : ['gin']---------------------
+/project/p_gnn001/code/gnn_clean_code/utils.py:153: UserWarning: std_mean(): degrees of freedom is <= 0. Correction should be strictly less than the reduction factor (input numel divided by output numel). (Triggered internally at /opt/conda/conda-bld/pytorch_1708025824022/work/aten/src/ATen/native/ReduceOps.cpp:1760.)
+  std, mean = torch.std_mean(array)
+Trial 1/1
+Epoch 10: loss=0.0018
+Epoch 20: loss=0.0003
+Epoch 30: loss=0.0002
+Epoch 40: loss=0.0001
+Epoch 50: loss=0.0001
+Epoch 60: loss=0.0001
+Epoch 70: loss=0.0001
+Epoch 80: loss=0.0001
+Epoch 90: loss=0.0001
+Epoch 100: loss=0.0001
+best trail model is : model_weights_trail0_dataset_identity_feat.pth
+test mean acc: 0.0000, error bound: nan
+
+
+2.1.2--------------------------------------------Train and Test  : ['gin']---------------------
+
+-------------------------------label_type : density---------------------
+
+2-------------------------------feat_type : identity_feat---------------------
+
+
+2.1--------------------------------------------model name  : ['gin']---------------------
+
+
+2.1.1--------------------------------------------Grid_Search  : ['gin']---------------------
+/project/p_gnn001/code/gnn_clean_code/utils.py:153: UserWarning: std_mean(): degrees of freedom is <= 0. Correction should be strictly less than the reduction factor (input numel divided by output numel). (Triggered internally at /opt/conda/conda-bld/pytorch_1708025824022/work/aten/src/ATen/native/ReduceOps.cpp:1760.)
+  std, mean = torch.std_mean(array)
+Trial 1/1
+Epoch 10: loss=1.4133
+Epoch 20: loss=0.5908
+Epoch 30: loss=0.3585
+Epoch 40: loss=0.2832
+Epoch 50: loss=0.2541
+Epoch 60: loss=0.2401
+Epoch 70: loss=0.2336
+Epoch 80: loss=0.2303
+Epoch 90: loss=0.2286
+Epoch 100: loss=0.2278
+best trail model is : model_weights_trail0_dataset_identity_feat.pth
+test mean acc: 0.0580, error bound: nan
+
+
+2.1.2--------------------------------------------Train and Test  : ['gin']---------------------
+
+-------------------------------label_type : kurtosis---------------------
+
+2-------------------------------feat_type : identity_feat---------------------
+
+
+2.1--------------------------------------------model name  : ['gin']---------------------
+
+
+2.1.1--------------------------------------------Grid_Search  : ['gin']---------------------
+/project/p_gnn001/code/gnn_clean_code/utils.py:153: UserWarning: std_mean(): degrees of freedom is <= 0. Correction should be strictly less than the reduction factor (input numel divided by output numel). (Triggered internally at /opt/conda/conda-bld/pytorch_1708025824022/work/aten/src/ATen/native/ReduceOps.cpp:1760.)
+  std, mean = torch.std_mean(array)
+Trial 1/1
+Epoch 10: loss=0.3103
+Epoch 20: loss=0.1126
+Epoch 30: loss=0.0803
+Epoch 40: loss=0.0717
+Epoch 50: loss=0.0683
+Epoch 60: loss=0.0666
+Epoch 70: loss=0.0658
+Epoch 80: loss=0.0653
+Epoch 90: loss=0.0651
+Epoch 100: loss=0.0650
+best trail model is : model_weights_trail0_dataset_identity_feat.pth
+test mean acc: 0.0439, error bound: nan
+
+
+2.1.2--------------------------------------------Train and Test  : ['gin']---------------------
+
+-------------------------------label_type : average_path---------------------
+
+2-------------------------------feat_type : identity_feat---------------------
+
+
+2.1--------------------------------------------model name  : ['gin']---------------------
+
+
+2.1.1--------------------------------------------Grid_Search  : ['gin']---------------------
+/project/p_gnn001/code/gnn_clean_code/utils.py:153: UserWarning: std_mean(): degrees of freedom is <= 0. Correction should be strictly less than the reduction factor (input numel divided by output numel). (Triggered internally at /opt/conda/conda-bld/pytorch_1708025824022/work/aten/src/ATen/native/ReduceOps.cpp:1760.)
+  std, mean = torch.std_mean(array)
+Trial 1/1
+Epoch 10: loss=6.1399
+Epoch 20: loss=3.7108
+Epoch 30: loss=2.7077
+Epoch 40: loss=2.2735
+Epoch 50: loss=2.0734
+Epoch 60: loss=1.9778
+Epoch 70: loss=1.9310
+Epoch 80: loss=1.9075
+Epoch 90: loss=1.8957
+Epoch 100: loss=1.8897
+best trail model is : model_weights_trail0_dataset_identity_feat.pth
+test mean acc: 0.3806, error bound: nan
+
+
+2.1.2--------------------------------------------Train and Test  : ['gin']---------------------
+
+
+field : Social networks
+
+../data_folder/facebook_combined.txt.gz number of nodes is :  4039
+../data_folder/facebook_combined.txt.gz number of edges is :  88234
+../data_folder/facebook_combined.txt.gz identity_feat : loss : 5212.7056 
+
+../data_folder/wiki-Vote.txt.gz number of nodes is :  7115
+../data_folder/wiki-Vote.txt.gz number of edges is :  103689
+../data_folder/wiki-Vote.txt.gz identity_feat : loss : 7535.2720 
+
+
+field : Networks with ground-truth communities
+
+../data_folder/email-Eu-core.txt.gz number of nodes is :  1005
+../data_folder/email-Eu-core.txt.gz number of edges is :  25571
+../data_folder/email-Eu-core.txt.gz identity_feat : loss : 769.9376 
+
+
+field : Internet peer-to-peer networks
+
+../data_folder/p2p-Gnutella04.txt.gz number of nodes is :  10876
+../data_folder/p2p-Gnutella04.txt.gz number of edges is :  39994
+../data_folder/p2p-Gnutella04.txt.gz identity_feat : loss : 5320.6650 
+
+../data_folder/p2p-Gnutella08.txt.gz number of nodes is :  6301
+../data_folder/p2p-Gnutella08.txt.gz number of edges is :  20777
+../data_folder/p2p-Gnutella08.txt.gz identity_feat : loss : 2486.9170 
+
+
+field : Collaboration networks
+
+../data_folder/ca-GrQc.txt.gz number of nodes is :  5242
+../data_folder/ca-GrQc.txt.gz number of edges is :  28980
+../data_folder/ca-GrQc.txt.gz identity_feat : loss : 500.4831 
+
+CSphd number of nodes is :  1882
+CSphd number of edges is :  3480
+CSphd identity_feat : loss : 261.3594 
+YeastS number of nodes is :  2361
+YeastS number of edges is :  13828
+YeastS identity_feat : loss : 1168.6335 
+geom number of nodes is :  7343
+geom number of edges is :  23796
+geom identity_feat : loss : 1060.4978 
+netsience number of nodes is :  1589
+netsience number of edges is :  5484
+netsience identity_feat : loss : 281.3045 
+Erdos02 number of nodes is :  6927
+Erdos02 number of edges is :  23700
+Erdos02 identity_feat : loss : 3683.4761 
+karate number of nodes is :  34
+karate number of edges is :  156
+karate identity_feat : loss : 10.9342 
+lesmis number of nodes is :  77
+lesmis number of edges is :  508
+lesmis identity_feat : loss : 6.7099 
+adjnoun number of nodes is :  112
+adjnoun number of edges is :  850
+adjnoun identity_feat : loss : 73.6786 
+football number of nodes is :  115
+football number of edges is :  1226
+football identity_feat : loss : 29.6245 
+dolphins number of nodes is :  62
+dolphins number of edges is :  318
+dolphins identity_feat : loss : 17.3496 
+polbooks number of nodes is :  105
+polbooks number of edges is :  882
+polbooks identity_feat : loss : 42.3460 
+hep-th number of nodes is :  8361
+hep-th number of edges is :  31502
+hep-th identity_feat : loss : 797.4991 
+power number of nodes is :  4941
+power number of edges is :  13188
+power identity_feat : loss : 627.7594 
+CLUSTERDataset number of nodes is :  117
+CLUSTERDataset number of edges is :  4104
+CLUSTERDataset identity_feat : loss : 91.4150 
+PATTERNDataset number of nodes is :  108
+PATTERNDataset number of edges is :  4884
+PATTERNDataset identity_feat : loss : 66.7322 
+Done loading data from cached files.
+TreeGridDataset number of nodes is :  1231
+TreeGridDataset number of edges is :  1705
+TreeGridDataset identity_feat : loss : 1062.9098 
+Done loading data from cached files.
+TreeCycleDataset number of nodes is :  871
+TreeCycleDataset number of edges is :  966
+TreeCycleDataset identity_feat : loss : 654.8431 
+
+field : Social networks
+
+../data_folder/facebook_combined.txt.gz number of nodes is :  4039
+../data_folder/facebook_combined.txt.gz number of edges is :  88234
+../data_folder/facebook_combined.txt.gz identity_feat : loss : 91.5494 
+
+../data_folder/wiki-Vote.txt.gz number of nodes is :  7115
+../data_folder/wiki-Vote.txt.gz number of edges is :  103689
+../data_folder/wiki-Vote.txt.gz identity_feat : loss : -33.2037 
+
+
+field : Networks with ground-truth communities
+
+../data_folder/email-Eu-core.txt.gz number of nodes is :  1005
+../data_folder/email-Eu-core.txt.gz number of edges is :  25571
+../data_folder/email-Eu-core.txt.gz identity_feat : loss : 16.9228 
+
+
+field : Internet peer-to-peer networks
+
+../data_folder/p2p-Gnutella04.txt.gz number of nodes is :  10876
+../data_folder/p2p-Gnutella04.txt.gz number of edges is :  39994
+../data_folder/p2p-Gnutella04.txt.gz identity_feat : loss : -141.6978 
+
+../data_folder/p2p-Gnutella08.txt.gz number of nodes is :  6301
+../data_folder/p2p-Gnutella08.txt.gz number of edges is :  20777
+../data_folder/p2p-Gnutella08.txt.gz identity_feat : loss : -120.0005 
+
+
+field : Collaboration networks
+
+../data_folder/ca-GrQc.txt.gz number of nodes is :  5242
+../data_folder/ca-GrQc.txt.gz number of edges is :  28980
+../data_folder/ca-GrQc.txt.gz identity_feat : loss : -117.7071 
+
+CSphd number of nodes is :  1882
+CSphd number of edges is :  3480
+CSphd identity_feat : loss : 0.7789 
+YeastS number of nodes is :  2361
+YeastS number of edges is :  13828
+YeastS identity_feat : loss : -68.1901 
+geom number of nodes is :  7343
+geom number of edges is :  23796
+geom identity_feat : loss : -139.5178 
+netsience number of nodes is :  1589
+netsience number of edges is :  5484
+netsience identity_feat : loss : -22.4033 
+Erdos02 number of nodes is :  6927
+Erdos02 number of edges is :  23700
+Erdos02 identity_feat : loss : 1058.1436 
+karate number of nodes is :  34
+karate number of edges is :  156
+karate identity_feat : loss : 0.2992 
+lesmis number of nodes is :  77
+lesmis number of edges is :  508
+lesmis identity_feat : loss : -1.1469 
+adjnoun number of nodes is :  112
+adjnoun number of edges is :  850
+adjnoun identity_feat : loss : -1.3566 
+football number of nodes is :  115
+football number of edges is :  1226
+football identity_feat : loss : -4.7294 
+dolphins number of nodes is :  62
+dolphins number of edges is :  318
+dolphins identity_feat : loss : -1.7355 
+polbooks number of nodes is :  105
+polbooks number of edges is :  882
+polbooks identity_feat : loss : -1.8317 
+hep-th number of nodes is :  8361
+hep-th number of edges is :  31502
+hep-th identity_feat : loss : -231.2903 
+power number of nodes is :  4941
+power number of edges is :  13188
+power identity_feat : loss : -43.3121 
+CLUSTERDataset number of nodes is :  117
+CLUSTERDataset number of edges is :  4104
+CLUSTERDataset identity_feat : loss : 6.8559 
+PATTERNDataset number of nodes is :  108
+PATTERNDataset number of edges is :  4884
+PATTERNDataset identity_feat : loss : 4.5290 
+Done loading data from cached files.
+TreeGridDataset number of nodes is :  1231
+TreeGridDataset number of edges is :  1705
+TreeGridDataset identity_feat : loss : -35.4273 
+Done loading data from cached files.
+TreeCycleDataset number of nodes is :  871
+TreeCycleDataset number of edges is :  966
+TreeCycleDataset identity_feat : loss : -37.5019 
+
+field : Social networks
+
+../data_folder/facebook_combined.txt.gz number of nodes is :  4039
+../data_folder/facebook_combined.txt.gz number of edges is :  88234
+../data_folder/facebook_combined.txt.gz identity_feat : loss : -205.0517 
+
+../data_folder/wiki-Vote.txt.gz number of nodes is :  7115
+../data_folder/wiki-Vote.txt.gz number of edges is :  103689
+../data_folder/wiki-Vote.txt.gz identity_feat : loss : -634.1785 
+
+
+field : Networks with ground-truth communities
+
+../data_folder/email-Eu-core.txt.gz number of nodes is :  1005
+../data_folder/email-Eu-core.txt.gz number of edges is :  25571
+../data_folder/email-Eu-core.txt.gz identity_feat : loss : -270.7429 
+
+
+field : Internet peer-to-peer networks
+
+../data_folder/p2p-Gnutella04.txt.gz number of nodes is :  10876
+../data_folder/p2p-Gnutella04.txt.gz number of edges is :  39994
+../data_folder/p2p-Gnutella04.txt.gz identity_feat : loss : -1019.7176 
+
+../data_folder/p2p-Gnutella08.txt.gz number of nodes is :  6301
+../data_folder/p2p-Gnutella08.txt.gz number of edges is :  20777
+../data_folder/p2p-Gnutella08.txt.gz identity_feat : loss : -644.6412 
+
+
+field : Collaboration networks
+
+../data_folder/ca-GrQc.txt.gz number of nodes is :  5242
+../data_folder/ca-GrQc.txt.gz number of edges is :  28980
+../data_folder/ca-GrQc.txt.gz identity_feat : loss : -2119.0034 
+
+CSphd number of nodes is :  1882
+CSphd number of edges is :  3480
+CSphd identity_feat : loss : -273.0064 
+YeastS number of nodes is :  2361
+YeastS number of edges is :  13828
+YeastS identity_feat : loss : -926.1399 
+geom number of nodes is :  7343
+geom number of edges is :  23796
+geom identity_feat : loss : -2472.7046 
+netsience number of nodes is :  1589
+netsience number of edges is :  5484
+netsience identity_feat : loss : -219.8066 
+Erdos02 number of nodes is :  6927
+Erdos02 number of edges is :  23700
+Erdos02 identity_feat : loss : -2260.9229 
+karate number of nodes is :  34
+karate number of edges is :  156
+karate identity_feat : loss : -2.1825 
+lesmis number of nodes is :  77
+lesmis number of edges is :  508
+lesmis identity_feat : loss : -24.3094 
+adjnoun number of nodes is :  112
+adjnoun number of edges is :  850
+adjnoun identity_feat : loss : -40.6522 
+football number of nodes is :  115
+football number of edges is :  1226
+football identity_feat : loss : -26.6025 
+dolphins number of nodes is :  62
+dolphins number of edges is :  318
+dolphins identity_feat : loss : -13.6012 
+polbooks number of nodes is :  105
+polbooks number of edges is :  882
+polbooks identity_feat : loss : -27.9225 
+hep-th number of nodes is :  8361
+hep-th number of edges is :  31502
+hep-th identity_feat : loss : -3046.1348 
+power number of nodes is :  4941
+power number of edges is :  13188
+power identity_feat : loss : -963.0077 
+CLUSTERDataset number of nodes is :  117
+CLUSTERDataset number of edges is :  4104
+CLUSTERDataset identity_feat : loss : -10.4721 
+PATTERNDataset number of nodes is :  108
+PATTERNDataset number of edges is :  4884
+PATTERNDataset identity_feat : loss : -4.6206 
+Done loading data from cached files.
+TreeGridDataset number of nodes is :  1231
+TreeGridDataset number of edges is :  1705
+TreeGridDataset identity_feat : loss : -101.3925 
+Done loading data from cached files.
+TreeCycleDataset number of nodes is :  871
+TreeCycleDataset number of edges is :  966
+TreeCycleDataset identity_feat : loss : -85.2981 
+
+field : Social networks
+
+../data_folder/facebook_combined.txt.gz number of nodes is :  4039
+../data_folder/facebook_combined.txt.gz number of edges is :  88234
+../data_folder/facebook_combined.txt.gz identity_feat : loss : 155.6155 
+
+../data_folder/wiki-Vote.txt.gz number of nodes is :  7115
+../data_folder/wiki-Vote.txt.gz number of edges is :  103689
+../data_folder/wiki-Vote.txt.gz identity_feat : loss : 209.4826 
+
+
+field : Networks with ground-truth communities
+
+../data_folder/email-Eu-core.txt.gz number of nodes is :  1005
+../data_folder/email-Eu-core.txt.gz number of edges is :  25571
+../data_folder/email-Eu-core.txt.gz identity_feat : loss : 34.2170 
+
+
+field : Internet peer-to-peer networks
+
+../data_folder/p2p-Gnutella04.txt.gz number of nodes is :  10876
+../data_folder/p2p-Gnutella04.txt.gz number of edges is :  39994
+../data_folder/p2p-Gnutella04.txt.gz identity_feat : loss : 43.1050 
+
+../data_folder/p2p-Gnutella08.txt.gz number of nodes is :  6301
+../data_folder/p2p-Gnutella08.txt.gz number of edges is :  20777
+../data_folder/p2p-Gnutella08.txt.gz identity_feat : loss : 213.2851 
+
+
+field : Collaboration networks
+
+../data_folder/ca-GrQc.txt.gz number of nodes is :  5242
+../data_folder/ca-GrQc.txt.gz number of edges is :  28980
+../data_folder/ca-GrQc.txt.gz identity_feat : loss : 1013.7792 
+
+CSphd number of nodes is :  1882
+CSphd number of edges is :  3480
+CSphd identity_feat : loss : 619.9650 
+YeastS number of nodes is :  2361
+YeastS number of edges is :  13828
+YeastS identity_feat : loss : 750.0283 
+geom number of nodes is :  7343
+geom number of edges is :  23796
+geom identity_feat : loss : 1498.2909 
+netsience number of nodes is :  1589
+netsience number of edges is :  5484
+netsience identity_feat : loss : 301.5327 
+Erdos02 number of nodes is :  6927
+Erdos02 number of edges is :  23700
+Erdos02 identity_feat : loss : 2362.8635 
+karate number of nodes is :  34
+karate number of edges is :  156
+karate identity_feat : loss : 5.0747 
+lesmis number of nodes is :  77
+lesmis number of edges is :  508
+lesmis identity_feat : loss : 8.4481 
+adjnoun number of nodes is :  112
+adjnoun number of edges is :  850
+adjnoun identity_feat : loss : 14.6231 
+football number of nodes is :  115
+football number of edges is :  1226
+football identity_feat : loss : 4.2784 
+dolphins number of nodes is :  62
+dolphins number of edges is :  318
+dolphins identity_feat : loss : 8.0825 
+polbooks number of nodes is :  105
+polbooks number of edges is :  882
+polbooks identity_feat : loss : 18.8246 
+hep-th number of nodes is :  8361
+hep-th number of edges is :  31502
+hep-th identity_feat : loss : 1745.2902 
+power number of nodes is :  4941
+power number of edges is :  13188
+power identity_feat : loss : 1146.9136 
+CLUSTERDataset number of nodes is :  117
+CLUSTERDataset number of edges is :  4104
+CLUSTERDataset identity_feat : loss : 8.4629 
+PATTERNDataset number of nodes is :  108
+PATTERNDataset number of edges is :  4884
+PATTERNDataset identity_feat : loss : 5.6994 
+Done loading data from cached files.
+TreeGridDataset number of nodes is :  1231
+TreeGridDataset number of edges is :  1705
+TreeGridDataset identity_feat : loss : 33.2649 
+Done loading data from cached files.
+TreeCycleDataset number of nodes is :  871
+TreeCycleDataset number of edges is :  966
+TreeCycleDataset identity_feat : loss : 20.2705 

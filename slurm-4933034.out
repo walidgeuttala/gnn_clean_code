@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/project/p_gnn001/code/gnn_clean_code/merge_real_networks.py", line 20, in <module>
+    df['Loss'] = pd.abs(df['y']-df['pred_y'])
+                 ^^^^^^
+AttributeError: module 'pandas' has no attribute 'abs'

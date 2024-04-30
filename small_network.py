@@ -26,33 +26,33 @@ def extract_float_values(input_string):
         print("Pattern not found in the string.")
         return None
 
-length = 6
-#label_types = ['transitivity', 'average_path', 'density', 'kurtosis']
+length = 1
+label_types = ['transitivity', 'average_path', 'density', 'kurtosis']
+for current_path in label_types:
+    current_path = f'../gnn_outputs/{current_path}/'
+    #keys = ['architecture', 'hidden_dim', 'num_layers', 'feat_type', 'train_loss', 'train_loss_error', 'train_acc', 'train_acc_error', 'valid_acc', 'valid_acc_error', 'test_acc', 'test_acc_error']
+    keys = ['architecture', 'hidden_dim', 'num_layers', 'feat_type', 'small_test_acc', 'medium_test_acc']
+    df = []
+    for i in range(1, length+1):
+        args_path = [f for f in os.listdir(current_path+'output{}/'.format(i)) if f.startswith('Data_dataset')][0]
+        with open(current_path+'output{}/'.format(i)+args_path) as f:
+            data = json.load(f)
+        #print(data['result'][0])
+        #results = np.array(data['results'])
+        #ans = np.ones(results.shape[1]*2)
+        results = extract_float_values(data['result'])
+        results = data['results']
+        mean_results1 = np.mean(np.array(results[0]))
+        mean_results2 = np.mean(np.array(results[1]))
+        #var_results = np.var(results, axis=0)
+        #ans[::2] = mean_results
+        #ans[1::2] = var_results
+        values = [data['hyper-parameters']['architecture'], data['hyper-parameters']['hidden_dim'], data['hyper-parameters']['num_layers'], data['hyper-parameters']['feat_type']]+[mean_results1, mean_results2]
+        
+        my_dict = {keys[i]: values[i] for i in range(len(keys))}
+        df.append(my_dict)
 
-current_path = '../gnn_outputs/density_new_gatv2/'
-#keys = ['architecture', 'hidden_dim', 'num_layers', 'feat_type', 'train_loss', 'train_loss_error', 'train_acc', 'train_acc_error', 'valid_acc', 'valid_acc_error', 'test_acc', 'test_acc_error']
-keys = ['architecture', 'hidden_dim', 'num_layers', 'feat_type', 'small_test_acc', 'medium_test_acc']
-df = []
-for i in range(1, length):
-    args_path = [f for f in os.listdir(current_path+'output{}/'.format(i)) if f.startswith('Data_dataset')][0]
-    with open(current_path+'output{}/'.format(i)+args_path) as f:
-        data = json.load(f)
-    #print(data['result'][0])
-    #results = np.array(data['results'])
-    #ans = np.ones(results.shape[1]*2)
-    results = extract_float_values(data['result'])
-    results = data['results']
-    mean_results1 = np.mean(np.array(results[0]))
-    mean_results2 = np.mean(np.array(results[1]))
-    #var_results = np.var(results, axis=0)
-    #ans[::2] = mean_results
-    #ans[1::2] = var_results
-    values = [data['hyper-parameters']['architecture'], data['hyper-parameters']['hidden_dim'], data['hyper-parameters']['num_layers'], data['hyper-parameters']['feat_type']]+[mean_results1, mean_results2]
-    
-    my_dict = {keys[i]: values[i] for i in range(len(keys))}
-    df.append(my_dict)
+    df = pd.DataFrame(df)
+    df.to_csv('test_resutls_small_networks.csv')
 
-df = pd.DataFrame(df)
-df.to_csv('test_resutls_small_networks.csv')
-
-print(df)
+    print(df)

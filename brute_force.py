@@ -7,7 +7,7 @@ import re
 feat_types = ['ones_feat', 'noise_feat', 'degree_feat', 'norm_degree_feat', 'identity_feat']
 save_last_epoch_hidden_output = False
 
-num_trials = 5
+num_trials = 1
 epochs = 100
 epoch_search = 50
 cnt = 0
@@ -28,11 +28,11 @@ models = ['gin', 'global', 'hierarchical', 'gatv2']
 label_types = ['transitivity', 'average_path', 'density', 'kurtosis']
 search_space = {
     "architecture": ['gin'],
-    "hidden_dim": [4, 8, 16, 32, 64],
+    "hidden_dim": [32, 64],
     "lr": [1e-2],
-    "num_layers":[3, 4],
+    "num_layers":[1, 2],
     "weight_decay": [1e-3],
-    "k": [32]
+    "k": [4],
 }
 
 num_trials = 1
@@ -40,15 +40,15 @@ device = 'cuda'
 epochs = 100
 epoch_search = 1
 feat_types = ['identity_feat']
-models = ['gine']
-label_types = ['average_path']
+models = ['gin']
+label_types = ['transitivity', 'density', 'kurtosis', 'average_path']
 search_space = {
-    "architecture": ['gine'],
-    "hidden_dim": [32],
+    "architecture": ['gin'],
+    "hidden_dim": [8],
     "lr": [1e-2],
     "num_layers":[1],
     "weight_decay": [1e-3],
-    "k": [32]
+    "k": [4]
 }
 
 for label_type in label_types:

@@ -1,0 +1,37 @@
+Downloading /home/p_gnngw/.dgl/MUTAG.zip from https://www.chrsmrrs.com/graphkerneldatasets/MUTAG.zip...
+/home/p_gnngw/.dgl/MUTAG.zip:   0%|          | 0.00/24.6k [00:00<?, ?B/s]/home/p_gnngw/.dgl/MUTAG.zip: 100%|██████████| 24.6k/24.6k [00:00<00:00, 16.6MB/s]
+/project/p_gnn001/code/gnn_clean_code/test_stat0.py:92: RuntimeWarning: Precision loss occurred in moment calculation due to catastrophic cancellation. This occurs when the data are nearly identical. Results may be unreliable.
+  kurtosis_value = kurtosis(list(degree_distribution.values()))
+Extracting file to /home/p_gnngw/.dgl/MUTAG_47395044
+tensor(0)
+tensor(0)
+tensor(0)
+tensor(0)
+tensor(0)
+tensor(0)
+tensor(0)
+tensor(0)
+Downloading /home/p_gnngw/.dgl/COLLAB.zip from https://www.chrsmrrs.com/graphkerneldatasets/COLLAB.zip...
+/home/p_gnngw/.dgl/COLLAB.zip:   0%|          | 0.00/74.4M [00:00<?, ?B/s]/home/p_gnngw/.dgl/COLLAB.zip:   1%|          | 442k/74.4M [00:00<00:16, 4.38MB/s]/home/p_gnngw/.dgl/COLLAB.zip:   8%|▊         | 5.80M/74.4M [00:00<00:02, 33.2MB/s]/home/p_gnngw/.dgl/COLLAB.zip:  17%|█▋        | 12.9M/74.4M [00:00<00:01, 50.3MB/s]/home/p_gnngw/.dgl/COLLAB.zip:  27%|██▋       | 20.0M/74.4M [00:00<00:00, 58.4MB/s]/home/p_gnngw/.dgl/COLLAB.zip:  36%|███▋      | 27.1M/74.4M [00:00<00:00, 62.8MB/s]/home/p_gnngw/.dgl/COLLAB.zip:  46%|████▌     | 34.3M/74.4M [00:00<00:00, 65.7MB/s]/home/p_gnngw/.dgl/COLLAB.zip:  56%|█████▌    | 41.4M/74.4M [00:00<00:00, 67.3MB/s]/home/p_gnngw/.dgl/COLLAB.zip:  65%|██████▌   | 48.6M/74.4M [00:00<00:00, 68.8MB/s]/home/p_gnngw/.dgl/COLLAB.zip:  75%|███████▍  | 55.6M/74.4M [00:00<00:00, 69.1MB/s]/home/p_gnngw/.dgl/COLLAB.zip:  84%|████████▍ | 62.7M/74.4M [00:01<00:00, 70.0MB/s]/home/p_gnngw/.dgl/COLLAB.zip:  94%|█████████▎| 69.7M/74.4M [00:01<00:00, 69.8MB/s]/home/p_gnngw/.dgl/COLLAB.zip: 100%|██████████| 74.4M/74.4M [00:01<00:00, 63.5MB/s]
+Extracting file to /home/p_gnngw/.dgl/COLLAB_aadc9419
+tensor(0)
+tensor(0)
+tensor(0)
+tensor(0)
+tensor(0)
+tensor(0)
+tensor(0)
+tensor(0)
+Downloading /home/p_gnngw/.dgl/ENZYMES.zip from https://www.chrsmrrs.com/graphkerneldatasets/ENZYMES.zip...
+/home/p_gnngw/.dgl/ENZYMES.zip:   0%|          | 0.00/537k [00:00<?, ?B/s]/home/p_gnngw/.dgl/ENZYMES.zip:  79%|███████▉  | 426k/537k [00:00<00:00, 4.23MB/s]/home/p_gnngw/.dgl/ENZYMES.zip: 100%|██████████| 537k/537k [00:00<00:00, 4.97MB/s]
+/project/p_gnn001/code/gnn_clean_code/test_stat0.py:92: RuntimeWarning: Precision loss occurred in moment calculation due to catastrophic cancellation. This occurs when the data are nearly identical. Results may be unreliable.
+  kurtosis_value = kurtosis(list(degree_distribution.values()))
+Extracting file to /home/p_gnngw/.dgl/ENZYMES_67bfdeff
+tensor(0)
+tensor(0)
+tensor(0)
+tensor(0)
+tensor(0)
+tensor(0)
+tensor(0)
+tensor(0)
