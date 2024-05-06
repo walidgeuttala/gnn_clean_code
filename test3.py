@@ -2,14 +2,18 @@ import pandas as pd
 import torch 
 import numpy as np
 
+
+
+idx_label_prorptie = 8
+prorptie_idx = 3
 properties = ['average_path', "transitivity", 'kurtosis', 'density']
 data_names = ['MUTAG', 'ENZYMES', 'DD', 'COLLAB']
 # self.data_types = ['classification', 'regression']
 
-y = torch.load(f"../data_folder/dgl_graph_labels/{data_names[0]}_properties_labels.pt")[8]
+y = torch.load(f"../data_folder/dgl_graph_labels/{data_names[0]}_properties_labels.pt")[idx_label_prorptie]
 print(y)
 df = pd.read_csv('real_network.csv', index_col=0)
-df1 = df[[properties[3]]]
+df1 = df[[properties[prorptie_idx]]]
 print(df)
 print(df1)
 
@@ -35,7 +39,7 @@ plt.ylabel('Frequency')
 plt.title('Histogram with Overlayed Points')
 
 # Save the plot
-plt.savefig('dist.png')
+plt.savefig(f'dist_{properties[prorptie_idx]}.png')
 
 # Show plot
 plt.show()

@@ -24,4 +24,5 @@
 #CUBLAS_WORKSPACE_CONFIG=:4096:8 python exp_real_networks.py
 #CUBLAS_WORKSPACE_CONFIG=:4096:8 python exp_real_networks.py
 #python dataset_analysis.py
-CUBLAS_WORKSPACE_CONFIG=:4096:8 python exp_real_networks.py
+#CUBLAS_WORKSPACE_CONFIG=:4096:8 python exp_real_networks.py
+python test3.py

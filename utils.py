@@ -349,7 +349,7 @@ def calculate_avg_shortest_path(graph):
     # Create a mask for lower half with diag (above the diagonal)
     mask = torch.triu(torch.ones(rows, cols, dtype=torch.uint8), diagonal=1)
     # Calculate the sum of elements in the upper half
-    #mask[matrix == 0] = 0
+    mask[matrix == -1] = 0
     sum_upper_half = torch.sum(matrix * mask)
     # Calculate the number of elements in the upper half
     count = torch.sum(mask)

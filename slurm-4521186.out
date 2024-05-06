@@ -1,7 +1,0 @@
-Done loading data from cached files.
-Done loading data from cached files.
-Traceback (most recent call last):
-  File "/project/p_gnn001/code/gnn_clean_code/test_stat0.py", line 264, in <module>
-    arr2.to_csv('real_network.csv')    
-    ^^^^^^^^^^^
-AttributeError: 'numpy.ndarray' object has no attribute 'to_csv'
