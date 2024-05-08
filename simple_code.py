@@ -8,9 +8,8 @@ import torch.nn as F
 from torch.utils.data import random_split
 from dgl.dataloading import GraphDataLoader
 
-from network import get_network
-from utils import set_random_seed, GraphFeatureNormalizer
-
+import random
+import numpy as np
 import os
 import torch
 import dgl 
@@ -18,6 +17,63 @@ from dgl.data import DGLDataset
 from dgl import load_graphs
 from dgl.data.utils import load_info
 from identity import compute_identity
+from dgl.nn import AvgPooling, GINConv
+from torch.nn.functional import relu
+
+class GraphFeatureNormalizer:
+    def __init__(self):
+        self.mean = None
+        self.std = None
+
+    def fit_transform(self, graph_loader):
+        # Concatenate all node features into a single tensor
+        all_feats = torch.cat([graph.ndata['feat'] for graph, _ in graph_loader], dim=0)
+        
+        # Compute mean and standard deviation
+        self.mean = torch.mean(all_feats, dim=0)
+        self.std = torch.std(all_feats, dim=0)
+        
+        # Normalize all node features across all graphs
+        for graph, _ in graph_loader:
+            graph.ndata['feat'] = (graph.ndata['feat'] - self.mean) / self.std
+
+    def transform(self, graph_loader):
+        # Check if the mean and std have been computed
+        if self.mean is None or self.std is None:
+            raise ValueError("Mean and std have not been computed. Please fit the normalizer first.")
+        
+        # Transform the node features of test data using the computed mean and std
+        for graph, _ in graph_loader:
+            graph.ndata['feat'] = (graph.ndata['feat'] - self.mean) / self.std
+
+def set_random_seed(seed=0):
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed(seed)
+        torch.cuda.manual_seed_all(seed)
+        torch.backends.cudnn.deterministic = True
+        torch.backends.cudnn.benchmark = False
+    dgl.random.seed(seed)
+    torch.use_deterministic_algorithms(True)
+
+device = "cuda"
+dataset_path  = "../data_folder/data"
+k = 1
+feat_type = "degree_feat"
+batch_size = 100
+optimizer_name = "Adam"
+lr = 0.01
+weight_decay = 0.0
+epochs = 100
+hidden_dim = 8
+num_layers = 2
+loss_name = "MSELoss"
+
+
+
+
 
 # create a DGLDataset for our graphs and labels
 class GraphDataset(DGLDataset):
@@ -56,9 +112,6 @@ class GraphDataset(DGLDataset):
         tuple: a tuple containing the graph and label at the specified index
         '''
         return self.graphs[idx], self.labels[idx]
-
-    def statistics(self):
-        return self.dim_nfeats, self.gclasses, self.device
 
     def load(self, data_path):
         '''
@@ -115,11 +168,7 @@ class GraphDataset(DGLDataset):
         # started from 1 as the first labels is the original label
         self.labels = torch.load(file_path)
         self.labels = self.labels[-1].view(-1, 1).float()
-        print("check the match ")
-        print(self.labels[-10])
-        for i in range(10):
-            print(self.graphs[i].in_degrees().float().mean().item())
-        print('end')
+        
 
     def add_ones_feat(self, k):
         self.dim_nfeats = k
@@ -207,18 +256,18 @@ class GIN(nn.Module):
         return  pooled_h
 
 
-def train(model: torch.nn.Module, optimizer, trainloader, args):
+def train(model: torch.nn.Module, optimizer, trainloader):
     model.train()
     total_loss = 0.0
     num_graphs = 0
     
-    loss_func = getattr(F, args.loss_name)(reduction="sum")
+    loss_func = getattr(F, loss_name)(reduction="sum")
     for batch in trainloader:
         optimizer.zero_grad()
         batch_graphs, batch_labels = batch
-        num_graphs += args.batch_size
+        num_graphs += batch_size
     
-        out = model(batch_graphs, args)
+        out = model(batch_graphs)
         loss = loss_func(out, batch_labels)
         loss.backward()
         optimizer.step()
@@ -227,30 +276,21 @@ def train(model: torch.nn.Module, optimizer, trainloader, args):
     return total_loss / num_graphs
 
 @torch.no_grad()
-def test_regression(model: torch.nn.Module, loader, args):
+def test_regression(model: torch.nn.Module, loader):
     model.eval()
     loss = 0.0
     num_graphs = 0
-    loss_func = getattr(F, args.loss_name)(reduction="sum")
+    loss_func = getattr(F, loss_name)(reduction="sum")
     for batch in loader:
         batch_graphs, batch_labels = batch
-        num_graphs += args.batch_size
-        out = model(batch_graphs, args)
+        num_graphs += batch_size
+        out = model(batch_graphs)
         loss += loss_func(out, batch_labels).item()
-        args.current_batch += 1
 
     return loss / num_graphs
 
-def main(seed):
-    device = "cuda"
-    dataset_path  = ""
-    k = 1
-    feat_type = ""
-    batch_size = 100
-    optimizer_name = ""
-    lr = 1
-    weight_decay = ""
-    epochs = 100
+def main(seed=1):
+    
     # Step 1: Prepare graph data and retrieve train/validation/test index ============================= #
     set_random_seed(seed)
     dataset = GraphDataset(device=device)
@@ -276,10 +316,7 @@ def main(seed):
     normalizer.transform(test_loader2)
     
     # Step 2: Create model =================================================================== #
-    num_feature, num_classes, _ = dataset.statistics()
-    hidden_dim = 8
-    num_layers = 2
-
+    num_feature, num_classes = k, 1
     set_random_seed(seed)
     
     model = GIN(
@@ -299,7 +336,7 @@ def main(seed):
     train_times = []
     for e in range(epochs):
         s_time = time()
-        train_loss = train(model, optimizer, train_loader, args)
+        train_loss = train(model, optimizer, train_loader)
         scheduler.step()
         train_times.append(time() - s_time)
 
@@ -307,12 +344,13 @@ def main(seed):
             log_format = ("Epoch {}: loss={:.4f}")
             print(log_format.format(e + 1, train_loss))
    
-    test_acc = test_regression(model, test_loader, args)
-    test_acc2 = test_regression(model, test_loader2, args)
+    test_acc = test_regression(model, test_loader)
+    test_acc2 = test_regression(model, test_loader2)
 
     print(f"small_test : {test_acc}, medium_test {test_acc2}")
    
     return test_acc, test_acc2, sum(train_times) / len(train_times)
 
 if __name__ == "__main__":
+    
     main()

@@ -1,0 +1,33 @@
+check the match 
+tensor([2.0909])
+2.2352941036224365
+2.153846263885498
+2.153846263885498
+2.3157894611358643
+2.0
+2.2142856121063232
+2.125
+2.200000047683716
+2.1666667461395264
+2.2352941036224365
+end
+check the match 
+tensor([8.])
+3.9886362552642822
+4.081751823425293
+4.103846073150635
+4.398876190185547
+3.994736909866333
+4.174736976623535
+3.918518543243408
+4.111111164093018
+4.064690113067627
+4.094972133636475
+end
+Traceback (most recent call last):
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code.py", line 360, in <module>
+    main()
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code.py", line 343, in main
+    train_loss = train(model, optimizer, train_loader)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: train() missing 1 required positional argument: 'args'

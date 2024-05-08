@@ -1,0 +1,11 @@
+Epoch 10: loss=3.4203
+Epoch 20: loss=3.0769
+Epoch 30: loss=2.9111
+Epoch 40: loss=2.8211
+Epoch 50: loss=2.7690
+Epoch 60: loss=2.7466
+Epoch 70: loss=2.7357
+Epoch 80: loss=2.7303
+Epoch 90: loss=2.7276
+Epoch 100: loss=2.7263
+small_test : 0.615542106628418, medium_test 41.52898596191406

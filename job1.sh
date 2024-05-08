@@ -15,7 +15,7 @@
 #python run_hidden_dim.py  i     # Replace with your Python script or command
 #python test_stat0.py
 #python node_analysis_cal_plot.py
-CUBLAS_WORKSPACE_CONFIG=:4096:8 python brute_force.py
+CUBLAS_WORKSPACE_CONFIG=:4096:8 python simple_code.py
 #python node_analysis_cal_plot.py
 #CUBLAS_WORKSPACE_CONFIG=:4096:8 python test_gpu.py 
 #python generate_weights.py

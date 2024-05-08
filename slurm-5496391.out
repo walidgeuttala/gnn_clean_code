@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code.py", line 11, in <module>
+    from network import get_network
+  File "/project/p_gnn001/code/gnn_clean_code/network.py", line 14, in <module>
+    from layer import ConvPoolBlock, SAGPool
+  File "/project/p_gnn001/code/gnn_clean_code/layer.py", line 5, in <module>
+    from utils import get_batch_id, topk
+  File "/project/p_gnn001/code/gnn_clean_code/utils.py", line 3, in <module>
+    import matplotlib.pyplot as plt
+ModuleNotFoundError: No module named 'matplotlib'
