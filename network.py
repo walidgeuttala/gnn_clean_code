@@ -10,7 +10,7 @@ from dgl.nn import AvgPooling, MaxPooling
 from dgl.nn.pytorch.glob import SumPooling
 from dgl.nn.pytorch.conv import GINConv, GraphConv, GINEConv
 from dgl.nn import GATv2Conv
-
+from torch.nn.functional import relu
 from layer import ConvPoolBlock, SAGPool
 from utils import repeat_last_dim
 import h5py
@@ -359,55 +359,39 @@ class GIN(nn.Module):
         for layer in range(num_layers):  # excluding the input layer
             if layer == 0:
                 mlp = MLP(in_dim, hidden_dim, hidden_dim)
+            elif layer == num_layers-1:
+                mlp = MLP(hidden_dim, hidden_dim, out_dim)
             else:
                 mlp = MLP(hidden_dim, hidden_dim, hidden_dim)
             self.ginlayers.append(
-                GINConv(mlp, learn_eps=False)
+                GINConv(mlp, learn_eps=True, activation=relu)
             )  # set to True if learning epsilon
-            self.batch_norms.append(nn.BatchNorm1d(hidden_dim))
-
-        mlp = MLP(hidden_dim, hidden_dim, 1)
-        self.ginlayers.append(
-                GINConv(mlp, learn_eps=False)
-            )  # set to True if learning epsilon
-        self.batch_norms.append(nn.BatchNorm1d(1))
-            #if layer == 0:
-            #    print(mlp.linears[0].weight)
-        # linear functions for graph sum poolings of output of each layer
-        self.linear_prediction = nn.ModuleList()
-        for layer in range(num_layers+1):
-            if layer == 0:
-                self.linear_prediction.append(nn.Linear(in_dim, hidden_dim))
+            if layer != num_layers-1:
+                self.batch_norms.append(nn.BatchNorm1d(hidden_dim))
             else:
-                self.linear_prediction.append(nn.Linear(hidden_dim, hidden_dim))
-        self.linear_prediction.append(nn.Linear(1, hidden_dim))
-        self.drop = nn.Dropout(dropout)
-        self.mlp = MLP(hidden_dim, hidden_dim, out_dim)
+                self.batch_norms.append(nn.BatchNorm1d(out_dim))
+
+        self.mlp = MLP(out_dim,hidden_dim , out_dim)
         self.pool = (
-            SumPooling()
+            AvgPooling()
         )  # change to mean readout (AvgPooling) on social network datasets
         self.relu = nn.ReLU()
         self.output_activation = getattr(nn, self.output_activation)(dim=-1)
+        #self.dropout = nn.Dropout(0.5)
 
     def forward(self, g, args):
         # list of hidden representation at each layer (including the input layer)
         h = g.ndata["feat"]
-        hidden_rep = [h]
-        for i, layer in enumerate(self.ginlayers):
-            h = layer(g, h)
-            h = self.batch_norms[i](h)
-            h = self.relu(h)
-            hidden_rep.append(h)
-        score_over_layer = 0
-        # perform graph sum pooling over all nodes in each layer
-        pooled_h_list = []
-        for i, h in enumerate(hidden_rep):
-            pooled_h = self.pool(g, h)
-            pooled_h_list.append(pooled_h)
-            score_over_layer += self.drop(self.linear_prediction[i](pooled_h))
+        for idx in range(len(self.ginlayers)):
+            
+            h = self.ginlayers[idx](g, h)
+            h = self.batch_norms[idx](h)
+            #h = self.relu(h)
+        pooled_h = self.pool(g, h)
+        pooled_h = self.mlp(pooled_h)
+        return  self.output_activation(pooled_h)
 
-        score_over_layer = self.mlp(score_over_layer)
-        return  self.output_activation(score_over_layer)
+
 
 
 class GINE(nn.Module):

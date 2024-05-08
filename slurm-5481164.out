@@ -1,0 +1,146 @@
+-------------------------------label_type : density---------------------
+
+2-------------------------------feat_type : ones_feat---------------------
+
+
+2.1--------------------------------------------model name  : ['gin']---------------------
+
+
+2.1.1--------------------------------------------Grid_Search  : ['gin']---------------------
+small_test : 0.9278990173339844, medium_test 80.91641900634765
+/project/p_gnn001/code/gnn_clean_code/utils.py:153: UserWarning: std_mean(): degrees of freedom is <= 0. Correction should be strictly less than the reduction factor (input numel divided by output numel). (Triggered internally at /opt/conda/conda-bld/pytorch_1708025824022/work/aten/src/ATen/native/ReduceOps.cpp:1760.)
+  std, mean = torch.std_mean(array)
+Trial 1/1
+Epoch 10: loss=2.1470
+Epoch 20: loss=0.8651
+Epoch 30: loss=0.4150
+Epoch 40: loss=0.2648
+Epoch 50: loss=0.2074
+Epoch 60: loss=0.1824
+Epoch 70: loss=0.1707
+Epoch 80: loss=0.1649
+Epoch 90: loss=0.1620
+Epoch 100: loss=0.1605
+small_test : 0.03396444320678711, medium_test 830436.7403320313
+best trail model is : model_weights_trail0_dataset_ones_feat.pth
+test mean acc: 0.0340, error bound: nan
+
+
+2.1.2--------------------------------------------Train and Test  : ['gin']---------------------
+
+
+3-------------------------------feat_type : noise_feat---------------------
+
+
+3.1--------------------------------------------model name  : ['gin']---------------------
+
+
+3.1.1--------------------------------------------Grid_Search  : ['gin']---------------------
+small_test : 0.8992283630371094, medium_test 50.63891577148438
+/project/p_gnn001/code/gnn_clean_code/utils.py:153: UserWarning: std_mean(): degrees of freedom is <= 0. Correction should be strictly less than the reduction factor (input numel divided by output numel). (Triggered internally at /opt/conda/conda-bld/pytorch_1708025824022/work/aten/src/ATen/native/ReduceOps.cpp:1760.)
+  std, mean = torch.std_mean(array)
+Trial 1/1
+Epoch 10: loss=2.2736
+Epoch 20: loss=0.9850
+Epoch 30: loss=0.5034
+Epoch 40: loss=0.3323
+Epoch 50: loss=0.2657
+Epoch 60: loss=0.2351
+Epoch 70: loss=0.2211
+Epoch 80: loss=0.2138
+Epoch 90: loss=0.2102
+Epoch 100: loss=0.2084
+small_test : 0.06630365371704101, medium_test 26.826428985595705
+best trail model is : model_weights_trail0_dataset_noise_feat.pth
+test mean acc: 0.0663, error bound: nan
+
+
+3.1.2--------------------------------------------Train and Test  : ['gin']---------------------
+
+
+4-------------------------------feat_type : degree_feat---------------------
+
+
+4.1--------------------------------------------model name  : ['gin']---------------------
+
+
+4.1.1--------------------------------------------Grid_Search  : ['gin']---------------------
+small_test : 1.017926483154297, medium_test 2946.508245361328
+/project/p_gnn001/code/gnn_clean_code/utils.py:153: UserWarning: std_mean(): degrees of freedom is <= 0. Correction should be strictly less than the reduction factor (input numel divided by output numel). (Triggered internally at /opt/conda/conda-bld/pytorch_1708025824022/work/aten/src/ATen/native/ReduceOps.cpp:1760.)
+  std, mean = torch.std_mean(array)
+Trial 1/1
+Epoch 10: loss=2.2277
+Epoch 20: loss=1.1891
+Epoch 30: loss=0.5304
+Epoch 40: loss=0.3301
+Epoch 50: loss=0.2549
+Epoch 60: loss=0.2233
+Epoch 70: loss=0.2084
+Epoch 80: loss=0.2009
+Epoch 90: loss=0.1970
+Epoch 100: loss=0.1950
+small_test : 0.04449453353881836, medium_test 917594.2940614548
+best trail model is : model_weights_trail0_dataset_degree_feat.pth
+test mean acc: 0.0445, error bound: nan
+
+
+4.1.2--------------------------------------------Train and Test  : ['gin']---------------------
+
+
+5-------------------------------feat_type : norm_degree_feat---------------------
+
+
+5.1--------------------------------------------model name  : ['gin']---------------------
+
+
+5.1.1--------------------------------------------Grid_Search  : ['gin']---------------------
+small_test : 0.8791879272460937, medium_test 39.80340405273437
+/project/p_gnn001/code/gnn_clean_code/utils.py:153: UserWarning: std_mean(): degrees of freedom is <= 0. Correction should be strictly less than the reduction factor (input numel divided by output numel). (Triggered internally at /opt/conda/conda-bld/pytorch_1708025824022/work/aten/src/ATen/native/ReduceOps.cpp:1760.)
+  std, mean = torch.std_mean(array)
+Trial 1/1
+Epoch 10: loss=2.1534
+Epoch 20: loss=0.8924
+Epoch 30: loss=0.4169
+Epoch 40: loss=0.2593
+Epoch 50: loss=0.2000
+Epoch 60: loss=0.1749
+Epoch 70: loss=0.1632
+Epoch 80: loss=0.1575
+Epoch 90: loss=0.1546
+Epoch 100: loss=0.1531
+small_test : 0.04074990272521973, medium_test 20.230463050842285
+best trail model is : model_weights_trail0_dataset_norm_degree_feat.pth
+test mean acc: 0.0407, error bound: nan
+
+
+5.1.2--------------------------------------------Train and Test  : ['gin']---------------------
+
+
+6-------------------------------feat_type : identity_feat---------------------
+
+
+6.1--------------------------------------------model name  : ['gin']---------------------
+
+
+6.1.1--------------------------------------------Grid_Search  : ['gin']---------------------
+small_test : 0.8867660522460937, medium_test 41.749179748535155
+/project/p_gnn001/code/gnn_clean_code/utils.py:153: UserWarning: std_mean(): degrees of freedom is <= 0. Correction should be strictly less than the reduction factor (input numel divided by output numel). (Triggered internally at /opt/conda/conda-bld/pytorch_1708025824022/work/aten/src/ATen/native/ReduceOps.cpp:1760.)
+  std, mean = torch.std_mean(array)
+Trial 1/1
+Epoch 10: loss=2.2328
+Epoch 20: loss=0.9229
+Epoch 30: loss=0.4605
+Epoch 40: loss=0.2868
+Epoch 50: loss=0.2152
+Epoch 60: loss=0.1861
+Epoch 70: loss=0.1732
+Epoch 80: loss=0.1669
+Epoch 90: loss=0.1637
+Epoch 100: loss=0.1622
+small_test : 0.03818190097808838, medium_test 99821.4261599865
+best trail model is : model_weights_trail0_dataset_identity_feat.pth
+test mean acc: 0.0382, error bound: nan
+
+
+6.1.2--------------------------------------------Train and Test  : ['gin']---------------------
+

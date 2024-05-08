@@ -39,14 +39,14 @@ num_trials = 1
 device = 'cuda'
 epochs = 100
 epoch_search = 1
-feat_types = ['identity_feat']
+feat_types = ['ones_feat', 'noise_feat', 'degree_feat', 'norm_degree_feat', 'identity_feat']
 models = ['gin']
-label_types = ['transitivity', 'density', 'kurtosis', 'average_path']
+label_types = ['density']
 search_space = {
     "architecture": ['gin'],
     "hidden_dim": [8],
     "lr": [1e-2],
-    "num_layers":[1],
+    "num_layers":[2],
     "weight_decay": [1e-3],
     "k": [4]
 }

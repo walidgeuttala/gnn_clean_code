@@ -158,8 +158,8 @@ def main(args, seed, save=True):
     dataset = GraphDataset(device=args.device)
     dataset2 = GraphDataset(device=args.device)
     dataset.load2("MUTAG", args)
+    #dataset.load(args.dataset_path, args)
     dataset2.load(args.dataset_path, args)
-    
     getattr(dataset, f'add_{args.feat_type}')(args.k)
     getattr(dataset2, f'add_{args.feat_type}')(args.k)
     
@@ -229,7 +229,7 @@ def main(args, seed, save=True):
     else:
         test_acc, _ = test_classification(model, test_loader, args)
         test_acc2, _ = test_classification(model, test_loader2, args)
-    #print(f"small_test : {test_acc}, medium_test {test_acc2}")
+    print(f"small_test : {test_acc}, medium_test {test_acc2}")
     if save == True:
         if args.changer == 1:
             torch.save(model.state_dict(), '{}/last_second_model_weights_trail{}_{}_{}.pth'.format(args.output_path, seed, args.dataset, args.feat_type))
