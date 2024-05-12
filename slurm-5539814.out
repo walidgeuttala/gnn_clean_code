@@ -1,0 +1,70 @@
+Epoch 10: loss=0.5322
+Epoch 20: loss=0.1094
+Epoch 30: loss=0.1124
+Epoch 40: loss=0.1085
+Epoch 50: loss=0.1079
+Epoch 60: loss=0.1078
+Epoch 70: loss=0.1077
+Epoch 80: loss=0.1077
+Epoch 90: loss=0.1077
+Epoch 100: loss=0.1077
+small_test : 0.02103433609008789, medium_test 39.239915466308595
+Weight shape for ginlayers.0.apply_func.linears.0.weight: torch.Size([8, 1])
+Weights for ginlayers.0.apply_func.linears.0.weight: Parameter containing:
+tensor([[ 0.4797],
+        [-0.4605],
+        [-0.2992],
+        [ 0.4914],
+        [-0.8710],
+        [ 0.6876],
+        [-0.2576],
+        [ 0.4148]], device='cuda:0', requires_grad=True)
+Weight shape for ginlayers.0.apply_func.linears.1.weight: torch.Size([8, 8])
+Weights for ginlayers.0.apply_func.linears.1.weight: Parameter containing:
+tensor([[ 0.1185, -0.1126,  0.0264,  0.0897,  0.0571, -0.0657, -0.0978,  0.0401],
+        [-0.0738,  0.1291,  0.4492, -0.0310,  0.0044, -0.3502,  0.0748, -0.2890],
+        [-0.1164,  0.0218,  0.2202,  0.1841, -0.3401,  0.2106,  0.1062,  0.3295],
+        [ 0.2578, -0.3434, -0.3528, -0.1519,  0.2889, -0.0395,  0.1306, -0.1411],
+        [ 0.2124, -0.0145,  0.4013, -0.1313, -0.0517,  0.0459, -0.0525, -0.0313],
+        [-0.2975,  0.1599, -0.1361, -0.3707,  0.3908, -0.2882,  0.5517,  0.0835],
+        [-0.0028, -0.2500,  0.1986,  0.1260, -0.2441,  0.2456,  0.1979,  0.3283],
+        [-0.1346, -0.1223, -0.0752,  0.1166, -0.3289, -0.1815,  0.1247, -0.0175]],
+       device='cuda:0', requires_grad=True)
+Bias shape for ginlayers.0.apply_func.linears.1.bias: torch.Size([8])
+Biases for ginlayers.0.apply_func.linears.1.bias: Parameter containing:
+tensor([ 0.1967, -0.0896,  0.1098, -0.0110, -0.0089,  0.0546, -0.3095,  0.1852],
+       device='cuda:0', requires_grad=True)
+Weight shape for ginlayers.0.apply_func.batch_norm.weight: torch.Size([8])
+Weights for ginlayers.0.apply_func.batch_norm.weight: Parameter containing:
+tensor([0.9644, 1.0142, 1.1233, 1.0171, 0.9293, 1.0839, 1.0478, 0.8986],
+       device='cuda:0', requires_grad=True)
+Bias shape for ginlayers.0.apply_func.batch_norm.bias: torch.Size([8])
+Biases for ginlayers.0.apply_func.batch_norm.bias: Parameter containing:
+tensor([-0.0998,  0.0356, -0.1413,  0.1354, -0.0142,  0.0915, -0.0785,  0.0532],
+       device='cuda:0', requires_grad=True)
+Weight shape for ginlayers.1.apply_func.linears.0.weight: torch.Size([8, 8])
+Weights for ginlayers.1.apply_func.linears.0.weight: Parameter containing:
+tensor([[-0.0717, -0.2480,  0.0484, -0.0324,  0.2972, -0.1707, -0.2393,  0.4238],
+        [ 0.0084,  0.2943,  0.0925, -0.2715, -0.0089,  0.1870, -0.2897, -0.1284],
+        [ 0.0642, -0.0875, -0.1163, -0.0760,  0.3817, -0.1775,  0.2328,  0.1005],
+        [-0.3371, -0.5304,  0.1005, -0.1447,  0.0207, -0.1432, -0.1317,  0.1930],
+        [ 0.3140, -0.3758, -0.0654,  0.2054,  0.1421,  0.1169, -0.3656, -0.2336],
+        [-0.1773, -0.1883,  0.2223, -0.2845,  0.0893, -0.4180, -0.4567, -0.0566],
+        [ 0.2790,  0.4839, -0.3189, -0.0190,  0.1876,  0.3812,  0.1099,  0.3254],
+        [ 0.1186, -0.1725, -0.1536, -0.0749, -0.1853, -0.3078, -0.1574, -0.1075]],
+       device='cuda:0', requires_grad=True)
+Weight shape for ginlayers.1.apply_func.linears.1.weight: torch.Size([1, 8])
+Weights for ginlayers.1.apply_func.linears.1.weight: Parameter containing:
+tensor([[ 0.3570, -0.2713,  0.3897,  0.3600,  0.4625,  0.4814, -0.3495,  0.2194]],
+       device='cuda:0', requires_grad=True)
+Bias shape for ginlayers.1.apply_func.linears.1.bias: torch.Size([1])
+Biases for ginlayers.1.apply_func.linears.1.bias: Parameter containing:
+tensor([0.2138], device='cuda:0', requires_grad=True)
+Weight shape for ginlayers.1.apply_func.batch_norm.weight: torch.Size([8])
+Weights for ginlayers.1.apply_func.batch_norm.weight: Parameter containing:
+tensor([1.2625, 1.2086, 1.2637, 1.2598, 1.2522, 1.2467, 1.2362, 0.8485],
+       device='cuda:0', requires_grad=True)
+Bias shape for ginlayers.1.apply_func.batch_norm.bias: torch.Size([8])
+Biases for ginlayers.1.apply_func.batch_norm.bias: Parameter containing:
+tensor([ 0.2736, -0.2748,  0.2722,  0.2732,  0.2683,  0.2674, -0.2730,  0.2386],
+       device='cuda:0', requires_grad=True)

@@ -205,8 +205,8 @@ class MLP(nn.Module):
         super().__init__()
         self.linears = nn.ModuleList()
         # two-layer MLP
-        self.linears.append(nn.Linear(input_dim, hidden_dim, bias=False))
-        self.linears.append(nn.Linear(hidden_dim, output_dim, bias=False))
+        self.linears.append(nn.Linear(input_dim, hidden_dim, bias=True))
+        self.linears.append(nn.Linear(hidden_dim, output_dim, bias=True))
         self.batch_norm = nn.BatchNorm1d((hidden_dim))
         self.relu = nn.ReLU()
     def forward(self, x):
@@ -223,7 +223,7 @@ class GIN(nn.Module):
 
         super().__init__()
         self.ginlayers = nn.ModuleList()
-        #self.batch_norms = nn.ModuleList()
+        self.batch_norms = nn.ModuleList()
         self.num_layers = num_layers
         # five-layer GCN with two-layer MLP aggregator and sum-neighbor-pooling scheme
         for layer in range(num_layers):  # excluding the input layer
@@ -241,8 +241,8 @@ class GIN(nn.Module):
                 self.ginlayers.append(
                     GINConv(mlp, learn_eps=True)
                 )
-            # if layer != num_layers-1:
-            #     self.batch_norms.append(nn.BatchNorm1d(hidden_dim))
+            if layer != num_layers-1:
+                self.batch_norms.append(nn.BatchNorm1d(hidden_dim))
             
 
         self.pool = (
@@ -254,8 +254,8 @@ class GIN(nn.Module):
         h = g.ndata["feat"]
         for idx in range(len(self.ginlayers)):
             h = self.ginlayers[idx](g, h)
-            # if self.num_layers-1 != idx:
-            #     h = self.batch_norms[idx](h)
+            if self.num_layers-1 != idx:
+                h = self.batch_norms[idx](h)
         pooled_h = self.pool(g, h)
         return  pooled_h
 
@@ -352,13 +352,7 @@ def main(seed=1):
     test_acc2 = test_regression(model, test_loader2)
 
     print(f"small_test : {test_acc}, medium_test {test_acc2}")
-    for name, param in model.named_parameters():
-        if 'weight' in name:
-            print(f'Weight shape for {name}: {param.shape}')
-            print(f'Weights for {name}: {param}')
-        elif 'bias' in name:
-            print(f'Bias shape for {name}: {param.shape}')
-            print(f'Biases for {name}: {param}')
+   
     return test_acc, test_acc2, sum(train_times) / len(train_times)
 
 if __name__ == "__main__":

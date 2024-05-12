@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code.py", line 366, in <module>
+    main()
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code.py", line 326, in main
+    model = GIN(
+            ^^^^
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code.py", line 231, in __init__
+    mlp = MLP(in_dim, hidden_dim, hidden_dim)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code.py", line 210, in __init__
+    self.batch_norm = nn.BatchNorm1d((hidden_dim), bias=False)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: _BatchNorm.__init__() got an unexpected keyword argument 'bias'
