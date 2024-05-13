@@ -1,0 +1,40 @@
+/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/torch/nn/modules/loss.py:535: UserWarning: Using a target size (torch.Size([10, 1])) that is different to the input size (torch.Size([189, 1])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  return F.mse_loss(input, target, reduction=self.reduction)
+Epoch 10: loss=0.5308
+Epoch 20: loss=0.2266
+Epoch 30: loss=0.2233
+Epoch 40: loss=0.2217
+Epoch 50: loss=0.2207
+Epoch 60: loss=0.2203
+Epoch 70: loss=0.2201
+Epoch 80: loss=0.2200
+Epoch 90: loss=0.2200
+Epoch 100: loss=0.2200
+small_test : 0.08292436599731445, medium_test 39.58165386962891
+Traceback (most recent call last):
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code.py", line 469, in <module>
+    main()
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code.py", line 456, in main
+    test_regression_sample(model, test_loader_samples, samples)
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 115, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code.py", line 334, in test_regression_sample
+    loss += loss_func(out, batch_labels).item()
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/torch/nn/modules/loss.py", line 535, in forward
+    return F.mse_loss(input, target, reduction=self.reduction)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/torch/nn/functional.py", line 3338, in mse_loss
+    expanded_input, expanded_target = torch.broadcast_tensors(input, target)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/torch/functional.py", line 76, in broadcast_tensors
+    return _VF.broadcast_tensors(tensors)  # type: ignore[attr-defined]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: The size of tensor a (189) must match the size of tensor b (10) at non-singleton dimension 0

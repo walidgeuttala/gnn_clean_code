@@ -1,0 +1,27 @@
+Epoch 10: loss=0.5308
+Epoch 20: loss=0.2266
+Epoch 30: loss=0.2233
+Epoch 40: loss=0.2217
+Epoch 50: loss=0.2207
+Epoch 60: loss=0.2203
+Epoch 70: loss=0.2201
+Epoch 80: loss=0.2200
+Epoch 90: loss=0.2200
+Epoch 100: loss=0.2200
+small_test : 0.08292436599731445, medium_test 39.58165386962891
+Traceback (most recent call last):
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code.py", line 457, in <module>
+    
+    ^
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code.py", line 444, in main
+    
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 115, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code.py", line 324, in test_regression_sample
+    loss += loss_func(out, batch_labels).item()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code.py", line 301, in plot_degree_distribution
+    degrees = graph.in_degrees().numpy()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: can't convert cuda:0 device type tensor to numpy. Use Tensor.cpu() to copy the tensor to host memory first.

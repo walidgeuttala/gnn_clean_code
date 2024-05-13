@@ -64,11 +64,11 @@ k = 1
 feat_type = "ones_feat"
 batch_size = 100
 optimizer_name = "Adam"
-lr = 0.01
-weight_decay = 0.0
-epochs = 100
-hidden_dim = 8
-num_layers = 2
+lr = 0.1
+weight_decay = 0.95
+epochs = 200
+hidden_dim = 1
+num_layers = 1
 loss_name = "MSELoss"
 
 
@@ -133,7 +133,6 @@ class GraphDataset(DGLDataset):
             self.graphs = [g.to(self.device) for g in self.graphs]
             self.labels = self.labels.to(self.device)
         
-
     def load2(self, data_name):
         '''
         Loads the processed data from disk as .bin and .pkl files. The processed data consists of the graph data and the corresponding labels.
@@ -149,8 +148,6 @@ class GraphDataset(DGLDataset):
             self.graphs = [g.to(self.device) for g in self.graphs]
             self.labels = self.labels.to(self.device)
         
-        
-
     def has_cache(self):
         '''
         Checks if the processed data has been saved to disk as .bin and .pkl files.
@@ -168,7 +165,6 @@ class GraphDataset(DGLDataset):
         # started from 1 as the first labels is the original label
         self.labels = torch.load(file_path)
         self.labels = self.labels[-1].view(-1, 1).float()
-        
 
     def add_ones_feat(self, k):
         self.dim_nfeats = k
@@ -207,13 +203,26 @@ class MLP(nn.Module):
         # two-layer MLP
         self.linears.append(nn.Linear(input_dim, hidden_dim, bias=False))
         self.linears.append(nn.Linear(hidden_dim, output_dim, bias=False))
-        self.batch_norm = nn.BatchNorm1d((hidden_dim))
+        #self.batch_norm = nn.BatchNorm1d((hidden_dim))
         self.relu = nn.ReLU()
     def forward(self, x):
         h = x
-        h = self.batch_norm(self.linears[0](h))
+        #h = self.batch_norm(self.linears[0](h))
+        h = self.linears[0](h)
         return self.relu(self.linears[1](h))
-    
+
+class MLP2(nn.Module):
+    """Construct two-layer MLP-type aggreator for GIN model"""
+
+    def __init__(self, input_dim, hidden_dim, output_dim):
+        super().__init__()
+        # two-layer MLP
+        self.linears = nn.Linear(input_dim, output_dim, bias=False)
+
+    def forward(self, x):
+        h = self.linears(x)
+        return h
+
 class GIN(nn.Module):
     def __init__(self, in_dim,
                  hidden_dim,
@@ -228,7 +237,7 @@ class GIN(nn.Module):
         # five-layer GCN with two-layer MLP aggregator and sum-neighbor-pooling scheme
         for layer in range(num_layers):  # excluding the input layer
             if layer == 0:
-                mlp = MLP(in_dim, hidden_dim, hidden_dim)
+                mlp = MLP2(in_dim, hidden_dim, out_dim)
             elif layer == num_layers-1:
                 mlp = MLP(hidden_dim, hidden_dim, out_dim)
             else:
@@ -243,7 +252,7 @@ class GIN(nn.Module):
                 )
             # if layer != num_layers-1:
             #     self.batch_norms.append(nn.BatchNorm1d(hidden_dim))
-            
+        #self.mlp = MLP2(in_dim, hidden_dim, out_dim)
 
         self.pool = (
             AvgPooling()
@@ -257,7 +266,18 @@ class GIN(nn.Module):
             # if self.num_layers-1 != idx:
             #     h = self.batch_norms[idx](h)
         pooled_h = self.pool(g, h)
+        #pooled_h = self.mlp(pooled_h)
         return  pooled_h
+    
+    def forward2(self, g):
+        # list of hidden representation at each layer (including the input layer)
+        h = g.ndata["feat"]
+        for idx in range(len(self.ginlayers)):
+            h = self.ginlayers[idx](g, h)
+            # if self.num_layers-1 != idx:
+            #     h = self.batch_norms[idx](h)
+        pooled_h = self.pool(g, h)
+        return  pooled_h, h
 
 
 def train(model: torch.nn.Module, optimizer, trainloader):
@@ -292,9 +312,97 @@ def test_regression(model: torch.nn.Module, loader):
         loss += loss_func(out, batch_labels).item()
 
     return loss / num_graphs
+import numpy as np
+import matplotlib.pyplot as plt
+import networkx as nx
+
+def plot_degree_distribution(graph):
+    # Calculate the degree of each node in the graph
+    degrees = graph.cpu().out_degrees().numpy()
+
+    # Plot the degree distribution
+    plt.hist(degrees, bins=np.arange(max(degrees) + 2) - 0.5, color='blue', edgecolor='black')
+    plt.xlabel('Degree')
+    plt.ylabel('Frequency')
+    plt.title('Degree Distribution')
+    plt.grid(True)
+    plt.savefig(f'degree_dist_samples.png')
+    plt.show()
+
+@torch.no_grad()
+def test_regression_sample(model: torch.nn.Module, loader, samples):
+    model.eval()
+    loss = 0.0
+    num_graphs = 0
+    loss_func = getattr(F, loss_name)(reduction="sum")
+    degrees = 0
+    out = 0
+    for batch in loader:
+        batch_graphs, batch_labels = batch
+        num_graphs += samples
+        out, outt = model.forward2(batch_graphs)
+        loss += loss_func(out, batch_labels).item()
+        out = outt
+        plot_degree_distribution(batch_graphs)
+        g = batch_graphs.cpu().to_networkx()
+        g = nx.Graph(g)
+        degrees = np.array(list(dict(g.degree()).values()))
+        break
+
+    # Assuming your 2D matrix is named 'data_matrix' and the degree list is named 'degree_list'
+    # 'data_matrix' is a 2D numpy array where rows represent nodes and columns represent features
+    # 'degree_list' is a list containing the degree of each node
+    # Here's a sample 'data_matrix' and 'degree_list' for illustration purposes
+
+
+    data_matrix = out.cpu().numpy()  # 100 nodes with 10 features each
+    degree_list = degrees  # Example degree list for 100 nodes
+    print(data_matrix.shape)
+    print(degrees.shape)
+    # Calculate minimum, mean, and maximum values for each node
+    # min_values = np.min(data_matrix, axis=1)
+    # mean_values = np.mean(data_matrix, axis=1)
+    # max_values = np.max(data_matrix, axis=1)
+
+    # # Sort the node indices based on degree
+    # sorted_indices = np.argsort(degree_list)
+    # sorted_degree = degree_list[sorted_indices]
+    # sorted_min_values = min_values[sorted_indices]
+    # sorted_mean_values = mean_values[sorted_indices]
+    # sorted_max_values = max_values[sorted_indices]
+
+    # Plot the results
+    num_nodes = data_matrix.shape[0]
+    node_indices = np.arange(1, num_nodes + 1)
+    model_name = "GIN"
+    feat_name = "degree_feat"
+
+    plt.figure(figsize=(10, 6))
+    plt.subplot(2, 1, 2)
+    #plt.scatter(node_indices, sorted_min_values, label='Minimum', marker='o')
+    plt.scatter(node_indices, data_matrix, label='Value', marker='x')
+    #plt.scatter(node_indices, sorted_max_values, label='Maximum', marker='^')
+    plt.xlabel('Node')
+    plt.ylabel('Value')
+    plt.title(f'Values with Node Degree {model_name} {feat_name} (Ordered by Degree)')
+    plt.legend()
+    plt.subplot(2, 1, 1)
+    plt.scatter(node_indices, degrees, label='Degree', marker='x', color='black')  # Scatter plot for degree
+    plt.xlabel('Node')
+    plt.ylabel('Value')
+    plt.title(f'Values with Node Degree {model_name}  {feat_name} (Ordered by Degree)')
+    plt.legend()
+    #plt.yscale('log', base=2)
+    plt.xticks(node_indices)
+    
+    plt.savefig(f'{model_name}_{feat_name}.png')
+    plt.close()
+
+    print("loss of the samples : ", loss / num_graphs)
+    
 
 def main(seed=1):
-    
+    samples = 10
     # Step 1: Prepare graph data and retrieve train/validation/test index ============================= #
     set_random_seed(seed)
     dataset = GraphDataset(device=device)
@@ -313,6 +421,10 @@ def main(seed=1):
 
     train_loader = GraphDataLoader(train_set, batch_size=batch_size, shuffle=False)
     test_loader = GraphDataLoader(test_set, batch_size=batch_size, shuffle=False)
+
+    test_loader_samples = GraphDataLoader(test_set, batch_size=samples, shuffle=True)
+    test_loader2_samples = GraphDataLoader(dataset2, batch_size=samples, shuffle=True)
+
 
     # normalizer = GraphFeatureNormalizer()
     # normalizer.fit_transform(train_loader)
@@ -350,8 +462,9 @@ def main(seed=1):
    
     test_acc = test_regression(model, test_loader)
     test_acc2 = test_regression(model, test_loader2)
-
     print(f"small_test : {test_acc}, medium_test {test_acc2}")
+
+    
     for name, param in model.named_parameters():
         if 'weight' in name:
             print(f'Weight shape for {name}: {param.shape}')
@@ -359,8 +472,11 @@ def main(seed=1):
         elif 'bias' in name:
             print(f'Bias shape for {name}: {param.shape}')
             print(f'Biases for {name}: {param}')
+
+    # test_regression_sample(model, test_loader_samples, samples)
+
     return test_acc, test_acc2, sum(train_times) / len(train_times)
 
 if __name__ == "__main__":
-    
-    main()
+    for i in range(10):
+        main(i)

@@ -1,0 +1,25 @@
+Epoch 10: loss=4.0553
+Epoch 20: loss=4.0553
+Epoch 30: loss=4.0553
+Epoch 40: loss=4.0553
+Epoch 50: loss=4.0553
+Epoch 60: loss=4.0553
+Epoch 70: loss=4.0553
+Epoch 80: loss=4.0553
+Epoch 90: loss=4.0553
+Epoch 100: loss=4.0553
+small_test : 0.9184127807617187, medium_test 39.86043884277344
+Weight shape for ginlayers.0.apply_func.linears.0.weight: torch.Size([8, 1])
+Weights for ginlayers.0.apply_func.linears.0.weight: Parameter containing:
+tensor([[ 0.5153],
+        [-0.4414],
+        [-0.1939],
+        [ 0.4694],
+        [-0.9414],
+        [ 0.5997],
+        [-0.2057],
+        [ 0.5087]], device='cuda:0', requires_grad=True)
+Weight shape for ginlayers.0.apply_func.linears.1.weight: torch.Size([1, 8])
+Weights for ginlayers.0.apply_func.linears.1.weight: Parameter containing:
+tensor([[ 0.0491, -0.0433,  0.0981,  0.0174,  0.1291, -0.1378, -0.0258, -0.0318]],
+       device='cuda:0', requires_grad=True)

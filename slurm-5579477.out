@@ -1,0 +1,170 @@
+Epoch 10: loss=0.7278
+Epoch 20: loss=0.2409
+Epoch 30: loss=0.1210
+Epoch 40: loss=0.0836
+Epoch 50: loss=0.0690
+Epoch 60: loss=0.0624
+Epoch 70: loss=0.0591
+Epoch 80: loss=0.0575
+Epoch 90: loss=0.0567
+Epoch 100: loss=0.0563
+small_test : 0.011720595359802246, medium_test 10.13775742340088
+Weight shape for ginlayers.0.apply_func.linears.weight: torch.Size([1, 1])
+Weights for ginlayers.0.apply_func.linears.weight: Parameter containing:
+tensor([[0.3095]], device='cuda:0', requires_grad=True)
+Bias shape for ginlayers.0.apply_func.linears.bias: torch.Size([1])
+Biases for ginlayers.0.apply_func.linears.bias: Parameter containing:
+tensor([0.8475], device='cuda:0', requires_grad=True)
+Epoch 10: loss=0.0290
+Epoch 20: loss=0.0023
+Epoch 30: loss=0.0020
+Epoch 40: loss=0.0013
+Epoch 50: loss=0.0011
+Epoch 60: loss=0.0010
+Epoch 70: loss=0.0010
+Epoch 80: loss=0.0009
+Epoch 90: loss=0.0009
+Epoch 100: loss=0.0009
+small_test : 0.00019765708595514297, medium_test 1.4343653745651246
+Weight shape for ginlayers.0.apply_func.linears.weight: torch.Size([1, 1])
+Weights for ginlayers.0.apply_func.linears.weight: Parameter containing:
+tensor([[0.7185]], device='cuda:0', requires_grad=True)
+Bias shape for ginlayers.0.apply_func.linears.bias: torch.Size([1])
+Biases for ginlayers.0.apply_func.linears.bias: Parameter containing:
+tensor([-0.2385], device='cuda:0', requires_grad=True)
+Epoch 10: loss=0.6742
+Epoch 20: loss=0.1993
+Epoch 30: loss=0.0934
+Epoch 40: loss=0.0623
+Epoch 50: loss=0.0505
+Epoch 60: loss=0.0452
+Epoch 70: loss=0.0426
+Epoch 80: loss=0.0414
+Epoch 90: loss=0.0407
+Epoch 100: loss=0.0403
+small_test : 0.009255810379981995, medium_test 4.692846923828125
+Weight shape for ginlayers.0.apply_func.linears.weight: torch.Size([1, 1])
+Weights for ginlayers.0.apply_func.linears.weight: Parameter containing:
+tensor([[0.5398]], device='cuda:0', requires_grad=True)
+Bias shape for ginlayers.0.apply_func.linears.bias: torch.Size([1])
+Biases for ginlayers.0.apply_func.linears.bias: Parameter containing:
+tensor([0.0671], device='cuda:0', requires_grad=True)
+Epoch 10: loss=23.3867
+Epoch 20: loss=19.4186
+Epoch 30: loss=17.7101
+Epoch 40: loss=16.9123
+Epoch 50: loss=16.5229
+Epoch 60: loss=16.3290
+Epoch 70: loss=16.2316
+Epoch 80: loss=16.1825
+Epoch 90: loss=16.1577
+Epoch 100: loss=16.1452
+small_test : 3.502100830078125, medium_test 121.10856469726562
+Weight shape for ginlayers.0.apply_func.linears.weight: torch.Size([1, 1])
+Weights for ginlayers.0.apply_func.linears.weight: Parameter containing:
+tensor([[-0.6205]], device='cuda:0', requires_grad=True)
+Bias shape for ginlayers.0.apply_func.linears.bias: torch.Size([1])
+Biases for ginlayers.0.apply_func.linears.bias: Parameter containing:
+tensor([-0.4122], device='cuda:0', requires_grad=True)
+Epoch 10: loss=0.6969
+Epoch 20: loss=0.2156
+Epoch 30: loss=0.1040
+Epoch 40: loss=0.0705
+Epoch 50: loss=0.0576
+Epoch 60: loss=0.0518
+Epoch 70: loss=0.0490
+Epoch 80: loss=0.0476
+Epoch 90: loss=0.0469
+Epoch 100: loss=0.0465
+small_test : 0.010140408277511597, medium_test 6.963706939697266
+Weight shape for ginlayers.0.apply_func.linears.weight: torch.Size([1, 1])
+Weights for ginlayers.0.apply_func.linears.weight: Parameter containing:
+tensor([[0.4324]], device='cuda:0', requires_grad=True)
+Bias shape for ginlayers.0.apply_func.linears.bias: torch.Size([1])
+Biases for ginlayers.0.apply_func.linears.bias: Parameter containing:
+tensor([0.4255], device='cuda:0', requires_grad=True)
+Epoch 10: loss=0.0014
+Epoch 20: loss=0.0056
+Epoch 30: loss=0.0011
+Epoch 40: loss=0.0004
+Epoch 50: loss=0.0003
+Epoch 60: loss=0.0003
+Epoch 70: loss=0.0003
+Epoch 80: loss=0.0003
+Epoch 90: loss=0.0003
+Epoch 100: loss=0.0003
+small_test : 8.748019114136696e-05, medium_test 0.5471249046325684
+Weight shape for ginlayers.0.apply_func.linears.weight: torch.Size([1, 1])
+Weights for ginlayers.0.apply_func.linears.weight: Parameter containing:
+tensor([[0.8266]], device='cuda:0', requires_grad=True)
+Bias shape for ginlayers.0.apply_func.linears.bias: torch.Size([1])
+Biases for ginlayers.0.apply_func.linears.bias: Parameter containing:
+tensor([-0.5789], device='cuda:0', requires_grad=True)
+Epoch 10: loss=0.5942
+Epoch 20: loss=0.1657
+Epoch 30: loss=0.0747
+Epoch 40: loss=0.0490
+Epoch 50: loss=0.0395
+Epoch 60: loss=0.0353
+Epoch 70: loss=0.0332
+Epoch 80: loss=0.0322
+Epoch 90: loss=0.0317
+Epoch 100: loss=0.0314
+small_test : 0.006519656181335449, medium_test 6.35394953918457
+Weight shape for ginlayers.0.apply_func.linears.weight: torch.Size([1, 1])
+Weights for ginlayers.0.apply_func.linears.weight: Parameter containing:
+tensor([[0.4508]], device='cuda:0', requires_grad=True)
+Bias shape for ginlayers.0.apply_func.linears.bias: torch.Size([1])
+Biases for ginlayers.0.apply_func.linears.bias: Parameter containing:
+tensor([0.4088], device='cuda:0', requires_grad=True)
+Epoch 10: loss=2.6951
+Epoch 20: loss=1.5024
+Epoch 30: loss=1.0665
+Epoch 40: loss=0.8861
+Epoch 50: loss=0.8036
+Epoch 60: loss=0.7637
+Epoch 70: loss=0.7438
+Epoch 80: loss=0.7338
+Epoch 90: loss=0.7286
+Epoch 100: loss=0.7261
+small_test : 0.15460055351257324, medium_test 11.050348876953125
+Weight shape for ginlayers.0.apply_func.linears.weight: torch.Size([1, 1])
+Weights for ginlayers.0.apply_func.linears.weight: Parameter containing:
+tensor([[0.4223]], device='cuda:0', requires_grad=True)
+Bias shape for ginlayers.0.apply_func.linears.bias: torch.Size([1])
+Biases for ginlayers.0.apply_func.linears.bias: Parameter containing:
+tensor([-0.2558], device='cuda:0', requires_grad=True)
+Epoch 10: loss=0.0181
+Epoch 20: loss=0.0061
+Epoch 30: loss=0.0047
+Epoch 40: loss=0.0040
+Epoch 50: loss=0.0038
+Epoch 60: loss=0.0038
+Epoch 70: loss=0.0038
+Epoch 80: loss=0.0038
+Epoch 90: loss=0.0038
+Epoch 100: loss=0.0038
+small_test : 0.001091659963130951, medium_test 6.817774982452392
+Weight shape for ginlayers.0.apply_func.linears.weight: torch.Size([1, 1])
+Weights for ginlayers.0.apply_func.linears.weight: Parameter containing:
+tensor([[0.3896]], device='cuda:0', requires_grad=True)
+Bias shape for ginlayers.0.apply_func.linears.bias: torch.Size([1])
+Biases for ginlayers.0.apply_func.linears.bias: Parameter containing:
+tensor([0.8798], device='cuda:0', requires_grad=True)
+Epoch 10: loss=0.5134
+Epoch 20: loss=0.1237
+Epoch 30: loss=0.0504
+Epoch 40: loss=0.0315
+Epoch 50: loss=0.0248
+Epoch 60: loss=0.0219
+Epoch 70: loss=0.0205
+Epoch 80: loss=0.0198
+Epoch 90: loss=0.0195
+Epoch 100: loss=0.0193
+small_test : 0.0044886404275894165, medium_test 3.2504381675720215
+Weight shape for ginlayers.0.apply_func.linears.weight: torch.Size([1, 1])
+Weights for ginlayers.0.apply_func.linears.weight: Parameter containing:
+tensor([[0.6103]], device='cuda:0', requires_grad=True)
+Bias shape for ginlayers.0.apply_func.linears.bias: torch.Size([1])
+Biases for ginlayers.0.apply_func.linears.bias: Parameter containing:
+tensor([-0.1018], device='cuda:0', requires_grad=True)

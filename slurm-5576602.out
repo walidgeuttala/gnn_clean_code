@@ -1,0 +1,27 @@
+/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/torch/nn/modules/loss.py:535: UserWarning: Using a target size (torch.Size([100, 1])) that is different to the input size (torch.Size([100, 8])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  return F.mse_loss(input, target, reduction=self.reduction)
+/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/torch/nn/modules/loss.py:535: UserWarning: Using a target size (torch.Size([69, 1])) that is different to the input size (torch.Size([69, 8])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  return F.mse_loss(input, target, reduction=self.reduction)
+/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/torch/nn/modules/loss.py:535: UserWarning: Using a target size (torch.Size([19, 1])) that is different to the input size (torch.Size([19, 8])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  return F.mse_loss(input, target, reduction=self.reduction)
+Epoch 10: loss=33.2881
+Epoch 20: loss=27.0671
+Epoch 30: loss=24.4981
+Epoch 40: loss=23.3151
+Epoch 50: loss=22.7404
+Epoch 60: loss=22.4544
+Epoch 70: loss=22.3107
+Epoch 80: loss=22.2381
+Epoch 90: loss=22.2014
+Epoch 100: loss=22.1829
+small_test : 5.021958312988281, medium_test 210.09219287109374
+Weight shape for ginlayers.0.apply_func.linears.weight: torch.Size([8, 1])
+Weights for ginlayers.0.apply_func.linears.weight: Parameter containing:
+tensor([[ 0.7563],
+        [-0.0730],
+        [ 0.1700],
+        [ 0.7439],
+        [-0.5685],
+        [ 0.7626],
+        [ 0.1584],
+        [ 0.7552]], device='cuda:0', requires_grad=True)

@@ -1,0 +1,32 @@
+Epoch 10: loss=0.5308
+Epoch 20: loss=0.2266
+Epoch 30: loss=0.2233
+Epoch 40: loss=0.2217
+Epoch 50: loss=0.2207
+Epoch 60: loss=0.2203
+Epoch 70: loss=0.2201
+Epoch 80: loss=0.2200
+Epoch 90: loss=0.2200
+Epoch 100: loss=0.2200
+small_test : 0.08292436599731445, medium_test 39.58165386962891
+(10, 1)
+Traceback (most recent call last):
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code.py", line 458, in <module>
+    main()
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code.py", line 445, in main
+    test_regression_sample(model, test_loader_samples, samples)
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 115, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code.py", line 368, in test_regression_sample
+    plt.scatter(node_indices, degrees, label='Degree', marker='x', color='black')  # Scatter plot for degree
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/matplotlib/pyplot.py", line 3687, in scatter
+    __ret = gca().scatter(
+            ^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/matplotlib/__init__.py", line 1465, in inner
+    return func(ax, *map(sanitize_sequence, args), **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/matplotlib/axes/_axes.py", line 4652, in scatter
+    raise ValueError("x and y must be the same size")
+ValueError: x and y must be the same size
