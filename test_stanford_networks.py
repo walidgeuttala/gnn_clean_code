@@ -722,4 +722,122 @@ if __name__ == "__main__":
         test_networks(model, args, result, args2.real_network_folder)
         #test_networks3(model, args, param)
         
+
+
+
+@torch.no_grad()
+def test_network_diff_nfeat_simple(model, graph, name, args, feat_type="ones_feat", device = "cuda"):
+    k = 1
+    try:
+        model.eval()
+        ans = [] 
+        softmax = torch.nn.Softmax(dim=1)
+        #graph = dgl.add_self_loop(graph)
+        graph = graph.to(device)
+        # print(name + ' number of nodes is : ', graph.num_nodes())
+        # print(name + ' number of edges is : ', graph.num_edges())
         
+        if feat_type == 'ones_feat':
+            graph.ndata['feat'] = torch.ones(graph.num_nodes(), 1).float().to(device)
+        elif feat_type == 'noise_feat':
+            graph.ndata['feat'] = torch.randn(graph.num_nodes(), 1).float().to(device)
+        elif feat_type == 'identity_feat':
+            graph.ndata['feat'] = compute_identity(torch.stack(graph.edges(), dim=0), graph.number_of_nodes(), k).float().to(device)
+        elif feat_type == 'degree_feat':
+            degrees = graph.in_degrees().unsqueeze(1).float().to(device)
+            graph.ndata['feat'] = degrees.repeat(1, 1)
+        else:
+            degrees = graph.in_degrees().unsqueeze(1).float().to(device)
+            graph.ndata['feat'] = degrees.repeat(1, 1)/(graph.number_of_nodes() - 1)
+
+        logits = model(graph)
+        
+        real_name = name.split('/')[-1].split('.')[0]
+        
+        df = pd.read_csv('real_network.csv',)
+        if real_name in df['network_name'].values:
+            label = df[df['network_name'] == real_name][args.label_type].values.tolist()[0]
+        else:
+            print('error')
+            label = None
+        
+        print("label : ",label)
+        
+        result = logits
+        #print([[result[0], abs(result[0]-label)]])
+        ans.append([result[0].cpu().item(), label])
+        
+        print('loss : {:.4f} '.format(result[0].item()), end='')
+        print()
+        
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        ans = None
+    print(ans[0])
+    return ans
+
+
+def test_networks_simple(model, args, result, data_folder):
+    # Open the file in read mode
+    ans = []
+    names = []
+    network_size = []
+    with open('../data_folder/links.txt', 'r') as file:
+        # Iterate over each line in the file
+        f = 0
+        for line in file:
+            # Print the line
+            if len(line) <= 1:
+                f = 1
+            else :
+                if f == 1:
+                    print()
+                    print("field : "+line)
+                    f = 0
+                else:
+                    graph, name = download_Stanford_network(line[:-1], data_folder)
+                    network_size.append([graph.num_nodes(), graph.num_edges()])
+                    value = test_network_diff_nfeat(model, graph, name, args)
+                    if value != None:
+                        ans.append(value[0])
+                        names.append(name.split('/')[-1][:-7])
+                    print()
+            torch.cuda.empty_cache()
+
+    for file_path in result:
+        graph, name = read_graph(file_path)
+        graph = dgl.from_networkx(graph)
+        network_size.append([graph.num_nodes(), graph.num_edges()])
+        value = test_network_diff_nfeat(model, graph, name, args)
+        if value != None:
+            ans.append(value[0])
+            names.append(name)
+        torch.cuda.empty_cache()
+
+    for list_name in list_names:
+        graph = read_graph2(list_name)
+        name = list_name[-1]
+        network_size.append([graph.num_nodes(), graph.num_edges()])
+        value = test_network_diff_nfeat(model, graph, name, args)
+        if value != None:
+            ans.append(value[0])
+            names.append(name)
+        torch.cuda.empty_cache() 
+
+    index = [(args.architecture, args.feat_type, name) for name in names]
+    index = pd.MultiIndex.from_tuples(index, names=['model', 'feat_type', 'network_name'])
+    list1, list2 = zip(*network_size)
+    
+    if args.data_type == "regression":
+        df = pd.DataFrame(ans, columns=['pred_y', 'y'], index=index)
+    else:
+        df = pd.DataFrame(ans, columns=['Low', 'High'], index=index)
+    df['num_nodes'] = list1
+    df['num_edges'] = list2
+    df.to_csv("{}/{}_stanford_output_testing2.csv".format(args.output_path, args.feat_type), index=True)
+    print(df)
+    #radar_plot(ans, names, args['output_path'], args['feat_type'], param)    
+
+        
+def run_real_networks():
+    result = download_and_extract(linkss)
