@@ -1,0 +1,470 @@
+Epoch 10: loss=0.2718
+Epoch 20: loss=0.0305
+Epoch 30: loss=0.0010
+Epoch 40: loss=0.0013
+Epoch 50: loss=0.0010
+Epoch 60: loss=0.0009
+Epoch 70: loss=0.0009
+Epoch 80: loss=0.0009
+Epoch 90: loss=0.0009
+Epoch 100: loss=0.0009
+Epoch 110: loss=0.0009
+Epoch 120: loss=0.0009
+Epoch 130: loss=0.0009
+Epoch 140: loss=0.0009
+Epoch 150: loss=0.0009
+Epoch 160: loss=0.0009
+Epoch 170: loss=0.0009
+Epoch 180: loss=0.0009
+Epoch 190: loss=0.0009
+Epoch 200: loss=0.0009
+small_test : 0.0003798938542604446, medium_test 1.798797001838684
+value out tensor([[2.2230]], device='cuda:0')
+value hidden tensor([[2.0614],
+        [2.0614],
+        [2.0614],
+        [2.7485],
+        [2.7485],
+        [2.0614],
+        [2.0614],
+        [2.0614],
+        [2.7485],
+        [2.7485],
+        [2.0614],
+        [2.0614],
+        [2.7485],
+        [2.0614],
+        [2.7485],
+        [1.3742],
+        [1.3742]], device='cuda:0')
+graph loss : 0.00015023064042907208
+label tensor([2.2353], device='cuda:0')
+Number of edges: 55
+Number of nodes: 17
+Degrees: [3, 3, 3, 4, 4, 3, 3, 3, 4, 4, 3, 3, 4, 3, 4, 2, 2]
+Weight shape for layer.linear.weight: torch.Size([1, 1])
+Weights for layer.linear.weight: Parameter containing:
+tensor([[0.6871]], device='cuda:0', requires_grad=True)
+Epoch 10: loss=0.0146
+Epoch 20: loss=0.0021
+Epoch 30: loss=0.0012
+Epoch 40: loss=0.0010
+Epoch 50: loss=0.0010
+Epoch 60: loss=0.0010
+Epoch 70: loss=0.0010
+Epoch 80: loss=0.0010
+Epoch 90: loss=0.0010
+Epoch 100: loss=0.0010
+Epoch 110: loss=0.0010
+Epoch 120: loss=0.0010
+Epoch 130: loss=0.0010
+Epoch 140: loss=0.0010
+Epoch 150: loss=0.0010
+Epoch 160: loss=0.0010
+Epoch 170: loss=0.0010
+Epoch 180: loss=0.0010
+Epoch 190: loss=0.0010
+Epoch 200: loss=0.0010
+small_test : 0.0002205546572804451, medium_test 1.8140309839248656
+value out tensor([[2.2205]], device='cuda:0')
+value hidden tensor([[2.0590],
+        [2.0590],
+        [2.0590],
+        [2.7453],
+        [2.7453],
+        [2.0590],
+        [2.0590],
+        [2.0590],
+        [2.7453],
+        [2.7453],
+        [2.0590],
+        [2.0590],
+        [2.7453],
+        [2.0590],
+        [2.7453],
+        [1.3726],
+        [1.3726]], device='cuda:0')
+graph loss : 0.0002202364121330902
+label tensor([2.2353], device='cuda:0')
+Number of edges: 55
+Number of nodes: 17
+Degrees: [3, 3, 3, 4, 4, 3, 3, 3, 4, 4, 3, 3, 4, 3, 4, 2, 2]
+Weight shape for layer.linear.weight: torch.Size([1, 1])
+Weights for layer.linear.weight: Parameter containing:
+tensor([[0.6863]], device='cuda:0', requires_grad=True)
+Epoch 10: loss=0.0097
+Epoch 20: loss=0.0092
+Epoch 30: loss=0.0015
+Epoch 40: loss=0.0011
+Epoch 50: loss=0.0010
+Epoch 60: loss=0.0010
+Epoch 70: loss=0.0010
+Epoch 80: loss=0.0010
+Epoch 90: loss=0.0010
+Epoch 100: loss=0.0010
+Epoch 110: loss=0.0010
+Epoch 120: loss=0.0010
+Epoch 130: loss=0.0010
+Epoch 140: loss=0.0010
+Epoch 150: loss=0.0010
+Epoch 160: loss=0.0010
+Epoch 170: loss=0.0010
+Epoch 180: loss=0.0010
+Epoch 190: loss=0.0010
+Epoch 200: loss=0.0010
+small_test : 0.0001834387704730034, medium_test 1.809939688682556
+value out tensor([[2.2211]], device='cuda:0')
+value hidden tensor([[2.0596],
+        [2.0596],
+        [2.0596],
+        [2.7461],
+        [2.7461],
+        [2.0596],
+        [2.0596],
+        [2.0596],
+        [2.7461],
+        [2.7461],
+        [2.0596],
+        [2.0596],
+        [2.7461],
+        [2.0596],
+        [2.7461],
+        [1.3731],
+        [1.3731]], device='cuda:0')
+graph loss : 0.0002000713866436854
+label tensor([2.2353], device='cuda:0')
+Number of edges: 55
+Number of nodes: 17
+Degrees: [3, 3, 3, 4, 4, 3, 3, 3, 4, 4, 3, 3, 4, 3, 4, 2, 2]
+Weight shape for layer.linear.weight: torch.Size([1, 1])
+Weights for layer.linear.weight: Parameter containing:
+tensor([[0.6865]], device='cuda:0', requires_grad=True)
+Epoch 10: loss=0.0875
+Epoch 20: loss=0.1953
+Epoch 30: loss=0.0447
+Epoch 40: loss=0.0113
+Epoch 50: loss=0.0057
+Epoch 60: loss=0.0042
+Epoch 70: loss=0.0036
+Epoch 80: loss=0.0033
+Epoch 90: loss=0.0032
+Epoch 100: loss=0.0032
+Epoch 110: loss=0.0031
+Epoch 120: loss=0.0031
+Epoch 130: loss=0.0031
+Epoch 140: loss=0.0031
+Epoch 150: loss=0.0031
+Epoch 160: loss=0.0031
+Epoch 170: loss=0.0031
+Epoch 180: loss=0.0031
+Epoch 190: loss=0.0031
+Epoch 200: loss=0.0031
+small_test : 0.0009890937060117722, medium_test 1.5109743776321412
+value out tensor([[2.2741]], device='cuda:0')
+value hidden tensor([[2.1087],
+        [2.1087],
+        [2.1087],
+        [2.8116],
+        [2.8116],
+        [2.1087],
+        [2.1087],
+        [2.1087],
+        [2.8116],
+        [2.8116],
+        [2.1087],
+        [2.1087],
+        [2.8116],
+        [2.1087],
+        [2.8116],
+        [1.4058],
+        [1.4058]], device='cuda:0')
+graph loss : 0.0015024812892079353
+label tensor([2.2353], device='cuda:0')
+Number of edges: 55
+Number of nodes: 17
+Degrees: [3, 3, 3, 4, 4, 3, 3, 3, 4, 4, 3, 3, 4, 3, 4, 2, 2]
+Weight shape for layer.linear.weight: torch.Size([1, 1])
+Weights for layer.linear.weight: Parameter containing:
+tensor([[0.7029]], device='cuda:0', requires_grad=True)
+Epoch 10: loss=0.0512
+Epoch 20: loss=0.0039
+Epoch 30: loss=0.0018
+Epoch 40: loss=0.0010
+Epoch 50: loss=0.0010
+Epoch 60: loss=0.0010
+Epoch 70: loss=0.0010
+Epoch 80: loss=0.0010
+Epoch 90: loss=0.0010
+Epoch 100: loss=0.0010
+Epoch 110: loss=0.0010
+Epoch 120: loss=0.0010
+Epoch 130: loss=0.0010
+Epoch 140: loss=0.0010
+Epoch 150: loss=0.0010
+Epoch 160: loss=0.0010
+Epoch 170: loss=0.0010
+Epoch 180: loss=0.0010
+Epoch 190: loss=0.0010
+Epoch 200: loss=0.0010
+small_test : 0.00019176289439201355, medium_test 1.816515983581543
+value out tensor([[2.2200]], device='cuda:0')
+value hidden tensor([[2.0586],
+        [2.0586],
+        [2.0586],
+        [2.7448],
+        [2.7448],
+        [2.0586],
+        [2.0586],
+        [2.0586],
+        [2.7448],
+        [2.7448],
+        [2.0586],
+        [2.0586],
+        [2.7448],
+        [2.0586],
+        [2.7448],
+        [1.3724],
+        [1.3724]], device='cuda:0')
+graph loss : 0.00023287429939955473
+label tensor([2.2353], device='cuda:0')
+Number of edges: 55
+Number of nodes: 17
+Degrees: [3, 3, 3, 4, 4, 3, 3, 3, 4, 4, 3, 3, 4, 3, 4, 2, 2]
+Weight shape for layer.linear.weight: torch.Size([1, 1])
+Weights for layer.linear.weight: Parameter containing:
+tensor([[0.6862]], device='cuda:0', requires_grad=True)
+Epoch 10: loss=0.0050
+Epoch 20: loss=0.0014
+Epoch 30: loss=0.0011
+Epoch 40: loss=0.0010
+Epoch 50: loss=0.0010
+Epoch 60: loss=0.0010
+Epoch 70: loss=0.0010
+Epoch 80: loss=0.0010
+Epoch 90: loss=0.0010
+Epoch 100: loss=0.0010
+Epoch 110: loss=0.0010
+Epoch 120: loss=0.0010
+Epoch 130: loss=0.0010
+Epoch 140: loss=0.0010
+Epoch 150: loss=0.0010
+Epoch 160: loss=0.0010
+Epoch 170: loss=0.0010
+Epoch 180: loss=0.0010
+Epoch 190: loss=0.0010
+Epoch 200: loss=0.0010
+small_test : 0.0002576525136828423, medium_test 1.8107067136764525
+value out tensor([[2.2210]], device='cuda:0')
+value hidden tensor([[2.0595],
+        [2.0595],
+        [2.0595],
+        [2.7460],
+        [2.7460],
+        [2.0595],
+        [2.0595],
+        [2.0595],
+        [2.7460],
+        [2.7460],
+        [2.0595],
+        [2.0595],
+        [2.7460],
+        [2.0595],
+        [2.7460],
+        [1.3730],
+        [1.3730]], device='cuda:0')
+graph loss : 0.000203818577574566
+label tensor([2.2353], device='cuda:0')
+Number of edges: 55
+Number of nodes: 17
+Degrees: [3, 3, 3, 4, 4, 3, 3, 3, 4, 4, 3, 3, 4, 3, 4, 2, 2]
+Weight shape for layer.linear.weight: torch.Size([1, 1])
+Weights for layer.linear.weight: Parameter containing:
+tensor([[0.6865]], device='cuda:0', requires_grad=True)
+Epoch 10: loss=0.0268
+Epoch 20: loss=0.0015
+Epoch 30: loss=0.0014
+Epoch 40: loss=0.0010
+Epoch 50: loss=0.0010
+Epoch 60: loss=0.0010
+Epoch 70: loss=0.0010
+Epoch 80: loss=0.0010
+Epoch 90: loss=0.0010
+Epoch 100: loss=0.0010
+Epoch 110: loss=0.0010
+Epoch 120: loss=0.0010
+Epoch 130: loss=0.0010
+Epoch 140: loss=0.0010
+Epoch 150: loss=0.0010
+Epoch 160: loss=0.0010
+Epoch 170: loss=0.0010
+Epoch 180: loss=0.0010
+Epoch 190: loss=0.0010
+Epoch 200: loss=0.0010
+small_test : 0.0002776927500963211, medium_test 1.812314531326294
+value out tensor([[2.2207]], device='cuda:0')
+value hidden tensor([[2.0592],
+        [2.0592],
+        [2.0592],
+        [2.7456],
+        [2.7456],
+        [2.0592],
+        [2.0592],
+        [2.0592],
+        [2.7456],
+        [2.7456],
+        [2.0592],
+        [2.0592],
+        [2.7456],
+        [2.0592],
+        [2.7456],
+        [1.3728],
+        [1.3728]], device='cuda:0')
+graph loss : 0.00021171552361920476
+label tensor([2.2353], device='cuda:0')
+Number of edges: 55
+Number of nodes: 17
+Degrees: [3, 3, 3, 4, 4, 3, 3, 3, 4, 4, 3, 3, 4, 3, 4, 2, 2]
+Weight shape for layer.linear.weight: torch.Size([1, 1])
+Weights for layer.linear.weight: Parameter containing:
+tensor([[0.6864]], device='cuda:0', requires_grad=True)
+Epoch 10: loss=0.1269
+Epoch 20: loss=0.0148
+Epoch 30: loss=0.0020
+Epoch 40: loss=0.0011
+Epoch 50: loss=0.0010
+Epoch 60: loss=0.0010
+Epoch 70: loss=0.0010
+Epoch 80: loss=0.0010
+Epoch 90: loss=0.0010
+Epoch 100: loss=0.0010
+Epoch 110: loss=0.0010
+Epoch 120: loss=0.0010
+Epoch 130: loss=0.0010
+Epoch 140: loss=0.0010
+Epoch 150: loss=0.0010
+Epoch 160: loss=0.0010
+Epoch 170: loss=0.0010
+Epoch 180: loss=0.0010
+Epoch 190: loss=0.0010
+Epoch 200: loss=0.0010
+small_test : 0.00019797321408987045, medium_test 1.808314323425293
+value out tensor([[2.2214]], device='cuda:0')
+value hidden tensor([[2.0599],
+        [2.0599],
+        [2.0599],
+        [2.7465],
+        [2.7465],
+        [2.0599],
+        [2.0599],
+        [2.0599],
+        [2.7465],
+        [2.7465],
+        [2.0599],
+        [2.0599],
+        [2.7465],
+        [2.0599],
+        [2.7465],
+        [1.3732],
+        [1.3732]], device='cuda:0')
+graph loss : 0.0001924364478327334
+label tensor([2.2353], device='cuda:0')
+Number of edges: 55
+Number of nodes: 17
+Degrees: [3, 3, 3, 4, 4, 3, 3, 3, 4, 4, 3, 3, 4, 3, 4, 2, 2]
+Weight shape for layer.linear.weight: torch.Size([1, 1])
+Weights for layer.linear.weight: Parameter containing:
+tensor([[0.6866]], device='cuda:0', requires_grad=True)
+Epoch 10: loss=0.0032
+Epoch 20: loss=0.0036
+Epoch 30: loss=0.0010
+Epoch 40: loss=0.0011
+Epoch 50: loss=0.0010
+Epoch 60: loss=0.0010
+Epoch 70: loss=0.0010
+Epoch 80: loss=0.0010
+Epoch 90: loss=0.0010
+Epoch 100: loss=0.0010
+Epoch 110: loss=0.0010
+Epoch 120: loss=0.0010
+Epoch 130: loss=0.0010
+Epoch 140: loss=0.0010
+Epoch 150: loss=0.0010
+Epoch 160: loss=0.0010
+Epoch 170: loss=0.0010
+Epoch 180: loss=0.0010
+Epoch 190: loss=0.0010
+Epoch 200: loss=0.0010
+small_test : 0.0002776432409882545, medium_test 1.8092838983535766
+value out tensor([[2.2213]], device='cuda:0')
+value hidden tensor([[2.0597],
+        [2.0597],
+        [2.0597],
+        [2.7463],
+        [2.7463],
+        [2.0597],
+        [2.0597],
+        [2.0597],
+        [2.7463],
+        [2.7463],
+        [2.0597],
+        [2.0597],
+        [2.7463],
+        [2.0597],
+        [2.7463],
+        [1.3731],
+        [1.3731]], device='cuda:0')
+graph loss : 0.0001970209996215999
+label tensor([2.2353], device='cuda:0')
+Number of edges: 55
+Number of nodes: 17
+Degrees: [3, 3, 3, 4, 4, 3, 3, 3, 4, 4, 3, 3, 4, 3, 4, 2, 2]
+Weight shape for layer.linear.weight: torch.Size([1, 1])
+Weights for layer.linear.weight: Parameter containing:
+tensor([[0.6866]], device='cuda:0', requires_grad=True)
+Epoch 10: loss=0.0590
+Epoch 20: loss=0.0131
+Epoch 30: loss=0.0025
+Epoch 40: loss=0.0011
+Epoch 50: loss=0.0010
+Epoch 60: loss=0.0010
+Epoch 70: loss=0.0010
+Epoch 80: loss=0.0010
+Epoch 90: loss=0.0010
+Epoch 100: loss=0.0010
+Epoch 110: loss=0.0010
+Epoch 120: loss=0.0010
+Epoch 130: loss=0.0010
+Epoch 140: loss=0.0010
+Epoch 150: loss=0.0010
+Epoch 160: loss=0.0010
+Epoch 170: loss=0.0010
+Epoch 180: loss=0.0010
+Epoch 190: loss=0.0010
+Epoch 200: loss=0.0010
+small_test : 0.00014187024906277656, medium_test 1.8145139293670653
+value out tensor([[2.2204]], device='cuda:0')
+value hidden tensor([[2.0589],
+        [2.0589],
+        [2.0589],
+        [2.7452],
+        [2.7452],
+        [2.0589],
+        [2.0589],
+        [2.0589],
+        [2.7452],
+        [2.7452],
+        [2.0589],
+        [2.0589],
+        [2.7452],
+        [2.0589],
+        [2.7452],
+        [1.3726],
+        [1.3726]], device='cuda:0')
+graph loss : 0.00022264185827225447
+label tensor([2.2353], device='cuda:0')
+Number of edges: 55
+Number of nodes: 17
+Degrees: [3, 3, 3, 4, 4, 3, 3, 3, 4, 4, 3, 3, 4, 3, 4, 2, 2]
+Weight shape for layer.linear.weight: torch.Size([1, 1])
+Weights for layer.linear.weight: Parameter containing:
+tensor([[0.6863]], device='cuda:0', requires_grad=True)

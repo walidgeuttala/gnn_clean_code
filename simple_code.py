@@ -72,9 +72,6 @@ num_layers = 1
 loss_name = "MSELoss"
 
 
-
-
-
 # create a DGLDataset for our graphs and labels
 class GraphDataset(DGLDataset):
     '''
@@ -128,7 +125,7 @@ class GraphDataset(DGLDataset):
         #self.device = load_info(info_path)['device']
         self.data_path = data_path
         self.choose_labels(data_path+'/properties_labels.pt')
-        self.add_self_loop()
+        #self.add_self_loop()
         if self.device == 'cuda':
             self.graphs = [g.to(self.device) for g in self.graphs]
             self.labels = self.labels.to(self.device)
@@ -143,7 +140,7 @@ class GraphDataset(DGLDataset):
         for idx in range(len(dataset)):
             self.graphs.append(dataset[idx][0])
         self.choose_labels(f"../data_folder/dgl_graph_labels/{data_name}_properties_labels.pt")
-        self.add_self_loop()
+        #self.add_self_loop()
         if self.device == 'cuda':
             self.graphs = [g.to(self.device) for g in self.graphs]
             self.labels = self.labels.to(self.device)
@@ -158,8 +155,8 @@ class GraphDataset(DGLDataset):
         return os.path.exists(graph_path) and os.path.exists(info_path)
     
     def add_self_loop(self):
-        for graph in self.graphs:
-            graph = graph.add_self_loop()
+        for idx in range(len(self.graphs)):
+            self.graphs[idx] = self.graphs[idx].add_self_loop()
     
     def choose_labels(self, file_path):
         # started from 1 as the first labels is the original label
@@ -194,91 +191,91 @@ class GraphDataset(DGLDataset):
             repeated_degrees = degrees.repeat(1, k) / (g.number_of_nodes() - 1) # Repeat degree 'k' times
             g.ndata['feat'] = repeated_degrees
 
-class MLP(nn.Module):
-    """Construct two-layer MLP-type aggreator for GIN model"""
+import torch
+import torch.nn as nn
+import dgl
+import dgl.function as fn
 
-    def __init__(self, input_dim, hidden_dim, output_dim):
-        super().__init__()
-        self.linears = nn.ModuleList()
-        # two-layer MLP
-        self.linears.append(nn.Linear(input_dim, hidden_dim, bias=False))
-        self.linears.append(nn.Linear(hidden_dim, output_dim, bias=False))
-        #self.batch_norm = nn.BatchNorm1d((hidden_dim))
-        self.relu = nn.ReLU()
-    def forward(self, x):
-        h = x
-        #h = self.batch_norm(self.linears[0](h))
-        h = self.linears[0](h)
-        return self.relu(self.linears[1](h))
+class SimpleGNNLayer(nn.Module):
+    def __init__(self, in_feats, out_feats):
+        super(SimpleGNNLayer, self).__init__()
+        self.linear = nn.Linear(in_feats, out_feats, bias=False)
 
-class MLP2(nn.Module):
-    """Construct two-layer MLP-type aggreator for GIN model"""
+    def forward(self, g, h):
+        with g.local_scope():
+            g.ndata['h'] = h
+            # Use DGL's built-in sum aggregation
+            g.update_all(fn.copy_u('h', 'm'), fn.sum('m', 'h'))
+            h = g.ndata["h"]
+            return self.linear(h)
 
-    def __init__(self, input_dim, hidden_dim, output_dim):
-        super().__init__()
-        # two-layer MLP
-        self.linears = nn.Linear(input_dim, output_dim, bias=False)
+class SimpleGNNLayer2(nn.Module):
+    def __init__(self, in_feats, hidden_dim, out_feats):
+        super(SimpleGNNLayer2, self).__init__()
+        self.linear1 = nn.Linear(in_feats, hidden_dim, bias=False)
+        self.linear2 = nn.Linear(hidden_dim, out_feats, bias=False)
 
-    def forward(self, x):
-        h = self.linears(x)
-        return h
+    def forward(self, g, h):
+        with g.local_scope():
+            g.ndata['h'] = h
+            # Use DGL's built-in sum aggregation
+            g.update_all(fn.copy_u('h', 'm'), fn.sum('m', 'h'))
+            h = g.ndata["h"]
+            h = torch.relu(self.linear1(h))  # Apply first linear layer with ReLU activation
+            h = self.linear2(h)  # Apply second linear layer
+            return h
 
-class GIN(nn.Module):
-    def __init__(self, in_dim,
-                 hidden_dim,
-                 out_dim,
-                 num_layers
-                 ):
-
-        super().__init__()
-        self.ginlayers = nn.ModuleList()
-        #self.batch_norms = nn.ModuleList()
-        self.num_layers = num_layers
-        # five-layer GCN with two-layer MLP aggregator and sum-neighbor-pooling scheme
-        for layer in range(num_layers):  # excluding the input layer
-            if layer == 0:
-                mlp = MLP2(in_dim, hidden_dim, out_dim)
-            elif layer == num_layers-1:
-                mlp = MLP(hidden_dim, hidden_dim, out_dim)
-            else:
-                mlp = MLP(hidden_dim, hidden_dim, hidden_dim)
-            if layer != num_layers-1:
-                self.ginlayers.append(
-                    GINConv(mlp, learn_eps=True)
-                )
-            else:
-                self.ginlayers.append(
-                    GINConv(mlp, learn_eps=True)
-                )
-            # if layer != num_layers-1:
-            #     self.batch_norms.append(nn.BatchNorm1d(hidden_dim))
-        #self.mlp = MLP2(in_dim, hidden_dim, out_dim)
-
-        self.pool = (
-            AvgPooling()
-        )  # change to mean readout (AvgPooling) on social network datasets
+class SingleLayerGNN(nn.Module):
+    def __init__(self, in_dim, hidden_dim, out_dim):
+        super(SingleLayerGNN, self).__init__()
+        self.layer = SimpleGNNLayer2(in_dim, hidden_dim, out_dim)
+        self.pool = (AvgPooling()) 
 
     def forward(self, g):
-        # list of hidden representation at each layer (including the input layer)
-        h = g.ndata["feat"]
-        for idx in range(len(self.ginlayers)):
-            h = self.ginlayers[idx](g, h)
-            # if self.num_layers-1 != idx:
-            #     h = self.batch_norms[idx](h)
-        pooled_h = self.pool(g, h)
-        #pooled_h = self.mlp(pooled_h)
-        return  pooled_h
-    
-    def forward2(self, g):
-        # list of hidden representation at each layer (including the input layer)
-        h = g.ndata["feat"]
-        for idx in range(len(self.ginlayers)):
-            h = self.ginlayers[idx](g, h)
-            # if self.num_layers-1 != idx:
-            #     h = self.batch_norms[idx](h)
-        pooled_h = self.pool(g, h)
-        return  pooled_h, h
+        h = g.ndata['feat']
+        h = self.layer(g, h)
+        h = self.pool(g, h)
+        return h
 
+    def forward2(self, g):
+        h = g.ndata['feat']
+        h = self.layer(g, h)
+        h_pooled = self.pool(g, h)
+        return h_pooled, h
+
+
+class GNN(nn.Module):
+    def __init__(self, in_dim, hidden_dim, out_dim, num_layers):
+        super(GNN, self).__init__()
+        self.num_layers = num_layers
+        self.gnn_layers = nn.ModuleList()
+        for i in range(num_layers):
+            if i == 0:
+                in_dim1 = in_dim 
+            else:
+                in_dim1 = hidden_dim
+            if i+1 == num_layers:
+                out_dim1 = out_dim
+            else:
+                out_dim1 = hidden_dim
+            self.gnn_layers.append(SimpleGNNLayer2(in_dim1, hidden_dim, out_dim1))
+
+        self.pool = (AvgPooling()) 
+
+    def forward(self, g):
+        h = g.ndata['feat']
+        for i in range(num_layers):
+            h = self.gnn_layers[i](g, h)
+        h = self.pool(g, h)
+        return h
+
+    def forward2(self, g):
+        h = g.ndata['feat']
+        for i in range(num_layers):
+            h = self.gnn_layers[i](g, h)
+        h_pooled = self.pool(g, h)
+        return h_pooled, h
+    
 
 def train(model: torch.nn.Module, optimizer, trainloader):
     model.train()
@@ -312,6 +309,23 @@ def test_regression(model: torch.nn.Module, loader):
         loss += loss_func(out, batch_labels).item()
 
     return loss / num_graphs
+
+@torch.no_grad()
+def test_regression2(model: torch.nn.Module, loader):
+    model.eval()
+    loss = 0.0
+    num_graphs = 0
+    loss_func = getattr(F, loss_name)(reduction="sum")
+    for batch in loader:
+        batch_graphs, batch_labels = batch
+        num_graphs += 1
+        out, hidden = model.forward2(batch_graphs)
+        print("value out", out)
+        print("value hidden", hidden)
+        loss += loss_func(out, batch_labels).item()
+        break
+    return loss / num_graphs
+
 import numpy as np
 import matplotlib.pyplot as plt
 import networkx as nx
@@ -407,8 +421,8 @@ def main(seed=1):
     set_random_seed(seed)
     dataset = GraphDataset(device=device)
     dataset2 = GraphDataset(device=device)
-    dataset.load2("MUTAG")
-    dataset2.load(dataset_path)
+    dataset2.load2("MUTAG")
+    dataset.load(dataset_path)
     getattr(dataset, f'add_{feat_type}')(k)
     getattr(dataset2, f'add_{feat_type}')(k)
     
@@ -425,6 +439,7 @@ def main(seed=1):
     test_loader_samples = GraphDataLoader(test_set, batch_size=samples, shuffle=True)
     test_loader2_samples = GraphDataLoader(dataset2, batch_size=samples, shuffle=True)
 
+    test_graph = GraphDataLoader(dataset, batch_size=1, shuffle=False)
 
     # normalizer = GraphFeatureNormalizer()
     # normalizer.fit_transform(train_loader)
@@ -435,11 +450,11 @@ def main(seed=1):
     num_feature, num_classes = k, 1
     set_random_seed(seed)
     
-    model = GIN(
-        in_dim=num_feature,
-        hidden_dim=hidden_dim,
-        out_dim=num_classes,
-        num_layers=num_layers,
+    model = GNN(
+        1,
+        8,
+        1,
+        3
     ).to(device)
 
     # Step 3: Create training components ===================================================== #
@@ -463,8 +478,23 @@ def main(seed=1):
     test_acc = test_regression(model, test_loader)
     test_acc2 = test_regression(model, test_loader2)
     print(f"small_test : {test_acc}, medium_test {test_acc2}")
+    graph_loss = test_regression2(model, test_graph)
+    print(f'graph loss : {graph_loss}')
+    graph = dataset[0][0]
+    print("label", dataset[0][1])
+    # Print the number of edges and nodes
+    print("Number of edges:", graph.number_of_edges())
+    print("Number of nodes:", graph.number_of_nodes())
 
-    
+    # Compute the degree of each node
+    degrees = graph.in_degrees()
+
+    # Print the degrees as a list in one line
+    print("Degrees:", degrees.tolist())
+
+
+
+
     for name, param in model.named_parameters():
         if 'weight' in name:
             print(f'Weight shape for {name}: {param.shape}')

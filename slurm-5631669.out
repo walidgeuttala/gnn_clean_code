@@ -1,0 +1,29 @@
+Epoch 10: loss=0.0110
+Epoch 20: loss=0.0009
+Epoch 30: loss=0.0014
+Epoch 40: loss=0.0009
+Epoch 50: loss=0.0008
+Epoch 60: loss=0.0008
+Epoch 70: loss=0.0008
+Epoch 80: loss=0.0008
+Epoch 90: loss=0.0008
+Epoch 100: loss=0.0008
+Epoch 110: loss=0.0008
+Epoch 120: loss=0.0008
+Epoch 130: loss=0.0008
+Epoch 140: loss=0.0008
+Epoch 150: loss=0.0008
+Epoch 160: loss=0.0008
+Epoch 170: loss=0.0008
+Epoch 180: loss=0.0008
+Epoch 190: loss=0.0008
+Epoch 200: loss=0.0008
+small_test : 0.00031572718173265455, medium_test 1.5266793575286866
+value out tensor([[2.2221]], device='cuda:0')
+graph loss : 0.00017321672930847853
+label tensor([2.2353], device='cuda:0')
+Number of edges: 38
+Number of nodes: 17
+Weight shape for ginlayers.0.apply_func.linears.weight: torch.Size([1, 1])
+Weights for ginlayers.0.apply_func.linears.weight: Parameter containing:
+tensor([[0.7121]], device='cuda:0', requires_grad=True)
