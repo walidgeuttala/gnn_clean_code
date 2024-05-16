@@ -1,0 +1,51 @@
+/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/torch/nn/modules/loss.py:535: UserWarning: Using a target size (torch.Size([100, 1])) that is different to the input size (torch.Size([100, 8])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  return F.mse_loss(input, target, reduction=self.reduction)
+/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/torch/nn/modules/loss.py:535: UserWarning: Using a target size (torch.Size([88, 1])) that is different to the input size (torch.Size([88, 8])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  return F.mse_loss(input, target, reduction=self.reduction)
+Epoch 10: loss=0.0000
+Epoch 20: loss=0.0000
+Epoch 30: loss=0.0000
+Epoch 40: loss=0.0000
+Epoch 50: loss=0.0000
+Epoch 60: loss=0.0000
+Epoch 70: loss=0.0000
+Epoch 80: loss=0.0000
+Epoch 90: loss=0.0000
+Epoch 100: loss=0.0000
+Epoch 110: loss=0.0000
+Epoch 120: loss=0.0000
+Epoch 130: loss=0.0000
+Epoch 140: loss=0.0000
+Epoch 150: loss=0.0000
+Epoch 160: loss=0.0000
+Epoch 170: loss=0.0000
+Epoch 180: loss=0.0000
+Epoch 190: loss=0.0000
+Epoch 200: loss=0.0000
+small_test : 9.54219103732612e-07, medium_test 1.023999629978789e-07
+
+field : Social networks
+
+label :  21.845504760742188
+tensor(21.8453, device='cuda:0')
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+Traceback (most recent call last):
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code.py", line 515, in <module>
+    main(i)
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code.py", line 483, in main
+    run_real_networks(model)
+  File "/project/p_gnn001/code/gnn_clean_code/test_stanford_networks.py", line 848, in run_real_networks
+    test_networks_simple(model, result, real_network_folder)
+  File "/project/p_gnn001/code/gnn_clean_code/test_stanford_networks.py", line 805, in test_networks_simple
+    value = test_network_diff_nfeat_simple(model, graph, name)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 115, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/project/p_gnn001/code/gnn_clean_code/test_stanford_networks.py", line 780, in test_network_diff_nfeat_simple
+    print("loss : ",torch.nn.functional.mse_loss(result[0][0].cpu(), label))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/torch/nn/functional.py", line 3328, in mse_loss
+    if not (target.size() == input.size()):
+            ^^^^^^^^^^^
+AttributeError: 'float' object has no attribute 'size'

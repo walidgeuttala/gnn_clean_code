@@ -1,0 +1,650 @@
+Epoch 10: loss=0.0000
+Epoch 20: loss=0.0000
+Epoch 30: loss=0.0000
+Epoch 40: loss=0.0000
+Epoch 50: loss=0.0000
+Epoch 60: loss=0.0000
+Epoch 70: loss=0.0000
+Epoch 80: loss=0.0000
+Epoch 90: loss=0.0000
+Epoch 100: loss=0.0000
+Epoch 110: loss=0.0000
+Epoch 120: loss=0.0000
+Epoch 130: loss=0.0000
+Epoch 140: loss=0.0000
+Epoch 150: loss=0.0000
+Epoch 160: loss=0.0000
+Epoch 170: loss=0.0000
+Epoch 180: loss=0.0000
+Epoch 190: loss=0.0000
+Epoch 200: loss=0.0000
+validation : 7.063486191327684e-07, MUTAG 8.504013749188743e-08, Muedim test 7.579999510198832e-07
+
+field : Social networks
+
+loss : 21.8428 
+
+loss : 14.5713 
+
+
+field : Networks with ground-truth communities
+
+loss : 25.4404 
+
+
+field : Internet peer-to-peer networks
+
+loss : 3.6770 
+
+loss : 3.2971 
+
+
+field : Collaboration networks
+
+loss : 5.5278 
+
+loss : 1.8488 
+loss : 5.8561 
+loss : 3.2403 
+loss : 3.4507 
+loss : 3.4211 
+loss : 4.5876 
+loss : 6.5965 
+loss : 7.5883 
+loss : 10.6594 
+loss : 5.1283 
+loss : 8.3989 
+loss : 3.7674 
+loss : 2.6688 
+loss : 35.0721 
+loss : 45.2160 
+Done loading data from cached files.
+loss : 1.3849 
+Done loading data from cached files.
+loss : 1.1089 
+loss of real network :  4.0289650760759406e-06
+Epoch 10: loss=0.0000
+Epoch 20: loss=0.0000
+Epoch 30: loss=0.0000
+Epoch 40: loss=0.0000
+Epoch 50: loss=0.0000
+Epoch 60: loss=0.0000
+Epoch 70: loss=0.0000
+Epoch 80: loss=0.0000
+Epoch 90: loss=0.0000
+Epoch 100: loss=0.0000
+Epoch 110: loss=0.0000
+Epoch 120: loss=0.0000
+Epoch 130: loss=0.0000
+Epoch 140: loss=0.0000
+Epoch 150: loss=0.0000
+Epoch 160: loss=0.0000
+Epoch 170: loss=0.0000
+Epoch 180: loss=0.0000
+Epoch 190: loss=0.0000
+Epoch 200: loss=0.0000
+validation : 5.251743095868733e-07, MUTAG 6.565667490576743e-08, Muedim test 5.40781902600429e-07
+
+field : Social networks
+
+loss : 21.8432 
+
+loss : 14.5716 
+
+
+field : Networks with ground-truth communities
+
+loss : 25.4408 
+
+
+field : Internet peer-to-peer networks
+
+loss : 3.6770 
+
+loss : 3.2972 
+
+
+field : Collaboration networks
+
+loss : 5.5279 
+
+loss : 1.8489 
+loss : 5.8562 
+loss : 3.2404 
+loss : 3.4508 
+loss : 3.4211 
+loss : 4.5877 
+loss : 6.5966 
+loss : 7.5884 
+loss : 10.6596 
+loss : 5.1284 
+loss : 8.3990 
+loss : 3.7675 
+loss : 2.6689 
+loss : 35.0727 
+loss : 45.2168 
+Done loading data from cached files.
+loss : 1.3849 
+Done loading data from cached files.
+loss : 1.1089 
+loss of real network :  3.0828910126956544e-06
+Epoch 10: loss=0.0000
+Epoch 20: loss=0.0000
+Epoch 30: loss=0.0000
+Epoch 40: loss=0.0000
+Epoch 50: loss=0.0000
+Epoch 60: loss=0.0000
+Epoch 70: loss=0.0000
+Epoch 80: loss=0.0000
+Epoch 90: loss=0.0000
+Epoch 100: loss=0.0000
+Epoch 110: loss=0.0000
+Epoch 120: loss=0.0000
+Epoch 130: loss=0.0000
+Epoch 140: loss=0.0000
+Epoch 150: loss=0.0000
+Epoch 160: loss=0.0000
+Epoch 170: loss=0.0000
+Epoch 180: loss=0.0000
+Epoch 190: loss=0.0000
+Epoch 200: loss=0.0000
+validation : 5.4586356782238e-07, MUTAG 6.687012955808314e-08, Muedim test 5.413789131125668e-07
+
+field : Social networks
+
+loss : 21.8432 
+
+loss : 14.5716 
+
+
+field : Networks with ground-truth communities
+
+loss : 25.4408 
+
+
+field : Internet peer-to-peer networks
+
+loss : 3.6770 
+
+loss : 3.2972 
+
+
+field : Collaboration networks
+
+loss : 5.5279 
+
+loss : 1.8489 
+loss : 5.8562 
+loss : 3.2404 
+loss : 3.4508 
+loss : 3.4211 
+loss : 4.5877 
+loss : 6.5966 
+loss : 7.5884 
+loss : 10.6596 
+loss : 5.1284 
+loss : 8.3990 
+loss : 3.7675 
+loss : 2.6689 
+loss : 35.0727 
+loss : 45.2167 
+Done loading data from cached files.
+loss : 1.3849 
+Done loading data from cached files.
+loss : 1.1089 
+loss of real network :  3.1127413597400646e-06
+Epoch 10: loss=0.0000
+Epoch 20: loss=0.0000
+Epoch 30: loss=0.0000
+Epoch 40: loss=0.0000
+Epoch 50: loss=0.0000
+Epoch 60: loss=0.0000
+Epoch 70: loss=0.0000
+Epoch 80: loss=0.0000
+Epoch 90: loss=0.0000
+Epoch 100: loss=0.0000
+Epoch 110: loss=0.0000
+Epoch 120: loss=0.0000
+Epoch 130: loss=0.0000
+Epoch 140: loss=0.0000
+Epoch 150: loss=0.0000
+Epoch 160: loss=0.0000
+Epoch 170: loss=0.0000
+Epoch 180: loss=0.0000
+Epoch 190: loss=0.0000
+Epoch 200: loss=0.0000
+validation : 4.395168252813164e-07, MUTAG 5.0672690576902825e-08, Muedim test 4.785981036548038e-07
+
+field : Social networks
+
+loss : 21.8435 
+
+loss : 14.5718 
+
+
+field : Networks with ground-truth communities
+
+loss : 25.4412 
+
+
+field : Internet peer-to-peer networks
+
+loss : 3.6771 
+
+loss : 3.2972 
+
+
+field : Collaboration networks
+
+loss : 5.5280 
+
+loss : 1.8489 
+loss : 5.8563 
+loss : 3.2404 
+loss : 3.4509 
+loss : 3.4212 
+loss : 4.5877 
+loss : 6.5967 
+loss : 7.5885 
+loss : 10.6597 
+loss : 5.1285 
+loss : 8.3991 
+loss : 3.7675 
+loss : 2.6689 
+loss : 35.0732 
+loss : 45.2174 
+Done loading data from cached files.
+loss : 1.3849 
+Done loading data from cached files.
+loss : 1.1090 
+loss of real network :  2.3756927503101273e-06
+Epoch 10: loss=0.0000
+Epoch 20: loss=0.0000
+Epoch 30: loss=0.0000
+Epoch 40: loss=0.0000
+Epoch 50: loss=0.0000
+Epoch 60: loss=0.0000
+Epoch 70: loss=0.0000
+Epoch 80: loss=0.0000
+Epoch 90: loss=0.0000
+Epoch 100: loss=0.0000
+Epoch 110: loss=0.0000
+Epoch 120: loss=0.0000
+Epoch 130: loss=0.0000
+Epoch 140: loss=0.0000
+Epoch 150: loss=0.0000
+Epoch 160: loss=0.0000
+Epoch 170: loss=0.0000
+Epoch 180: loss=0.0000
+Epoch 190: loss=0.0000
+Epoch 200: loss=0.0000
+validation : 7.217690654215403e-07, MUTAG 8.659650120534934e-08, Muedim test 7.863668542995583e-07
+
+field : Social networks
+
+loss : 21.8428 
+
+loss : 14.5713 
+
+
+field : Networks with ground-truth communities
+
+loss : 25.4403 
+
+
+field : Internet peer-to-peer networks
+
+loss : 3.6770 
+
+loss : 3.2971 
+
+
+field : Collaboration networks
+
+loss : 5.5278 
+
+loss : 1.8488 
+loss : 5.8561 
+loss : 3.2403 
+loss : 3.4507 
+loss : 3.4211 
+loss : 4.5876 
+loss : 6.5965 
+loss : 7.5882 
+loss : 10.6594 
+loss : 5.1283 
+loss : 8.3988 
+loss : 3.7674 
+loss : 2.6688 
+loss : 35.0721 
+loss : 45.2160 
+Done loading data from cached files.
+loss : 1.3849 
+Done loading data from cached files.
+loss : 1.1089 
+loss of real network :  4.09495452256282e-06
+Epoch 10: loss=0.0000
+Epoch 20: loss=0.0000
+Epoch 30: loss=0.0000
+Epoch 40: loss=0.0000
+Epoch 50: loss=0.0000
+Epoch 60: loss=0.0000
+Epoch 70: loss=0.0000
+Epoch 80: loss=0.0000
+Epoch 90: loss=0.0000
+Epoch 100: loss=0.0000
+Epoch 110: loss=0.0000
+Epoch 120: loss=0.0000
+Epoch 130: loss=0.0000
+Epoch 140: loss=0.0000
+Epoch 150: loss=0.0000
+Epoch 160: loss=0.0000
+Epoch 170: loss=0.0000
+Epoch 180: loss=0.0000
+Epoch 190: loss=0.0000
+Epoch 200: loss=0.0000
+validation : 6.438714262912981e-07, MUTAG 8.140166755765677e-08, Muedim test 7.352902139245998e-07
+
+field : Social networks
+
+loss : 21.8428 
+
+loss : 14.5714 
+
+
+field : Networks with ground-truth communities
+
+loss : 25.4404 
+
+
+field : Internet peer-to-peer networks
+
+loss : 3.6770 
+
+loss : 3.2971 
+
+
+field : Collaboration networks
+
+loss : 5.5278 
+
+loss : 1.8488 
+loss : 5.8561 
+loss : 3.2403 
+loss : 3.4507 
+loss : 3.4211 
+loss : 4.5876 
+loss : 6.5965 
+loss : 7.5883 
+loss : 10.6594 
+loss : 5.1283 
+loss : 8.3989 
+loss : 3.7674 
+loss : 2.6688 
+loss : 35.0722 
+loss : 45.2162 
+Done loading data from cached files.
+loss : 1.3849 
+Done loading data from cached files.
+loss : 1.1089 
+loss of real network :  3.861273850455528e-06
+Epoch 10: loss=0.0000
+Epoch 20: loss=0.0000
+Epoch 30: loss=0.0000
+Epoch 40: loss=0.0000
+Epoch 50: loss=0.0000
+Epoch 60: loss=0.0000
+Epoch 70: loss=0.0000
+Epoch 80: loss=0.0000
+Epoch 90: loss=0.0000
+Epoch 100: loss=0.0000
+Epoch 110: loss=0.0000
+Epoch 120: loss=0.0000
+Epoch 130: loss=0.0000
+Epoch 140: loss=0.0000
+Epoch 150: loss=0.0000
+Epoch 160: loss=0.0000
+Epoch 170: loss=0.0000
+Epoch 180: loss=0.0000
+Epoch 190: loss=0.0000
+Epoch 200: loss=0.0000
+validation : 5.117350337968674e-07, MUTAG 5.6967674026964235e-08, Muedim test 5.184112524148076e-07
+
+field : Social networks
+
+loss : 21.8433 
+
+loss : 14.5717 
+
+
+field : Networks with ground-truth communities
+
+loss : 25.4410 
+
+
+field : Internet peer-to-peer networks
+
+loss : 3.6771 
+
+loss : 3.2972 
+
+
+field : Collaboration networks
+
+loss : 5.5279 
+
+loss : 1.8489 
+loss : 5.8563 
+loss : 3.2404 
+loss : 3.4509 
+loss : 3.4212 
+loss : 4.5877 
+loss : 6.5967 
+loss : 7.5884 
+loss : 10.6597 
+loss : 5.1285 
+loss : 8.3991 
+loss : 3.7675 
+loss : 2.6689 
+loss : 35.0730 
+loss : 45.2171 
+Done loading data from cached files.
+loss : 1.3849 
+Done loading data from cached files.
+loss : 1.1089 
+loss of real network :  2.6825703913672165e-06
+Epoch 10: loss=0.0000
+Epoch 20: loss=0.0000
+Epoch 30: loss=0.0000
+Epoch 40: loss=0.0000
+Epoch 50: loss=0.0000
+Epoch 60: loss=0.0000
+Epoch 70: loss=0.0000
+Epoch 80: loss=0.0000
+Epoch 90: loss=0.0000
+Epoch 100: loss=0.0000
+Epoch 110: loss=0.0000
+Epoch 120: loss=0.0000
+Epoch 130: loss=0.0000
+Epoch 140: loss=0.0000
+Epoch 150: loss=0.0000
+Epoch 160: loss=0.0000
+Epoch 170: loss=0.0000
+Epoch 180: loss=0.0000
+Epoch 190: loss=0.0000
+Epoch 200: loss=0.0000
+validation : 5.477488957694732e-07, MUTAG 6.471442020483665e-08, Muedim test 5.399151996243745e-07
+
+field : Social networks
+
+loss : 21.8432 
+
+loss : 14.5716 
+
+
+field : Networks with ground-truth communities
+
+loss : 25.4408 
+
+
+field : Internet peer-to-peer networks
+
+loss : 3.6770 
+
+loss : 3.2972 
+
+
+field : Collaboration networks
+
+loss : 5.5279 
+
+loss : 1.8489 
+loss : 5.8562 
+loss : 3.2404 
+loss : 3.4508 
+loss : 3.4211 
+loss : 4.5877 
+loss : 6.5966 
+loss : 7.5884 
+loss : 10.6596 
+loss : 5.1284 
+loss : 8.3990 
+loss : 3.7675 
+loss : 2.6689 
+loss : 35.0727 
+loss : 45.2168 
+Done loading data from cached files.
+loss : 1.3849 
+Done loading data from cached files.
+loss : 1.1089 
+loss of real network :  3.05624707501149e-06
+Epoch 10: loss=0.0000
+Epoch 20: loss=0.0000
+Epoch 30: loss=0.0000
+Epoch 40: loss=0.0000
+Epoch 50: loss=0.0000
+Epoch 60: loss=0.0000
+Epoch 70: loss=0.0000
+Epoch 80: loss=0.0000
+Epoch 90: loss=0.0000
+Epoch 100: loss=0.0000
+Epoch 110: loss=0.0000
+Epoch 120: loss=0.0000
+Epoch 130: loss=0.0000
+Epoch 140: loss=0.0000
+Epoch 150: loss=0.0000
+Epoch 160: loss=0.0000
+Epoch 170: loss=0.0000
+Epoch 180: loss=0.0000
+Epoch 190: loss=0.0000
+Epoch 200: loss=0.0000
+validation : 5.742138091591187e-07, MUTAG 6.716006964779808e-08, Muedim test 5.414185761765111e-07
+
+field : Social networks
+
+loss : 21.8432 
+
+loss : 14.5716 
+
+
+field : Networks with ground-truth communities
+
+loss : 25.4408 
+
+
+field : Internet peer-to-peer networks
+
+loss : 3.6770 
+
+loss : 3.2972 
+
+
+field : Collaboration networks
+
+loss : 5.5279 
+
+loss : 1.8489 
+loss : 5.8562 
+loss : 3.2404 
+loss : 3.4508 
+loss : 3.4211 
+loss : 4.5877 
+loss : 6.5966 
+loss : 7.5884 
+loss : 10.6596 
+loss : 5.1284 
+loss : 8.3990 
+loss : 3.7675 
+loss : 2.6689 
+loss : 35.0727 
+loss : 45.2167 
+Done loading data from cached files.
+loss : 1.3849 
+Done loading data from cached files.
+loss : 1.1089 
+loss of real network :  3.114239149226705e-06
+Epoch 10: loss=0.0000
+Epoch 20: loss=0.0000
+Epoch 30: loss=0.0000
+Epoch 40: loss=0.0000
+Epoch 50: loss=0.0000
+Epoch 60: loss=0.0000
+Epoch 70: loss=0.0000
+Epoch 80: loss=0.0000
+Epoch 90: loss=0.0000
+Epoch 100: loss=0.0000
+Epoch 110: loss=0.0000
+Epoch 120: loss=0.0000
+Epoch 130: loss=0.0000
+Epoch 140: loss=0.0000
+Epoch 150: loss=0.0000
+Epoch 160: loss=0.0000
+Epoch 170: loss=0.0000
+Epoch 180: loss=0.0000
+Epoch 190: loss=0.0000
+Epoch 200: loss=0.0000
+validation : 7.709752389928326e-07, MUTAG 8.429924946540269e-08, Muedim test 7.574133451271337e-07
+
+field : Social networks
+
+loss : 21.8428 
+
+loss : 14.5713 
+
+
+field : Networks with ground-truth communities
+
+loss : 25.4404 
+
+
+field : Internet peer-to-peer networks
+
+loss : 3.6770 
+
+loss : 3.2971 
+
+
+field : Collaboration networks
+
+loss : 5.5278 
+
+loss : 1.8488 
+loss : 5.8561 
+loss : 3.2403 
+loss : 3.4507 
+loss : 3.4211 
+loss : 4.5876 
+loss : 6.5965 
+loss : 7.5883 
+loss : 10.6594 
+loss : 5.1283 
+loss : 8.3989 
+loss : 3.7674 
+loss : 2.6688 
+loss : 35.0721 
+loss : 45.2160 
+Done loading data from cached files.
+loss : 1.3849 
+Done loading data from cached files.
+loss : 1.1089 
+loss of real network :  3.999171599636374e-06

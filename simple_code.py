@@ -66,7 +66,7 @@ batch_size = 100
 optimizer_name = "Adam"
 lr = 0.1
 weight_decay = 0.95
-epochs = 200
+epochs = 100
 hidden_dim = 1
 num_layers = 1
 loss_name = "MSELoss"
@@ -125,7 +125,7 @@ class GraphDataset(DGLDataset):
         #self.device = load_info(info_path)['device']
         self.data_path = data_path
         self.choose_labels(data_path+'/properties_labels.pt')
-        #self.add_self_loop()
+        self.add_self_loop()
         if self.device == 'cuda':
             self.graphs = [g.to(self.device) for g in self.graphs]
             self.labels = self.labels.to(self.device)
@@ -140,7 +140,7 @@ class GraphDataset(DGLDataset):
         for idx in range(len(dataset)):
             self.graphs.append(dataset[idx][0])
         self.choose_labels(f"../data_folder/dgl_graph_labels/{data_name}_properties_labels.pt")
-        #self.add_self_loop()
+        self.add_self_loop()
         if self.device == 'cuda':
             self.graphs = [g.to(self.device) for g in self.graphs]
             self.labels = self.labels.to(self.device)
@@ -162,6 +162,7 @@ class GraphDataset(DGLDataset):
         # started from 1 as the first labels is the original label
         self.labels = torch.load(file_path)
         self.labels = self.labels[-1].view(-1, 1).float()
+        self.labels += 1
 
     def add_ones_feat(self, k):
         self.dim_nfeats = k
@@ -195,6 +196,7 @@ import torch
 import torch.nn as nn
 import dgl
 import dgl.function as fn
+from dgl.nn.pytorch.conv import GINConv
 
 class SimpleGNNLayer(nn.Module):
     def __init__(self, in_feats, out_feats):
@@ -243,6 +245,20 @@ class SingleLayerGNN(nn.Module):
         h_pooled = self.pool(g, h)
         return h_pooled, h
 
+class MLP(nn.Module):
+    """Construct two-layer MLP-type aggreator for GIN model"""
+
+    def __init__(self, input_dim, hidden_dim, output_dim):
+        super().__init__()
+        self.linears = nn.ModuleList()
+        # two-layer MLP
+        self.linears.append(nn.Linear(input_dim, hidden_dim, bias=False))
+        self.linears.append(nn.Linear(hidden_dim, output_dim, bias=False))
+        self.relu = nn.ReLU()
+    def forward(self, x):
+        h = x
+        h = self.relu(self.linears[0](h))
+        return self.linears[1](h)
 
 class GNN(nn.Module):
     def __init__(self, in_dim, hidden_dim, out_dim, num_layers):
@@ -258,7 +274,7 @@ class GNN(nn.Module):
                 out_dim1 = out_dim
             else:
                 out_dim1 = hidden_dim
-            self.gnn_layers.append(SimpleGNNLayer2(in_dim1, hidden_dim, out_dim1))
+            self.gnn_layers.append(GINConv(MLP(in_dim1, hidden_dim, out_dim1)))
 
         self.pool = (AvgPooling()) 
 
@@ -269,12 +285,12 @@ class GNN(nn.Module):
         h = self.pool(g, h)
         return h
 
-    def forward2(self, g):
-        h = g.ndata['feat']
-        for i in range(num_layers):
-            h = self.gnn_layers[i](g, h)
-        h_pooled = self.pool(g, h)
-        return h_pooled, h
+    # def forward2(self, g):
+    #     h = g.ndata['feat']
+    #     for i in range(num_layers):
+    #         h = self.gnn_layers[i](g, h)
+    #     h_pooled = self.pool(g, h)
+    #     return h_pooled, h
     
 
 def train(model: torch.nn.Module, optimizer, trainloader):
@@ -414,6 +430,7 @@ def test_regression_sample(model: torch.nn.Module, loader, samples):
 
     print("loss of the samples : ", loss / num_graphs)
     
+from test_stanford_networks import run_real_networks
 
 def main(seed=1):
     samples = 10
@@ -421,12 +438,15 @@ def main(seed=1):
     set_random_seed(seed)
     dataset = GraphDataset(device=device)
     dataset2 = GraphDataset(device=device)
+    dataset3 = GraphDataset(device=device)
     dataset2.load2("MUTAG")
     dataset.load(dataset_path)
+    dataset3.load("../data_folder/test")
     getattr(dataset, f'add_{feat_type}')(k)
     getattr(dataset2, f'add_{feat_type}')(k)
-    
+    getattr(dataset3, f'add_{feat_type}')(k)
     test_loader2 = GraphDataLoader(dataset2, batch_size=batch_size, shuffle=False)
+    test_loader3 = GraphDataLoader(dataset3, batch_size=batch_size, shuffle=False)
     num_training = int(len(dataset) * 0.9)
     num_val = int(len(dataset) * 0.)
     num_test = len(dataset) - num_val - num_training
@@ -449,12 +469,12 @@ def main(seed=1):
     # Step 2: Create model =================================================================== #
     num_feature, num_classes = k, 1
     set_random_seed(seed)
-    
+    #in_dim, hidden_dim, out_dim, num_layers):
     model = GNN(
         1,
         8,
         1,
-        3
+        4
     ).to(device)
 
     # Step 3: Create training components ===================================================== #
@@ -465,6 +485,7 @@ def main(seed=1):
 
     # Step 4: training epoches =============================================================== #
     train_times = []
+    train_loss = 0
     for e in range(epochs):
         s_time = time()
         train_loss = train(model, optimizer, train_loader)
@@ -472,41 +493,53 @@ def main(seed=1):
         train_times.append(time() - s_time)
 
         if (e + 1) % 10 == 0:
-            log_format = ("Epoch {}: loss={:.4f}")
+            log_format = ("Epoch {}: loss={:f}")
             print(log_format.format(e + 1, train_loss))
    
     test_acc = test_regression(model, test_loader)
     test_acc2 = test_regression(model, test_loader2)
-    print(f"small_test : {test_acc}, medium_test {test_acc2}")
-    graph_loss = test_regression2(model, test_graph)
-    print(f'graph loss : {graph_loss}')
-    graph = dataset[0][0]
-    print("label", dataset[0][1])
-    # Print the number of edges and nodes
-    print("Number of edges:", graph.number_of_edges())
-    print("Number of nodes:", graph.number_of_nodes())
+    test_acc3 = test_regression(model, test_loader3)
+    print(f"validation : {test_acc}, MUTAG {test_acc2}, Muedim test {test_acc3}")
 
-    # Compute the degree of each node
-    degrees = graph.in_degrees()
+    real_loss = run_real_networks(model)
+    # graph_loss = test_regression2(model, test_graph)
+    # print(f'graph loss : {graph_loss}')
+    # graph = dataset[0][0]
+    # print("label", dataset[0][1])
+    # # Print the number of edges and nodes
+    # print("Number of edges:", graph.number_of_edges())
+    # print("Number of nodes:", graph.number_of_nodes())
 
-    # Print the degrees as a list in one line
-    print("Degrees:", degrees.tolist())
+    # # Compute the degree of each node
+    # degrees = graph.in_degrees()
+
+    # # Print the degrees as a list in one line
+    # print("Degrees:", degrees.tolist())
 
 
 
 
-    for name, param in model.named_parameters():
-        if 'weight' in name:
-            print(f'Weight shape for {name}: {param.shape}')
-            print(f'Weights for {name}: {param}')
-        elif 'bias' in name:
-            print(f'Bias shape for {name}: {param.shape}')
-            print(f'Biases for {name}: {param}')
+    # for name, param in model.named_parameters():
+    #     if 'weight' in name:
+    #         print(f'Weight shape for {name}: {param.shape}')
+    #         print(f'Weights for {name}: {param}')
+    #     elif 'bias' in name:
+    #         print(f'Bias shape for {name}: {param.shape}')
+    #         print(f'Biases for {name}: {param}')
 
     # test_regression_sample(model, test_loader_samples, samples)
 
-    return test_acc, test_acc2, sum(train_times) / len(train_times)
+    return train_loss, test_acc, test_acc2, test_acc3, real_loss
 
 if __name__ == "__main__":
-    for i in range(10):
-        main(i)
+    x1 = x2 =  x3 = x4 = x5 = 0
+    trials = 10
+    for i in range(trials):
+        train_loss, test_acc, test_acc2, test_acc3, test_acc4 = main(i)
+        x1 += train_loss
+        x2 += test_acc
+        x3 += test_acc2
+        x4 += test_acc3
+        x5 += test_acc4
+    
+    print(x1/trials,"    ",x2/trials,"    ",x3/trials,"    ",x4/trials, "    ",x5/trials)

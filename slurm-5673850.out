@@ -1,0 +1,151 @@
+Epoch 10: loss=0.0000
+Epoch 20: loss=0.0000
+Epoch 30: loss=0.0000
+Epoch 40: loss=0.0000
+Epoch 50: loss=0.0000
+Epoch 60: loss=0.0000
+Epoch 70: loss=0.0000
+Epoch 80: loss=0.0000
+Epoch 90: loss=0.0000
+Epoch 100: loss=0.0000
+Epoch 110: loss=0.0000
+Epoch 120: loss=0.0000
+Epoch 130: loss=0.0000
+Epoch 140: loss=0.0000
+Epoch 150: loss=0.0000
+Epoch 160: loss=0.0000
+Epoch 170: loss=0.0000
+Epoch 180: loss=0.0000
+Epoch 190: loss=0.0000
+Epoch 200: loss=0.0000
+small_test : 7.063486191327684e-07, medium_test 8.504013749188743e-08
+
+field : Social networks
+
+label :  21.845504760742188
+tensor(21.8428, device='cuda:0')
+loss : 21.8428 
+loss :  7.325292244786397e-06
+
+label :  14.573295593261719
+tensor(14.5713, device='cuda:0')
+loss : 14.5713 
+loss :  3.8520411180797964e-06
+
+
+field : Networks with ground-truth communities
+
+label :  25.443782806396484
+tensor(25.4404, device='cuda:0')
+loss : 25.4404 
+loss :  1.1669475497910753e-05
+
+
+field : Internet peer-to-peer networks
+
+label :  3.6772711277008057
+tensor(3.6770, device='cuda:0')
+loss : 3.6770 
+loss :  8.253806527136476e-08
+
+label :  3.2974131107330322
+tensor(3.2971, device='cuda:0')
+loss : 3.2971 
+loss :  1.051375875249505e-07
+
+
+field : Collaboration networks
+
+label :  5.528424263000488
+tensor(5.5278, device='cuda:0')
+loss : 5.5278 
+loss :  3.860370725305984e-07
+
+label :  1.849096655845642
+tensor(1.8488, device='cuda:0')
+loss : 1.8488 
+loss :  8.74024408403784e-08
+label :  5.85684061050415
+tensor(5.8561, device='cuda:0')
+loss : 5.8561 
+loss :  5.547562977881171e-07
+label :  3.2406375408172607
+tensor(3.2403, device='cuda:0')
+loss : 3.2403 
+loss :  1.0176358955504838e-07
+label :  3.4512271881103516
+tensor(3.4507, device='cuda:0')
+loss : 3.4507 
+loss :  2.29196302825585e-07
+label :  3.4213945865631104
+tensor(3.4211, device='cuda:0')
+loss : 3.4211 
+loss :  9.153842484010966e-08
+label :  4.588235378265381
+tensor(4.5876, device='cuda:0')
+loss : 4.5876 
+loss :  3.973773345933296e-07
+label :  6.597402572631836
+tensor(6.5965, device='cuda:0')
+loss : 6.5965 
+loss :  8.15643034002278e-07
+label :  7.589285850524902
+tensor(7.5883, device='cuda:0')
+loss : 7.5883 
+loss :  1.06870720628649e-06
+label :  10.660868644714355
+tensor(10.6594, device='cuda:0')
+loss : 10.6594 
+loss :  2.137393494194839e-06
+label :  5.129032135009766
+tensor(5.1283, device='cuda:0')
+loss : 5.1283 
+loss :  4.933392574457685e-07
+label :  8.40000057220459
+tensor(8.3989, device='cuda:0')
+loss : 8.3989 
+loss :  1.3228018360678107e-06
+label :  3.767731189727783
+tensor(3.7674, device='cuda:0')
+loss : 3.7674 
+loss :  1.0793905858008657e-07
+label :  2.669095277786255
+tensor(2.6688, device='cuda:0')
+loss : 2.6688 
+loss :  1.0115604709426407e-07
+label :  35.07692337036133
+tensor(35.0721, device='cuda:0')
+loss : 35.0721 
+loss :  2.3212764062918723e-05
+label :  45.22222137451172
+tensor(45.2160, device='cuda:0')
+loss : 45.2160 
+loss :  3.847345942631364e-05
+Done loading data from cached files.
+label :  1.3850528001785278
+tensor(1.3849, device='cuda:0')
+loss : 1.3849 
+loss :  3.0583024113184365e-08
+Done loading data from cached files.
+label :  1.109070062637329
+tensor(1.1089, device='cuda:0')
+loss : 1.1089 
+loss :  1.9854326183121884e-08
+Traceback (most recent call last):
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code.py", line 515, in <module>
+    main(i)
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code.py", line 483, in main
+    run_real_networks(model)
+  File "/project/p_gnn001/code/gnn_clean_code/test_stanford_networks.py", line 848, in run_real_networks
+    test_networks_simple(model, result, real_network_folder)
+  File "/project/p_gnn001/code/gnn_clean_code/test_stanford_networks.py", line 837, in test_networks_simple
+    df = pd.DataFrame(ans, columns=['pred_y', 'y'], index=index)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/frame.py", line 856, in __init__
+    mgr = ndarray_to_mgr(
+          ^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/internals/construction.py", line 336, in ndarray_to_mgr
+    _check_values_indices_shape_match(values, index, columns)
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/internals/construction.py", line 420, in _check_values_indices_shape_match
+    raise ValueError(f"Shape of passed values is {passed}, indices imply {implied}")
+ValueError: Shape of passed values is (23, 1), indices imply (23, 2)

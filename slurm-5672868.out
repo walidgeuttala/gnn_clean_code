@@ -1,0 +1,174 @@
+/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/torch/nn/modules/loss.py:535: UserWarning: Using a target size (torch.Size([100, 1])) that is different to the input size (torch.Size([100, 8])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  return F.mse_loss(input, target, reduction=self.reduction)
+/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/torch/nn/modules/loss.py:535: UserWarning: Using a target size (torch.Size([88, 1])) that is different to the input size (torch.Size([88, 8])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  return F.mse_loss(input, target, reduction=self.reduction)
+Epoch 10: loss=0.0000
+Epoch 20: loss=0.0000
+Epoch 30: loss=0.0000
+Epoch 40: loss=0.0000
+Epoch 50: loss=0.0000
+Epoch 60: loss=0.0000
+Epoch 70: loss=0.0000
+Epoch 80: loss=0.0000
+Epoch 90: loss=0.0000
+Epoch 100: loss=0.0000
+Epoch 110: loss=0.0000
+Epoch 120: loss=0.0000
+Epoch 130: loss=0.0000
+Epoch 140: loss=0.0000
+Epoch 150: loss=0.0000
+Epoch 160: loss=0.0000
+Epoch 170: loss=0.0000
+Epoch 180: loss=0.0000
+Epoch 190: loss=0.0000
+Epoch 200: loss=0.0000
+small_test : 9.54219103732612e-07, medium_test 1.023999629978789e-07
+
+field : Social networks
+
+label :  21.845504760742188
+tensor(21.8453, device='cuda:0')
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+loss :  4.401954356580973e-08
+
+label :  14.573295593261719
+tensor(14.5732, device='cuda:0')
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+loss :  1.7826096154749393e-08
+
+
+field : Networks with ground-truth communities
+
+label :  25.443782806396484
+tensor(25.4434, device='cuda:0')
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+loss :  1.4406759873963892e-07
+
+
+field : Internet peer-to-peer networks
+
+label :  3.6772711277008057
+tensor(3.6773, device='cuda:0')
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+loss :  1.7195134205394424e-10
+
+label :  3.2974131107330322
+tensor(3.2974, device='cuda:0')
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+loss :  2.7853275241795927e-10
+
+
+field : Collaboration networks
+
+label :  5.528424263000488
+tensor(5.5284, device='cuda:0')
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+loss :  1.1461906979093328e-09
+
+label :  1.849096655845642
+tensor(1.8491, device='cuda:0')
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+loss :  2.4016344468691386e-10
+label :  5.85684061050415
+tensor(5.8568, device='cuda:0')
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+loss :  4.082721716258675e-09
+label :  3.2406375408172607
+tensor(3.2406, device='cuda:0')
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+loss :  4.106937012693379e-10
+label :  3.4512271881103516
+tensor(3.4512, device='cuda:0')
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+loss :  1.6621584109088872e-09
+label :  3.4213945865631104
+tensor(3.4214, device='cuda:0')
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+loss :  1.3833414413966238e-09
+label :  4.588235378265381
+tensor(4.5881, device='cuda:0')
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+loss :  8.036295184865594e-09
+label :  6.597402572631836
+tensor(6.5973, device='cuda:0')
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+loss :  1.6452986528747715e-08
+label :  7.589285850524902
+tensor(7.5891, device='cuda:0')
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+loss :  2.2275571609498e-08
+label :  10.660868644714355
+tensor(10.6606, device='cuda:0')
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+loss :  4.895264282822609e-08
+label :  5.129032135009766
+tensor(5.1289, device='cuda:0')
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+loss :  9.93190951703582e-09
+label :  8.40000057220459
+tensor(8.3998, device='cuda:0')
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+loss :  2.7853275241795927e-08
+label :  3.767731189727783
+tensor(3.7677, device='cuda:0')
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+loss :  2.0463630789890885e-10
+label :  2.669095277786255
+tensor(2.6691, device='cuda:0')
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+loss :  7.366907084360719e-11
+label :  35.07692337036133
+tensor(35.0762, device='cuda:0')
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+loss :  4.6106288209557533e-07
+label :  45.22222137451172
+tensor(45.2213, device='cuda:0')
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+loss :  7.765047485008836e-07
+Done loading data from cached files.
+label :  1.3850528001785278
+tensor(1.3850, device='cuda:0')
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+loss :  2.5137580905720824e-10
+Done loading data from cached files.
+label :  1.109070062637329
+tensor(1.1091, device='cuda:0')
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+loss :  3.029185791092459e-10
+Traceback (most recent call last):
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code.py", line 515, in <module>
+    main(i)
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code.py", line 483, in main
+    run_real_networks(model)
+  File "/project/p_gnn001/code/gnn_clean_code/test_stanford_networks.py", line 848, in run_real_networks
+    test_networks_simple(model, result, real_network_folder)
+  File "/project/p_gnn001/code/gnn_clean_code/test_stanford_networks.py", line 839, in test_networks_simple
+    df['num_nodes'] = list1
+    ~~^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/frame.py", line 4299, in __setitem__
+    self._set_item(key, value)
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/frame.py", line 4512, in _set_item
+    value, refs = self._sanitize_column(value)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/frame.py", line 5243, in _sanitize_column
+    self._ensure_valid_index(value)
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/frame.py", line 4594, in _ensure_valid_index
+    self._mgr = self._mgr.reindex_axis(index_copy, axis=1, fill_value=np.nan)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/internals/base.py", line 126, in reindex_axis
+    new_index, indexer = self.axes[axis].reindex(new_index)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/indexes/base.py", line 4433, in reindex
+    target = self._wrap_reindex_result(target, indexer, preserve_names)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/indexes/multi.py", line 2717, in _wrap_reindex_result
+    target = MultiIndex.from_tuples(target)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/indexes/multi.py", line 222, in new_meth
+    return meth(self_or_cls, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/indexes/multi.py", line 617, in from_tuples
+    arrays = list(lib.tuples_to_object_array(tuples).T)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "lib.pyx", line 3029, in pandas._libs.lib.tuples_to_object_array
+ValueError: Buffer dtype mismatch, expected 'Python object' but got 'long'

@@ -1,0 +1,24 @@
+Epoch 10: loss=0.0774
+Epoch 20: loss=0.0761
+Epoch 30: loss=0.0756
+Epoch 40: loss=0.0757
+Epoch 50: loss=0.0755
+Epoch 60: loss=0.0754
+Epoch 70: loss=0.0754
+Epoch 80: loss=0.0754
+Epoch 90: loss=0.0753
+Epoch 100: loss=0.0753
+Epoch 110: loss=0.0753
+Epoch 120: loss=0.0753
+Epoch 130: loss=0.0753
+Epoch 140: loss=0.0753
+Epoch 150: loss=0.0753
+Epoch 160: loss=0.0753
+Epoch 170: loss=0.0753
+Epoch 180: loss=0.0753
+Epoch 190: loss=0.0753
+Epoch 200: loss=0.0753
+validation : 0.07578120946884155, MUTAG 0.3140359687805176, Muedim test 0.0754122018814087
+Done loading data from cached files.
+Done loading data from cached files.
+loss of real network :  3.8842228190701493

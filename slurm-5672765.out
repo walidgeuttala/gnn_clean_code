@@ -1,0 +1,162 @@
+/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/torch/nn/modules/loss.py:535: UserWarning: Using a target size (torch.Size([100, 1])) that is different to the input size (torch.Size([100, 8])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  return F.mse_loss(input, target, reduction=self.reduction)
+/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/torch/nn/modules/loss.py:535: UserWarning: Using a target size (torch.Size([88, 1])) that is different to the input size (torch.Size([88, 8])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  return F.mse_loss(input, target, reduction=self.reduction)
+Epoch 10: loss=0.0000
+Epoch 20: loss=0.0000
+Epoch 30: loss=0.0000
+Epoch 40: loss=0.0000
+Epoch 50: loss=0.0000
+Epoch 60: loss=0.0000
+Epoch 70: loss=0.0000
+Epoch 80: loss=0.0000
+Epoch 90: loss=0.0000
+Epoch 100: loss=0.0000
+Epoch 110: loss=0.0000
+Epoch 120: loss=0.0000
+Epoch 130: loss=0.0000
+Epoch 140: loss=0.0000
+Epoch 150: loss=0.0000
+Epoch 160: loss=0.0000
+Epoch 170: loss=0.0000
+Epoch 180: loss=0.0000
+Epoch 190: loss=0.0000
+Epoch 200: loss=0.0000
+small_test : 9.54219103732612e-07, medium_test 1.023999629978789e-07
+
+field : Social networks
+
+label :  43.69101262688784
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+None
+
+label :  28.32382290934645
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+None
+
+
+field : Networks with ground-truth communities
+
+error
+label :  None
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+None
+
+
+field : Internet peer-to-peer networks
+
+label :  7.354542111070247
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+None
+
+label :  6.594826218060625
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+None
+
+
+field : Collaboration networks
+
+error
+label :  None
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+None
+
+label :  1.849096705632306
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+None
+error
+label :  None
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+None
+label :  3.2406373416859595
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+None
+label :  3.4512271869100064
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+None
+error
+label :  None
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+None
+error
+label :  None
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+None
+error
+label :  None
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+None
+label :  7.589285714285714
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+None
+label :  10.660869565217393
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+None
+error
+label :  None
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+None
+error
+label :  None
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+None
+label :  3.767731132639637
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+None
+error
+label :  None
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+None
+label :  35.07692307692308
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+None
+error
+label :  None
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+None
+Done loading data from cached files.
+label :  2.770105605199025
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+None
+Done loading data from cached files.
+error
+label :  None
+An error occurred: a Tensor with 8 elements cannot be converted to Scalar
+None
+Traceback (most recent call last):
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code.py", line 515, in <module>
+    main(i)
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code.py", line 483, in main
+    run_real_networks(model)
+  File "/project/p_gnn001/code/gnn_clean_code/test_stanford_networks.py", line 846, in run_real_networks
+    test_networks_simple(model, result, real_network_folder)
+  File "/project/p_gnn001/code/gnn_clean_code/test_stanford_networks.py", line 837, in test_networks_simple
+    df['num_nodes'] = list1
+    ~~^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/frame.py", line 4299, in __setitem__
+    self._set_item(key, value)
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/frame.py", line 4512, in _set_item
+    value, refs = self._sanitize_column(value)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/frame.py", line 5243, in _sanitize_column
+    self._ensure_valid_index(value)
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/frame.py", line 4594, in _ensure_valid_index
+    self._mgr = self._mgr.reindex_axis(index_copy, axis=1, fill_value=np.nan)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/internals/base.py", line 126, in reindex_axis
+    new_index, indexer = self.axes[axis].reindex(new_index)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/indexes/base.py", line 4433, in reindex
+    target = self._wrap_reindex_result(target, indexer, preserve_names)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/indexes/multi.py", line 2717, in _wrap_reindex_result
+    target = MultiIndex.from_tuples(target)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/indexes/multi.py", line 222, in new_meth
+    return meth(self_or_cls, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/pandas/core/indexes/multi.py", line 617, in from_tuples
+    arrays = list(lib.tuples_to_object_array(tuples).T)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "lib.pyx", line 3029, in pandas._libs.lib.tuples_to_object_array
+ValueError: Buffer dtype mismatch, expected 'Python object' but got 'long'
