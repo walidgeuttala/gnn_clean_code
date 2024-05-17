@@ -58,6 +58,11 @@ def set_random_seed(seed=0):
     dgl.random.seed(seed)
     torch.use_deterministic_algorithms(True)
 
+def print_epsilon(model):
+    for i, layer in enumerate(model.layers):
+        if isinstance(layer.gin_conv, GINConv):
+            print(f'Layer {i} epsilon: {layer.gin_conv.eps.item()}')
+
 device = "cuda"
 dataset_path  = "../data_folder/data"
 k = 1
@@ -66,7 +71,7 @@ batch_size = 100
 optimizer_name = "Adam"
 lr = 0.1
 weight_decay = 0.95
-epochs = 100
+epochs = 500
 hidden_dim = 1
 num_layers = 1
 loss_name = "MSELoss"
@@ -125,7 +130,7 @@ class GraphDataset(DGLDataset):
         #self.device = load_info(info_path)['device']
         self.data_path = data_path
         self.choose_labels(data_path+'/properties_labels.pt')
-        self.add_self_loop()
+        #self.add_self_loop()
         if self.device == 'cuda':
             self.graphs = [g.to(self.device) for g in self.graphs]
             self.labels = self.labels.to(self.device)
@@ -140,7 +145,7 @@ class GraphDataset(DGLDataset):
         for idx in range(len(dataset)):
             self.graphs.append(dataset[idx][0])
         self.choose_labels(f"../data_folder/dgl_graph_labels/{data_name}_properties_labels.pt")
-        self.add_self_loop()
+        #self.add_self_loop()
         if self.device == 'cuda':
             self.graphs = [g.to(self.device) for g in self.graphs]
             self.labels = self.labels.to(self.device)
@@ -223,7 +228,7 @@ class SimpleGNNLayer2(nn.Module):
             # Use DGL's built-in sum aggregation
             g.update_all(fn.copy_u('h', 'm'), fn.sum('m', 'h'))
             h = g.ndata["h"]
-            h = torch.relu(self.linear1(h))  # Apply first linear layer with ReLU activation
+            h = self.linear1(h)  # Apply first linear layer with ReLU activation
             h = self.linear2(h)  # Apply second linear layer
             return h
 
@@ -275,6 +280,7 @@ class GNN(nn.Module):
             else:
                 out_dim1 = hidden_dim
             self.gnn_layers.append(GINConv(MLP(in_dim1, hidden_dim, out_dim1)))
+            #self.gnn_layers.append(SimpleGNNLayer2(in_dim1, hidden_dim, out_dim1))
 
         self.pool = (AvgPooling()) 
 
@@ -474,7 +480,7 @@ def main(seed=1):
         1,
         8,
         1,
-        4
+        1
     ).to(device)
 
     # Step 3: Create training components ===================================================== #
@@ -502,6 +508,7 @@ def main(seed=1):
     print(f"validation : {test_acc}, MUTAG {test_acc2}, Muedim test {test_acc3}")
 
     real_loss = run_real_networks(model)
+    #print_epsilon(model)
     # graph_loss = test_regression2(model, test_graph)
     # print(f'graph loss : {graph_loss}')
     # graph = dataset[0][0]
