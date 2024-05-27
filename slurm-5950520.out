@@ -1,0 +1,186 @@
+Epoch 10: loss=0.000089
+Epoch 20: loss=0.000001
+Epoch 30: loss=0.000001
+Epoch 40: loss=0.000002
+Epoch 50: loss=0.000003
+Epoch 60: loss=0.000003
+Epoch 70: loss=0.000003
+Epoch 80: loss=0.000003
+Epoch 90: loss=0.000003
+Epoch 100: loss=0.000003
+validation : 3.4822378074750304e-06, MUTAG 1.1069452739320695e-05, Muedim test 3.447519848123193e-06
+logits: tensor([[22.8304]], device='cuda:0'),     label:  22.84550631344392
+logits: tensor([[15.5656]], device='cuda:0'),     label:  15.573295853829936
+logits: tensor([[25.7871]], device='cuda:0'),     label:  25.80497512437811
+logits: tensor([[4.6791]], device='cuda:0'),     label:  4.677271055535123
+logits: tensor([[4.2997]], device='cuda:0'),     label:  4.2974131090303125
+logits: tensor([[6.5264]], device='cuda:0'),     label:  6.526135062953071
+logits: tensor([[2.8528]], device='cuda:0'),     label:  2.8490967056323058
+logits: tensor([[6.6301]], device='cuda:0'),     label:  6.6298178737822955
+logits: tensor([[4.2430]], device='cuda:0'),     label:  4.240637341685959
+logits: tensor([[4.4535]], device='cuda:0'),     label:  4.451227186910007
+logits: tensor([[4.4233]], device='cuda:0'),     label:  4.421394543092248
+logits: tensor([[5.5894]], device='cuda:0'),     label:  5.588235294117647
+logits: tensor([[7.5967]], device='cuda:0'),     label:  7.597402597402597
+logits: tensor([[8.5876]], device='cuda:0'),     label:  8.589285714285715
+logits: tensor([[11.6563]], device='cuda:0'),     label:  11.660869565217391
+logits: tensor([[6.1297]], device='cuda:0'),     label:  6.129032258064516
+logits: tensor([[9.3976]], device='cuda:0'),     label:  9.4
+logits: tensor([[4.7695]], device='cuda:0'),     label:  4.7677311326396365
+logits: tensor([[3.6721]], device='cuda:0'),     label:  3.66909532483303
+logits: tensor([[36.0494]], device='cuda:0'),     label:  36.07692307692308
+logits: tensor([[46.1852]], device='cuda:0'),     label:  46.22222222222222
+Done loading data from cached files.
+logits: tensor([[2.3893]], device='cuda:0'),     label:  2.3850528025995126
+Done loading data from cached files.
+logits: tensor([[2.1135]], device='cuda:0'),     label:  2.1090700344431688
+loss of real network :  0.00012401029300521119
+Epoch 10: loss=0.000017
+Epoch 20: loss=0.000006
+Epoch 30: loss=0.000005
+Epoch 40: loss=0.000005
+Epoch 50: loss=0.000005
+Epoch 60: loss=0.000005
+Epoch 70: loss=0.000005
+Epoch 80: loss=0.000005
+Epoch 90: loss=0.000005
+Epoch 100: loss=0.000005
+validation : 5.079959228169173e-06, MUTAG 1.7409362480975688e-05, Muedim test 5.082510324427858e-06
+logits: tensor([[22.8277]], device='cuda:0'),     label:  22.84550631344392
+logits: tensor([[15.5641]], device='cuda:0'),     label:  15.573295853829936
+logits: tensor([[25.7837]], device='cuda:0'),     label:  25.80497512437811
+logits: tensor([[4.6795]], device='cuda:0'),     label:  4.677271055535123
+logits: tensor([[4.3005]], device='cuda:0'),     label:  4.2974131090303125
+logits: tensor([[6.5267]], device='cuda:0'),     label:  6.526135062953071
+logits: tensor([[2.8538]], device='cuda:0'),     label:  2.8490967056323058
+logits: tensor([[6.6303]], device='cuda:0'),     label:  6.6298178737822955
+logits: tensor([[4.2437]], device='cuda:0'),     label:  4.240637341685959
+logits: tensor([[4.4541]], device='cuda:0'),     label:  4.451227186910007
+logits: tensor([[4.4244]], device='cuda:0'),     label:  4.421394543092248
+logits: tensor([[5.5898]], device='cuda:0'),     label:  5.588235294117647
+logits: tensor([[7.5967]], device='cuda:0'),     label:  7.597402597402597
+logits: tensor([[8.5875]], device='cuda:0'),     label:  8.589285714285715
+logits: tensor([[11.6556]], device='cuda:0'),     label:  11.660869565217391
+logits: tensor([[6.1300]], device='cuda:0'),     label:  6.129032258064516
+logits: tensor([[9.3973]], device='cuda:0'),     label:  9.4
+logits: tensor([[4.7701]], device='cuda:0'),     label:  4.7677311326396365
+logits: tensor([[3.6729]], device='cuda:0'),     label:  3.66909532483303
+logits: tensor([[36.0441]], device='cuda:0'),     label:  36.07692307692308
+logits: tensor([[46.1780]], device='cuda:0'),     label:  46.22222222222222
+Done loading data from cached files.
+logits: tensor([[2.3902]], device='cuda:0'),     label:  2.3850528025995126
+Done loading data from cached files.
+logits: tensor([[2.1146]], device='cuda:0'),     label:  2.1090700344431688
+loss of real network :  0.00017709040779776742
+Epoch 10: loss=0.000087
+Epoch 20: loss=0.000014
+Epoch 30: loss=0.000008
+Epoch 40: loss=0.000006
+Epoch 50: loss=0.000006
+Epoch 60: loss=0.000006
+Epoch 70: loss=0.000006
+Epoch 80: loss=0.000006
+Epoch 90: loss=0.000006
+Epoch 100: loss=0.000006
+validation : 5.534507799893617e-06, MUTAG 1.902220246847719e-05, Muedim test 5.590891232714057e-06
+logits: tensor([[22.8268]], device='cuda:0'),     label:  22.84550631344392
+logits: tensor([[15.5636]], device='cuda:0'),     label:  15.573295853829936
+logits: tensor([[25.7828]], device='cuda:0'),     label:  25.80497512437811
+logits: tensor([[4.6804]], device='cuda:0'),     label:  4.677271055535123
+logits: tensor([[4.3005]], device='cuda:0'),     label:  4.2974131090303125
+logits: tensor([[6.5267]], device='cuda:0'),     label:  6.526135062953071
+logits: tensor([[2.8540]], device='cuda:0'),     label:  2.8490967056323058
+logits: tensor([[6.6303]], device='cuda:0'),     label:  6.6298178737822955
+logits: tensor([[4.2439]], device='cuda:0'),     label:  4.240637341685959
+logits: tensor([[4.4542]], device='cuda:0'),     label:  4.451227186910007
+logits: tensor([[4.4243]], device='cuda:0'),     label:  4.421394543092248
+logits: tensor([[5.5899]], device='cuda:0'),     label:  5.588235294117647
+logits: tensor([[7.5967]], device='cuda:0'),     label:  7.597402597402597
+logits: tensor([[8.5874]], device='cuda:0'),     label:  8.589285714285715
+logits: tensor([[11.6553]], device='cuda:0'),     label:  11.660869565217391
+logits: tensor([[6.1301]], device='cuda:0'),     label:  6.129032258064516
+logits: tensor([[9.3972]], device='cuda:0'),     label:  9.4
+logits: tensor([[4.7705]], device='cuda:0'),     label:  4.7677311326396365
+logits: tensor([[3.6730]], device='cuda:0'),     label:  3.66909532483303
+logits: tensor([[36.0425]], device='cuda:0'),     label:  36.07692307692308
+logits: tensor([[46.1758]], device='cuda:0'),     label:  46.22222222222222
+Done loading data from cached files.
+logits: tensor([[2.3905]], device='cuda:0'),     label:  2.3850528025995126
+Done loading data from cached files.
+logits: tensor([[2.1148]], device='cuda:0'),     label:  2.1090700344431688
+loss of real network :  0.00019463851161062996
+Epoch 10: loss=0.093554
+Epoch 20: loss=0.028203
+Epoch 30: loss=0.013689
+Epoch 40: loss=0.008930
+Epoch 50: loss=0.006963
+Epoch 60: loss=0.006033
+Epoch 70: loss=0.005560
+Epoch 80: loss=0.005311
+Epoch 90: loss=0.005175
+Epoch 100: loss=0.005100
+validation : 0.0052261647582054135, MUTAG 0.02099182367324829, Muedim test 0.005111185908317566
+logits: tensor([[23.3792]], device='cuda:0'),     label:  22.84550631344392
+logits: tensor([[15.8538]], device='cuda:0'),     label:  15.573295853829936
+logits: tensor([[26.4415]], device='cuda:0'),     label:  25.80497512437811
+logits: tensor([[4.5794]], device='cuda:0'),     label:  4.677271055535123
+logits: tensor([[4.1863]], device='cuda:0'),     label:  4.2974131090303125
+logits: tensor([[6.4926]], device='cuda:0'),     label:  6.526135062953071
+logits: tensor([[2.6879]], device='cuda:0'),     label:  2.8490967056323058
+logits: tensor([[6.6000]], device='cuda:0'),     label:  6.6298178737822955
+logits: tensor([[4.1277]], device='cuda:0'),     label:  4.240637341685959
+logits: tensor([[4.3457]], device='cuda:0'),     label:  4.451227186910007
+logits: tensor([[4.3144]], device='cuda:0'),     label:  4.421394543092248
+logits: tensor([[5.5222]], device='cuda:0'),     label:  5.588235294117647
+logits: tensor([[7.6012]], device='cuda:0'),     label:  7.597402597402597
+logits: tensor([[8.6276]], device='cuda:0'),     label:  8.589285714285715
+logits: tensor([[11.8059]], device='cuda:0'),     label:  11.660869565217391
+logits: tensor([[6.0818]], device='cuda:0'),     label:  6.129032258064516
+logits: tensor([[9.4665]], device='cuda:0'),     label:  9.4
+logits: tensor([[4.6731]], device='cuda:0'),     label:  4.7677311326396365
+logits: tensor([[3.5364]], device='cuda:0'),     label:  3.66909532483303
+logits: tensor([[37.0704]], device='cuda:0'),     label:  36.07692307692308
+logits: tensor([[47.5682]], device='cuda:0'),     label:  46.22222222222222
+Done loading data from cached files.
+logits: tensor([[2.2077]], device='cuda:0'),     label:  2.3850528025995126
+Done loading data from cached files.
+logits: tensor([[1.9222]], device='cuda:0'),     label:  2.1090700344431688
+loss of real network :  0.16430630275215016
+Epoch 10: loss=0.000106
+Epoch 20: loss=0.000017
+Epoch 30: loss=0.000009
+Epoch 40: loss=0.000007
+Epoch 50: loss=0.000006
+Epoch 60: loss=0.000006
+Epoch 70: loss=0.000006
+Epoch 80: loss=0.000006
+Epoch 90: loss=0.000006
+Epoch 100: loss=0.000006
+validation : 5.892499175388366e-06, MUTAG 2.0581292337737976e-05, Muedim test 5.73328259633854e-06
+logits: tensor([[22.8262]], device='cuda:0'),     label:  22.84550631344392
+logits: tensor([[15.5631]], device='cuda:0'),     label:  15.573295853829936
+logits: tensor([[25.7820]], device='cuda:0'),     label:  25.80497512437811
+logits: tensor([[4.6805]], device='cuda:0'),     label:  4.677271055535123
+logits: tensor([[4.3008]], device='cuda:0'),     label:  4.2974131090303125
+logits: tensor([[6.5268]], device='cuda:0'),     label:  6.526135062953071
+logits: tensor([[2.8542]], device='cuda:0'),     label:  2.8490967056323058
+logits: tensor([[6.6303]], device='cuda:0'),     label:  6.6298178737822955
+logits: tensor([[4.2442]], device='cuda:0'),     label:  4.240637341685959
+logits: tensor([[4.4544]], device='cuda:0'),     label:  4.451227186910007
+logits: tensor([[4.4245]], device='cuda:0'),     label:  4.421394543092248
+logits: tensor([[5.5900]], device='cuda:0'),     label:  5.588235294117647
+logits: tensor([[7.5967]], device='cuda:0'),     label:  7.597402597402597
+logits: tensor([[8.5873]], device='cuda:0'),     label:  8.589285714285715
+logits: tensor([[11.6552]], device='cuda:0'),     label:  11.660869565217391
+logits: tensor([[6.1301]], device='cuda:0'),     label:  6.129032258064516
+logits: tensor([[9.3971]], device='cuda:0'),     label:  9.4
+logits: tensor([[4.7707]], device='cuda:0'),     label:  4.7677311326396365
+logits: tensor([[3.6732]], device='cuda:0'),     label:  3.66909532483303
+logits: tensor([[36.0414]], device='cuda:0'),     label:  36.07692307692308
+logits: tensor([[46.1743]], device='cuda:0'),     label:  46.22222222222222
+Done loading data from cached files.
+logits: tensor([[2.3907]], device='cuda:0'),     label:  2.3850528025995126
+Done loading data from cached files.
+logits: tensor([[2.1150]], device='cuda:0'),     label:  2.1090700344431688
+loss of real network :  0.0002080250323604623
+0.001024026634268618      0.0010492307924432679      0.004211981196654961      0.001026208022463834      0.03300201339938485

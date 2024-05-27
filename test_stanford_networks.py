@@ -734,8 +734,10 @@ def test_network_diff_nfeat_simple(model, graph, name):
     try:
         model.eval()
         ans = [] 
-        #graph = dgl.add_self_loop(graph)
+        #
         graph = graph.to(device)
+        #graph = dgl.add_self_loop(graph)
+        label = graph.num_edges() / graph.num_nodes() + 1
         # print(name + ' number of nodes is : ', graph.num_nodes())
         # print(name + ' number of edges is : ', graph.num_edges())
         
@@ -753,9 +755,10 @@ def test_network_diff_nfeat_simple(model, graph, name):
             graph.ndata['feat'] = degrees.repeat(1, 1)/(graph.number_of_nodes() - 1)
 
         logits = model(graph)
-        #print("logits: ",logits)
+        #print(logits)
+        print(f"logits: {logits},     label:  {label}",flush=True)
         real_name = name.split('/')[-1].split('.')[0]
-        label = graph.in_degrees().unsqueeze(1).float().mean().item()
+        
 
         # df = pd.read_csv('real_network.csv',)
         # if real_name in df['network_name'].values:
@@ -777,7 +780,7 @@ def test_network_diff_nfeat_simple(model, graph, name):
     except Exception as e:
         print(f"An error occurred: {e}")
         ans = None
-    loss = (result[0][0].cpu().item()-label)**2
+    loss = (logits[0][0].cpu().item()-label)**2
     
     return loss
 

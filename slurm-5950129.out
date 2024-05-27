@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code.py", line 561, in <module>
+    train_loss, test_acc, test_acc2, test_acc3, test_acc4 = main(i)
+                                                            ^^^^^^^
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code.py", line 464, in main
+    dataset2.load2("MUTAG")
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code.py", line 152, in load2
+    self.labels = self.labels.to(self.device)
+                  ^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'to'

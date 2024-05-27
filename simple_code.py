@@ -71,7 +71,7 @@ batch_size = 100
 optimizer_name = "Adam"
 lr = 0.1
 weight_decay = 0.95
-epochs = 500
+epochs = 100
 hidden_dim = 1
 num_layers = 1
 loss_name = "MSELoss"
@@ -129,12 +129,16 @@ class GraphDataset(DGLDataset):
         self.dim_nfeats = load_info(info_path)['dim_nfeats']
         #self.device = load_info(info_path)['device']
         self.data_path = data_path
-        self.choose_labels(data_path+'/properties_labels.pt')
-        #self.add_self_loop()
+        #self.choose_labels(data_path+'/properties_labels.pt')
+        
         if self.device == 'cuda':
             self.graphs = [g.to(self.device) for g in self.graphs]
+            
+        #self.add_self_loop()
+        self.degree_label()
+        if self.device == 'cuda': 
             self.labels = self.labels.to(self.device)
-        
+
     def load2(self, data_name):
         '''
         Loads the processed data from disk as .bin and .pkl files. The processed data consists of the graph data and the corresponding labels.
@@ -144,12 +148,21 @@ class GraphDataset(DGLDataset):
         self.graphs = []
         for idx in range(len(dataset)):
             self.graphs.append(dataset[idx][0])
-        self.choose_labels(f"../data_folder/dgl_graph_labels/{data_name}_properties_labels.pt")
-        #self.add_self_loop()
+        #self.choose_labels(f"../data_folder/dgl_graph_labels/{data_name}_properties_labels.pt")
         if self.device == 'cuda':
             self.graphs = [g.to(self.device) for g in self.graphs]
+        #self.add_self_loop()
+        self.degree_label()
+        if self.device == 'cuda':
             self.labels = self.labels.to(self.device)
-        
+
+
+    def degree_label(self):
+        self.labels = []
+        for idx in range(len(self.graphs)):
+            self.labels.append(self.graphs[idx].num_edges() / self.graphs[idx].num_nodes() + 1)
+        self.labels = torch.tensor(self.labels).view(-1, 1).float()
+
     def has_cache(self):
         '''
         Checks if the processed data has been saved to disk as .bin and .pkl files.
@@ -203,17 +216,22 @@ import dgl
 import dgl.function as fn
 from dgl.nn.pytorch.conv import GINConv
 
+from dgl.utils import expand_as_pair
+
 class SimpleGNNLayer(nn.Module):
     def __init__(self, in_feats, out_feats):
         super(SimpleGNNLayer, self).__init__()
         self.linear = nn.Linear(in_feats, out_feats, bias=False)
+        self.eps = 0
 
     def forward(self, g, h):
         with g.local_scope():
             g.ndata['h'] = h
             # Use DGL's built-in sum aggregation
             g.update_all(fn.copy_u('h', 'm'), fn.sum('m', 'h'))
-            h = g.ndata["h"]
+            #h = g.ndata["h"]
+            h = h +  g.ndata["h"]
+
             return self.linear(h)
 
 class SimpleGNNLayer2(nn.Module):
@@ -235,7 +253,7 @@ class SimpleGNNLayer2(nn.Module):
 class SingleLayerGNN(nn.Module):
     def __init__(self, in_dim, hidden_dim, out_dim):
         super(SingleLayerGNN, self).__init__()
-        self.layer = SimpleGNNLayer2(in_dim, hidden_dim, out_dim)
+        self.layer = SimpleGNNLayer(in_dim, out_dim)
         self.pool = (AvgPooling()) 
 
     def forward(self, g):
@@ -257,13 +275,13 @@ class MLP(nn.Module):
         super().__init__()
         self.linears = nn.ModuleList()
         # two-layer MLP
-        self.linears.append(nn.Linear(input_dim, hidden_dim, bias=False))
-        self.linears.append(nn.Linear(hidden_dim, output_dim, bias=False))
-        self.relu = nn.ReLU()
+        self.linears.append(nn.Linear(input_dim, output_dim, bias=False))
+        #self.linears.append(nn.Linear(hidden_dim, output_dim, bias=False))
+        #self.relu = nn.ReLU()
     def forward(self, x):
         h = x
-        h = self.relu(self.linears[0](h))
-        return self.linears[1](h)
+        #h = self.relu(self.linears[0](h))
+        return self.linears[0](h)
 
 class GNN(nn.Module):
     def __init__(self, in_dim, hidden_dim, out_dim, num_layers):
@@ -279,8 +297,9 @@ class GNN(nn.Module):
                 out_dim1 = out_dim
             else:
                 out_dim1 = hidden_dim
-            self.gnn_layers.append(GINConv(MLP(in_dim1, hidden_dim, out_dim1)))
+            self.gnn_layers.append(GINConv(MLP(in_dim1, hidden_dim, out_dim1), init_eps=0, learn_eps=False))
             #self.gnn_layers.append(SimpleGNNLayer2(in_dim1, hidden_dim, out_dim1))
+            #self.gnn_layers.append(SimpleGNNLayer(in_dim1, out_dim1))
 
         self.pool = (AvgPooling()) 
 
@@ -478,7 +497,7 @@ def main(seed=1):
     #in_dim, hidden_dim, out_dim, num_layers):
     model = GNN(
         1,
-        8,
+        1,
         1,
         1
     ).to(device)
@@ -540,7 +559,7 @@ def main(seed=1):
 
 if __name__ == "__main__":
     x1 = x2 =  x3 = x4 = x5 = 0
-    trials = 10
+    trials = 5
     for i in range(trials):
         train_loss, test_acc, test_acc2, test_acc3, test_acc4 = main(i)
         x1 += train_loss

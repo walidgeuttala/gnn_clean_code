@@ -1,0 +1,32 @@
+Epoch 10: loss=0.000001
+Epoch 20: loss=0.000000
+Epoch 30: loss=0.000000
+Epoch 40: loss=0.000000
+Epoch 50: loss=0.000000
+Epoch 60: loss=0.000000
+Epoch 70: loss=0.000000
+Epoch 80: loss=0.000000
+Epoch 90: loss=0.000000
+Epoch 100: loss=0.000000
+validation : 4.3423977331258356e-07, MUTAG 7.468514013453386e-08, Muedim test 4.649107904697303e-07
+An error occurred: the graph must be on CPU
+Traceback (most recent call last):
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code.py", line 551, in <module>
+    train_loss, test_acc, test_acc2, test_acc3, test_acc4 = main(i)
+                                                            ^^^^^^^
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code.py", line 516, in main
+    real_loss = run_real_networks(model)
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/project/p_gnn001/code/gnn_clean_code/test_stanford_networks.py", line 844, in run_real_networks
+    loss = test_networks_simple(model, result, real_network_folder)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/project/p_gnn001/code/gnn_clean_code/test_stanford_networks.py", line 805, in test_networks_simple
+    value = test_network_diff_nfeat_simple(model, graph, name)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 115, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/project/p_gnn001/code/gnn_clean_code/test_stanford_networks.py", line 780, in test_network_diff_nfeat_simple
+    loss = (result[0][0].cpu().item()-label)**2
+            ^^^^^^
+UnboundLocalError: cannot access local variable 'result' where it is not associated with a value

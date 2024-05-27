@@ -1,0 +1,71 @@
+Epoch 10: loss=0.000001
+Epoch 20: loss=0.000000
+Epoch 30: loss=0.000000
+Epoch 40: loss=0.000000
+Epoch 50: loss=0.000000
+Epoch 60: loss=0.000000
+Epoch 70: loss=0.000000
+Epoch 80: loss=0.000000
+Epoch 90: loss=0.000000
+Epoch 100: loss=0.000000
+validation : 4.3423977331258356e-07, MUTAG 7.468514013453386e-08, Muedim test 4.649107904697303e-07
+Done loading data from cached files.
+Done loading data from cached files.
+loss of real network :  0.9982791266842427
+Epoch 10: loss=0.000000
+Epoch 20: loss=0.000000
+Epoch 30: loss=0.000000
+Epoch 40: loss=0.000000
+Epoch 50: loss=0.000000
+Epoch 60: loss=0.000000
+Epoch 70: loss=0.000000
+Epoch 80: loss=0.000000
+Epoch 90: loss=0.000000
+Epoch 100: loss=0.000000
+validation : 3.934924279747065e-07, MUTAG 7.413854746118887e-08, Muedim test 4.615737998392433e-07
+Done loading data from cached files.
+Done loading data from cached files.
+loss of real network :  0.9982812996939943
+Epoch 10: loss=0.000000
+Epoch 20: loss=0.000000
+Epoch 30: loss=0.000000
+Epoch 40: loss=0.000000
+Epoch 50: loss=0.000000
+Epoch 60: loss=0.000000
+Epoch 70: loss=0.000000
+Epoch 80: loss=0.000000
+Epoch 90: loss=0.000000
+Epoch 100: loss=0.000000
+validation : 4.1300858356407843e-07, MUTAG 7.45517513678351e-08, Muedim test 4.64879894934711e-07
+Done loading data from cached files.
+Done loading data from cached files.
+loss of real network :  0.9982795824233284
+Epoch 10: loss=0.000005
+Epoch 20: loss=0.000000
+Epoch 30: loss=0.000000
+Epoch 40: loss=0.000000
+Epoch 50: loss=0.000000
+Epoch 60: loss=0.000000
+Epoch 70: loss=0.000000
+Epoch 80: loss=0.000000
+Epoch 90: loss=0.000000
+Epoch 100: loss=0.000000
+validation : 4.22192933910992e-07, MUTAG 7.45517513678351e-08, Muedim test 4.64879894934711e-07
+Done loading data from cached files.
+Done loading data from cached files.
+loss of real network :  0.9982795824233284
+Epoch 10: loss=0.000001
+Epoch 20: loss=0.000000
+Epoch 30: loss=0.000000
+Epoch 40: loss=0.000000
+Epoch 50: loss=0.000000
+Epoch 60: loss=0.000000
+Epoch 70: loss=0.000000
+Epoch 80: loss=0.000000
+Epoch 90: loss=0.000000
+Epoch 100: loss=0.000000
+validation : 4.058249214722309e-07, MUTAG 7.413854746118887e-08, Muedim test 4.615737998392433e-07
+Done loading data from cached files.
+Done loading data from cached files.
+loss of real network :  0.9982812996939943
+4.2761108286665855e-07      4.1375172804691824e-07      7.441314755851637e-08      4.635636360035278e-07      0.9982801781837776
