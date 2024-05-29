@@ -1,0 +1,80 @@
+Epoch 10: loss=0.006912
+Epoch 20: loss=0.000046
+Epoch 30: loss=0.000049
+Epoch 40: loss=0.000029
+Epoch 50: loss=0.000006
+Epoch 60: loss=0.000023
+Epoch 70: loss=0.000021
+Epoch 80: loss=0.000009
+Epoch 90: loss=0.000029
+Epoch 100: loss=0.000029
+Epoch 110: loss=0.000031
+Epoch 120: loss=0.000031
+Epoch 130: loss=0.000031
+Epoch 140: loss=0.000031
+Epoch 150: loss=0.000031
+Epoch 160: loss=0.000031
+Epoch 170: loss=0.000031
+Epoch 180: loss=0.000031
+Epoch 190: loss=0.000031
+Epoch 200: loss=0.000031
+Epoch 210: loss=0.000031
+Epoch 220: loss=0.000031
+Epoch 230: loss=0.000031
+Epoch 240: loss=0.000031
+Epoch 250: loss=0.000031
+Epoch 260: loss=0.000031
+Epoch 270: loss=0.000031
+Epoch 280: loss=0.000031
+Epoch 290: loss=0.000031
+Epoch 300: loss=0.000031
+Epoch 310: loss=0.000031
+Epoch 320: loss=0.000031
+Epoch 330: loss=0.000031
+Epoch 340: loss=0.000031
+Epoch 350: loss=0.000031
+Epoch 360: loss=0.000031
+Epoch 370: loss=0.000031
+Epoch 380: loss=0.000031
+Epoch 390: loss=0.000031
+Epoch 400: loss=0.000031
+Epoch 410: loss=0.000031
+Epoch 420: loss=0.000031
+Epoch 430: loss=0.000031
+Epoch 440: loss=0.000031
+Epoch 450: loss=0.000031
+Epoch 460: loss=0.000031
+Epoch 470: loss=0.000031
+Epoch 480: loss=0.000031
+Epoch 490: loss=0.000031
+Epoch 500: loss=0.000031
+validation : 3.2226704061031345e-05, MUTAG 2.5296583771705626e-06, Muedim test 0.00022750450298190117
+logits: tensor([[1019.4054]], device='cuda:0'),     label:  1019.4445663720377
+logits: tensor([[1012.1074]], device='cuda:0'),     label:  1012.1723559124237
+logits: tensor([[1023.0533]], device='cuda:0'),     label:  1023.0428411531211
+logits: tensor([[1001.3148]], device='cuda:0'),     label:  1001.2763311141289
+logits: tensor([[1000.8364]], device='cuda:0'),     label:  1000.8964731676241
+logits: tensor([[1003.0753]], device='cuda:0'),     label:  1003.1274843241413
+logits: tensor([[999.4655]], device='cuda:0'),     label:  999.448156764226
+logits: tensor([[1003.4607]], device='cuda:0'),     label:  1003.4559003804912
+logits: tensor([[1000.7740]], device='cuda:0'),     label:  1000.8396974002798
+logits: tensor([[1001.0661]], device='cuda:0'),     label:  1001.0502872455038
+logits: tensor([[1000.9568]], device='cuda:0'),     label:  1001.020454601686
+logits: tensor([[1002.1858]], device='cuda:0'),     label:  1002.1872953527114
+logits: tensor([[1004.1944]], device='cuda:0'),     label:  1004.1964626559964
+logits: tensor([[1005.1852]], device='cuda:0'),     label:  1005.1883457728794
+logits: tensor([[1008.2568]], device='cuda:0'),     label:  1008.2599296238111
+logits: tensor([[1002.7266]], device='cuda:0'),     label:  1002.7280923166583
+logits: tensor([[1005.9962]], device='cuda:0'),     label:  1005.9990600585937
+logits: tensor([[1001.2971]], device='cuda:0'),     label:  1001.3667911912333
+logits: tensor([[1000.2189]], device='cuda:0'),     label:  1000.2681553834268
+logits: tensor([[1032.6727]], device='cuda:0'),     label:  1032.6759831355168
+logits: tensor([[1042.8182]], device='cuda:0'),     label:  1042.821282280816
+Done loading data from cached files.
+logits: tensor([[998.9969]], device='cuda:0'),     label:  998.9841128611932
+Done loading data from cached files.
+logits: tensor([[998.7156]], device='cuda:0'),     label:  998.708130093037
+loss of real network :  0.0013129242117926115
+eps that is learned :  Parameter containing:
+tensor([996.5991], device='cuda:0', requires_grad=True)
+3.129917300409741e-05      3.2226704061031345e-05      2.5296583771705626e-06      0.00022750450298190117      0.0013129242117926115

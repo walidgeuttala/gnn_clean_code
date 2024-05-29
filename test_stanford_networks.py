@@ -737,7 +737,7 @@ def test_network_diff_nfeat_simple(model, graph, name):
         #
         graph = graph.to(device)
         #graph = dgl.add_self_loop(graph)
-        label = graph.num_edges() / graph.num_nodes() + 1
+        label = graph.num_edges() / graph.num_nodes() + 1 + model.gnn_layers[0].eps.item()
         # print(name + ' number of nodes is : ', graph.num_nodes())
         # print(name + ' number of edges is : ', graph.num_edges())
         
@@ -756,7 +756,7 @@ def test_network_diff_nfeat_simple(model, graph, name):
 
         logits = model(graph)
         #print(logits)
-        print(f"logits: {logits},     label:  {label}",flush=True)
+        #print(f"logits: {logits},     label:  {label}",flush=True)
         real_name = name.split('/')[-1].split('.')[0]
         
 

@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code.py", line 567, in <module>
+    train_loss, test_acc, test_acc2, test_acc3, test_acc4 = main(i)
+                                                            ^^^^^^^
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code.py", line 519, in main
+    train_loss = train(model, optimizer, train_loader)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code.py", line 331, in train
+    batch_labels2 = batch_labels.copy()
+                    ^^^^^^^^^^^^^^^^^
+AttributeError: 'Tensor' object has no attribute 'copy'. Did you mean: 'copy_'?

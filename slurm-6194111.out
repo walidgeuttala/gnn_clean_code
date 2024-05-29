@@ -1,0 +1,196 @@
+Epoch 10: loss=0.000034
+Epoch 20: loss=0.000000
+Epoch 30: loss=0.000000
+Epoch 40: loss=0.000000
+Epoch 50: loss=0.000000
+Epoch 60: loss=0.000000
+Epoch 70: loss=0.000000
+Epoch 80: loss=0.000000
+Epoch 90: loss=0.000000
+Epoch 100: loss=0.000000
+validation : 1.310399966314435e-10, MUTAG 6.703558028675616e-09, Muedim test 8.427656212006695e-07
+logits: tensor([[69.7072]], device='cuda:0'),     label:  69.70876467526033
+logits: tensor([[62.4400]], device='cuda:0'),     label:  62.43655421564634
+logits: tensor([[73.3065]], device='cuda:0'),     label:  73.30703945634377
+logits: tensor([[51.5456]], device='cuda:0'),     label:  51.54052941735153
+logits: tensor([[51.1606]], device='cuda:0'),     label:  51.16067147084672
+logits: tensor([[53.3897]], device='cuda:0'),     label:  53.391682627363906
+logits: tensor([[49.7112]], device='cuda:0'),     label:  49.71235506744871
+logits: tensor([[53.7182]], device='cuda:0'),     label:  53.72009868371391
+logits: tensor([[51.1055]], device='cuda:0'),     label:  51.10389570350237
+logits: tensor([[51.3137]], device='cuda:0'),     label:  51.31448554872641
+logits: tensor([[51.2856]], device='cuda:0'),     label:  51.284652904908654
+logits: tensor([[52.4514]], device='cuda:0'),     label:  52.45149365593405
+logits: tensor([[54.4606]], device='cuda:0'),     label:  54.460660959219005
+logits: tensor([[55.4525]], device='cuda:0'),     label:  55.45254407610212
+logits: tensor([[58.5241]], device='cuda:0'),     label:  58.524127927033796
+logits: tensor([[52.9922]], device='cuda:0'),     label:  52.99229061988092
+logits: tensor([[56.2632]], device='cuda:0'),     label:  56.263258361816405
+logits: tensor([[51.6340]], device='cuda:0'),     label:  51.630989494456045
+logits: tensor([[50.5295]], device='cuda:0'),     label:  50.53235368664944
+logits: tensor([[82.9401]], device='cuda:0'),     label:  82.94018143873949
+logits: tensor([[93.0854]], device='cuda:0'),     label:  93.08548058403863
+Done loading data from cached files.
+logits: tensor([[49.2483]], device='cuda:0'),     label:  49.24831116441592
+Done loading data from cached files.
+logits: tensor([[48.9723]], device='cuda:0'),     label:  48.97232839625958
+loss of real network :  3.0528860410928315e-06
+eps that is learned :  Parameter containing:
+tensor([46.8633], device='cuda:0', requires_grad=True)
+Epoch 10: loss=0.000006
+Epoch 20: loss=0.000000
+Epoch 30: loss=0.000000
+Epoch 40: loss=0.000000
+Epoch 50: loss=0.000000
+Epoch 60: loss=0.000000
+Epoch 70: loss=0.000000
+Epoch 80: loss=0.000000
+Epoch 90: loss=0.000000
+Epoch 100: loss=0.000000
+validation : 1.2225369573570787e-07, MUTAG 1.0359508451074361e-08, Muedim test 1.848801548476331e-07
+logits: tensor([[64.5445]], device='cuda:0'),     label:  64.54129946529939
+logits: tensor([[57.2681]], device='cuda:0'),     label:  57.2690890056854
+logits: tensor([[68.1391]], device='cuda:0'),     label:  68.13957424638284
+logits: tensor([[46.3707]], device='cuda:0'),     label:  46.37306420739059
+logits: tensor([[45.9956]], device='cuda:0'),     label:  45.993206260885785
+logits: tensor([[48.2275]], device='cuda:0'),     label:  48.22421741740297
+logits: tensor([[44.5445]], device='cuda:0'),     label:  44.544889857487775
+logits: tensor([[48.5522]], device='cuda:0'),     label:  48.55263347375297
+logits: tensor([[45.9372]], device='cuda:0'),     label:  45.93643049354143
+logits: tensor([[46.1466]], device='cuda:0'),     label:  46.14702033876547
+logits: tensor([[46.1186]], device='cuda:0'),     label:  46.11718769494772
+logits: tensor([[47.2839]], device='cuda:0'),     label:  47.284028445973114
+logits: tensor([[49.2931]], device='cuda:0'),     label:  49.29319574925807
+logits: tensor([[50.2850]], device='cuda:0'),     label:  50.285078866141184
+logits: tensor([[53.3566]], device='cuda:0'),     label:  53.35666271707286
+logits: tensor([[47.8247]], device='cuda:0'),     label:  47.82482540991998
+logits: tensor([[51.0957]], device='cuda:0'),     label:  51.09579315185547
+logits: tensor([[46.4631]], device='cuda:0'),     label:  46.46352428449511
+logits: tensor([[45.3677]], device='cuda:0'),     label:  45.3648884766885
+logits: tensor([[77.7726]], device='cuda:0'),     label:  77.77271622877855
+logits: tensor([[87.9179]], device='cuda:0'),     label:  87.9180153740777
+Done loading data from cached files.
+logits: tensor([[44.0804]], device='cuda:0'),     label:  44.08084595445498
+Done loading data from cached files.
+logits: tensor([[43.8045]], device='cuda:0'),     label:  43.80486318629864
+loss of real network :  1.9612536651030205e-06
+eps that is learned :  Parameter containing:
+tensor([41.6958], device='cuda:0', requires_grad=True)
+Epoch 10: loss=0.000018
+Epoch 20: loss=0.000000
+Epoch 30: loss=0.000000
+Epoch 40: loss=0.000000
+Epoch 50: loss=0.000000
+Epoch 60: loss=0.000000
+Epoch 70: loss=0.000000
+Epoch 80: loss=0.000000
+Epoch 90: loss=0.000000
+Epoch 100: loss=0.000000
+validation : 7.806949724908919e-08, MUTAG 4.073517629876733e-09, Muedim test 1.0473143993294799e-06
+logits: tensor([[68.5919]], device='cuda:0'),     label:  68.58950960934236
+logits: tensor([[61.3212]], device='cuda:0'),     label:  61.31729914972837
+logits: tensor([[72.1866]], device='cuda:0'),     label:  72.1877843904258
+logits: tensor([[50.4256]], device='cuda:0'),     label:  50.42127435143356
+logits: tensor([[50.0445]], device='cuda:0'),     label:  50.04141640492875
+logits: tensor([[52.2749]], device='cuda:0'),     label:  52.27242756144594
+logits: tensor([[48.5920]], device='cuda:0'),     label:  48.59310000153074
+logits: tensor([[52.5995]], device='cuda:0'),     label:  52.60084361779594
+logits: tensor([[49.9881]], device='cuda:0'),     label:  49.9846406375844
+logits: tensor([[50.1942]], device='cuda:0'),     label:  50.19523048280844
+logits: tensor([[50.1687]], device='cuda:0'),     label:  50.165397838990685
+logits: tensor([[51.3322]], device='cuda:0'),     label:  51.33223859001608
+logits: tensor([[53.3413]], device='cuda:0'),     label:  53.34140589330104
+logits: tensor([[54.3333]], device='cuda:0'),     label:  54.33328901018415
+logits: tensor([[57.4049]], device='cuda:0'),     label:  57.40487286111583
+logits: tensor([[51.8729]], device='cuda:0'),     label:  51.87303555396295
+logits: tensor([[55.1440]], device='cuda:0'),     label:  55.144003295898436
+logits: tensor([[50.5155]], device='cuda:0'),     label:  50.51173442853808
+logits: tensor([[49.4152]], device='cuda:0'),     label:  49.41309862073147
+logits: tensor([[81.8208]], device='cuda:0'),     label:  81.82092637282152
+logits: tensor([[91.9661]], device='cuda:0'),     label:  91.96622551812067
+Done loading data from cached files.
+logits: tensor([[48.1283]], device='cuda:0'),     label:  48.12905609849795
+Done loading data from cached files.
+logits: tensor([[47.8528]], device='cuda:0'),     label:  47.85307333034161
+loss of real network :  4.469222428227649e-06
+eps that is learned :  Parameter containing:
+tensor([45.7440], device='cuda:0', requires_grad=True)
+Epoch 10: loss=0.000196
+Epoch 20: loss=0.000000
+Epoch 30: loss=0.000000
+Epoch 40: loss=0.000000
+Epoch 50: loss=0.000000
+Epoch 60: loss=0.000000
+Epoch 70: loss=0.000000
+Epoch 80: loss=0.000000
+Epoch 90: loss=0.000000
+Epoch 100: loss=0.000000
+validation : 2.5772627850528805e-07, MUTAG 1.0096191545017063e-08, Muedim test 1.6186527500394732e-06
+logits: tensor([[70.4566]], device='cuda:0'),     label:  70.45693362057283
+logits: tensor([[63.1897]], device='cuda:0'),     label:  63.18472316095884
+logits: tensor([[74.0538]], device='cuda:0'),     label:  74.05520840165627
+logits: tensor([[52.2954]], device='cuda:0'),     label:  52.28869836266403
+logits: tensor([[51.9102]], device='cuda:0'),     label:  51.90884041615922
+logits: tensor([[54.1392]], device='cuda:0'),     label:  54.139851572676406
+logits: tensor([[50.4591]], device='cuda:0'),     label:  50.46052401276121
+logits: tensor([[54.4667]], device='cuda:0'),     label:  54.46826762902641
+logits: tensor([[51.8551]], device='cuda:0'),     label:  51.85206464881487
+logits: tensor([[52.0614]], device='cuda:0'),     label:  52.06265449403891
+logits: tensor([[52.0353]], device='cuda:0'),     label:  52.032821850221154
+logits: tensor([[53.1996]], device='cuda:0'),     label:  53.19966260124655
+logits: tensor([[55.2087]], device='cuda:0'),     label:  55.208829904531505
+logits: tensor([[56.2006]], device='cuda:0'),     label:  56.20071302141462
+logits: tensor([[59.2722]], device='cuda:0'),     label:  59.272296872346296
+logits: tensor([[53.7404]], device='cuda:0'),     label:  53.74045956519342
+logits: tensor([[57.0113]], device='cuda:0'),     label:  57.011427307128905
+logits: tensor([[52.3837]], device='cuda:0'),     label:  52.379158439768545
+logits: tensor([[51.2787]], device='cuda:0'),     label:  51.28052263196194
+logits: tensor([[83.6882]], device='cuda:0'),     label:  83.68835038405199
+logits: tensor([[93.8335]], device='cuda:0'),     label:  93.83364952935113
+Done loading data from cached files.
+logits: tensor([[49.9955]], device='cuda:0'),     label:  49.99648010972842
+Done loading data from cached files.
+logits: tensor([[49.7199]], device='cuda:0'),     label:  49.72049734157208
+loss of real network :  5.219197073406488e-06
+eps that is learned :  Parameter containing:
+tensor([47.6114], device='cuda:0', requires_grad=True)
+Epoch 10: loss=0.000025
+Epoch 20: loss=0.000000
+Epoch 30: loss=0.000000
+Epoch 40: loss=0.000000
+Epoch 50: loss=0.000000
+Epoch 60: loss=0.000000
+Epoch 70: loss=0.000000
+Epoch 80: loss=0.000000
+Epoch 90: loss=0.000000
+Epoch 100: loss=0.000000
+validation : 6.566187948919833e-08, MUTAG 4.840403562411666e-09, Muedim test 6.720659439451992e-07
+logits: tensor([[69.2241]], device='cuda:0'),     label:  69.22674334347322
+logits: tensor([[61.9504]], device='cuda:0'),     label:  61.95453288385923
+logits: tensor([[72.8259]], device='cuda:0'),     label:  72.82501812455666
+logits: tensor([[51.0539]], device='cuda:0'),     label:  51.05850808556442
+logits: tensor([[50.6753]], device='cuda:0'),     label:  50.67865013905961
+logits: tensor([[52.9069]], device='cuda:0'),     label:  52.9096612955768
+logits: tensor([[49.2313]], device='cuda:0'),     label:  49.2303337356616
+logits: tensor([[53.2392]], device='cuda:0'),     label:  53.2380773519268
+logits: tensor([[50.6182]], device='cuda:0'),     label:  50.62187437171526
+logits: tensor([[50.8333]], device='cuda:0'),     label:  50.8324642169393
+logits: tensor([[50.7990]], device='cuda:0'),     label:  50.802631573121545
+logits: tensor([[51.9694]], device='cuda:0'),     label:  51.96947232414694
+logits: tensor([[53.9785]], device='cuda:0'),     label:  53.978639627431896
+logits: tensor([[54.9705]], device='cuda:0'),     label:  54.97052274431501
+logits: tensor([[58.0421]], device='cuda:0'),     label:  58.042106595246686
+logits: tensor([[52.5102]], device='cuda:0'),     label:  52.51026928809381
+logits: tensor([[55.7812]], device='cuda:0'),     label:  55.781237030029295
+logits: tensor([[51.1449]], device='cuda:0'),     label:  51.148968162668936
+logits: tensor([[50.0480]], device='cuda:0'),     label:  50.05033235486233
+logits: tensor([[82.4581]], device='cuda:0'),     label:  82.45816010695238
+logits: tensor([[92.6033]], device='cuda:0'),     label:  92.60345925225153
+Done loading data from cached files.
+logits: tensor([[48.7669]], device='cuda:0'),     label:  48.76628983262881
+Done loading data from cached files.
+logits: tensor([[48.4904]], device='cuda:0'),     label:  48.49030706447247
+loss of real network :  5.070096183209315e-06
+eps that is learned :  Parameter containing:
+tensor([46.3812], device='cuda:0', requires_grad=True)
+7.78991104905597e-08      1.0476847819518297e-07      7.214635843411089e-09      8.73135773872491e-07      3.9545310782078605e-06

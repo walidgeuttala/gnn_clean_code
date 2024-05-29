@@ -71,8 +71,8 @@ batch_size = 100
 optimizer_name = "Adam"
 lr = 0.1
 weight_decay = 0.95
-epochs = 100
-hidden_dim = 1
+epochs = 500
+hidden_dim = 1  
 num_layers = 1
 loss_name = "MSELoss"
 
@@ -297,7 +297,8 @@ class GNN(nn.Module):
                 out_dim1 = out_dim
             else:
                 out_dim1 = hidden_dim
-            self.gnn_layers.append(GINConv(MLP(in_dim1, hidden_dim, out_dim1), init_eps=0, learn_eps=False))
+            # 1 100 50 -50 1000 -1000
+            self.gnn_layers.append(GINConv(MLP(in_dim1, hidden_dim, out_dim1), init_eps=1000, learn_eps=True))
             #self.gnn_layers.append(SimpleGNNLayer2(in_dim1, hidden_dim, out_dim1))
             #self.gnn_layers.append(SimpleGNNLayer(in_dim1, out_dim1))
 
@@ -328,9 +329,10 @@ def train(model: torch.nn.Module, optimizer, trainloader):
         optimizer.zero_grad()
         batch_graphs, batch_labels = batch
         num_graphs += batch_size
-    
+        batch_labels2 = batch_labels.clone()
+        batch_labels2 += model.gnn_layers[0].eps
         out = model(batch_graphs)
-        loss = loss_func(out, batch_labels)
+        loss = loss_func(out, batch_labels2)
         loss.backward()
         optimizer.step()
         total_loss += loss.item()
@@ -346,8 +348,10 @@ def test_regression(model: torch.nn.Module, loader):
     for batch in loader:
         batch_graphs, batch_labels = batch
         num_graphs += batch_size
+        batch_labels2 = batch_labels.clone()
+        batch_labels2 += model.gnn_layers[0].eps
         out = model(batch_graphs)
-        loss += loss_func(out, batch_labels).item()
+        loss += loss_func(out, batch_labels2).item()
 
     return loss / num_graphs
 
@@ -412,8 +416,7 @@ def test_regression_sample(model: torch.nn.Module, loader, samples):
 
     data_matrix = out.cpu().numpy()  # 100 nodes with 10 features each
     degree_list = degrees  # Example degree list for 100 nodes
-    print(data_matrix.shape)
-    print(degrees.shape)
+   
     # Calculate minimum, mean, and maximum values for each node
     # min_values = np.min(data_matrix, axis=1)
     # mean_values = np.mean(data_matrix, axis=1)
@@ -519,7 +522,7 @@ def main(seed=1):
 
         if (e + 1) % 10 == 0:
             log_format = ("Epoch {}: loss={:f}")
-            print(log_format.format(e + 1, train_loss))
+            #print(log_format.format(e + 1, train_loss))
    
     test_acc = test_regression(model, test_loader)
     test_acc2 = test_regression(model, test_loader2)
@@ -554,12 +557,12 @@ def main(seed=1):
     #         print(f'Biases for {name}: {param}')
 
     # test_regression_sample(model, test_loader_samples, samples)
-
+    print('eps that is learned : ', model.gnn_layers[0].eps)
     return train_loss, test_acc, test_acc2, test_acc3, real_loss
 
 if __name__ == "__main__":
     x1 = x2 =  x3 = x4 = x5 = 0
-    trials = 5
+    trials = 1
     for i in range(trials):
         train_loss, test_acc, test_acc2, test_acc3, test_acc4 = main(i)
         x1 += train_loss
