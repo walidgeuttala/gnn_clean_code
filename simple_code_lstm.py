@@ -17,7 +17,7 @@ from dgl.data import DGLDataset
 from dgl import load_graphs
 from dgl.data.utils import load_info
 from identity import compute_identity
-from dgl.nn import AvgPooling, GINConv, GATConv
+from dgl.nn import AvgPooling, GINConv, GATConv, SAGEConv
 from torch.nn.functional import relu
 
 class GraphFeatureNormalizer:
@@ -67,13 +67,13 @@ device = "cuda"
 dataset_path  = "../data_folder/data"
 k = 1
 feat_type = "degree_feat"
-batch_size = 100
+batch_size = 1
 optimizer_name = "Adam"
 lr = 0.01
 weight_decay = 0.95
 epochs = 100
-hidden_dim = 8
-num_layers = 4
+hidden_dim = 32
+num_layers = 3
 loss_name = "MSELoss"
 
 
@@ -230,7 +230,7 @@ class SimpleGNNLayer(nn.Module):
             # Use DGL's built-in sum aggregation
             g.update_all(fn.copy_u('h', 'm'), fn.sum('m', 'h'))
             #h = g.ndata["h"]
-            h = h +  g.ndata["h"]
+            h = g.ndata["h"]
 
             return self.linear(h)
 
@@ -283,25 +283,6 @@ class MLP(nn.Module):
         #h = self.relu(self.linears[0](h))
         return self.linears[0](h)
 
-
-class GAT(nn.Module):
-    def __init__(self, in_dim, hidden_dim, out_dim, num_heads):
-        super(GAT, self).__init__()
-        self.layers = nn.ModuleList([
-            dgl.nn.GATConv(in_dim, hidden_dim, num_heads=num_heads, residual=True),
-            dgl.nn.GATConv(hidden_dim * num_heads, out_dim, num_heads=1, residual=True)
-        ])
-        self.pool = (dgl.SumPooling()) 
-        
-    def forward(self, g):
-        h = h = g.ndata['feat']
-        for layer in self.layers:
-            h = layer(g, h).flatten(1)
-
-        h = self.pool(g, h)
-        return h
-
-
 class GNN(nn.Module):
     def __init__(self, in_dim, hidden_dim, out_dim, num_layers):
         super(GNN, self).__init__()
@@ -318,16 +299,16 @@ class GNN(nn.Module):
                 out_dim1 = hidden_dim
             # 1 100 50 -50 1000 -1000
             #self.gnn_layers.append(GINConv(MLP(in_dim1, hidden_dim, out_dim1), init_eps=1, learn_eps=True))
-            self.gnn_layers.append(GATConv(in_dim1, out_dim1, 4))
+            #self.gnn_layers.append(GATConv(in_dim1, out_dim1, 1, init_eps=1, learn_eps=True))
             #self.gnn_layers.append(SimpleGNNLayer2(in_dim1, hidden_dim, out_dim1))
-            #self.gnn_layers.append(SimpleGNNLayer(in_dim1, out_dim1))
+            self.gnn_layers.append(SimpleGNNLayer(in_dim1, out_dim1))
 
         self.pool = (AvgPooling()) 
 
     def forward(self, g):
         h = g.ndata['feat']
         for i in range(num_layers):
-            h = self.gnn_layers[i](g, h).mean(-1) + h
+            h = self.gnn_layers[i](g, h)
         h = self.pool(g, h)
         return h
 
@@ -338,6 +319,30 @@ class GNN(nn.Module):
     #     h_pooled = self.pool(g, h)
     #     return h_pooled, h
     
+
+import torch
+import torch.nn as nn
+import torch.optim as optim
+import dgl
+from dgl.dataloading import GraphDataLoader
+
+class LSTMModel(nn.Module):
+    def __init__(self, input_dim, hidden_dim, num_layers, output_dim):
+        super(LSTMModel, self).__init__()
+        self.lstm = nn.LSTM(input_dim, hidden_dim, num_layers, batch_first=True)
+        self.fc = nn.Linear(hidden_dim, output_dim)
+    
+    def forward(self, g):
+        x = g.ndata['feat']  # Shape: (num_nodes, input_dim)
+        x = x.unsqueeze(0)  # Shape: (1, num_nodes, input_dim) to fit LSTM input
+        
+        h0 = torch.zeros(self.lstm.num_layers, x.size(0), self.lstm.hidden_size).to(x.device)
+        c0 = torch.zeros(self.lstm.num_layers, x.size(0), self.lstm.hidden_size).to(x.device)
+        
+        out, _ = self.lstm(x, (h0, c0))
+        out = out[:, -1, :]  # Take the output from the last time step
+        out = self.fc(out)
+        return out
 
 def train(model: torch.nn.Module, optimizer, trainloader):
     model.train()
@@ -352,7 +357,7 @@ def train(model: torch.nn.Module, optimizer, trainloader):
         batch_labels2 = batch_labels.clone()
         #batch_labels2 += model.gnn_layers[0].eps
         out = model(batch_graphs)
-        loss = loss_func(out.flatten(-1), batch_labels2)
+        loss = loss_func(out, batch_labels2)
         loss.backward()
         optimizer.step()
         total_loss += loss.item()
@@ -371,7 +376,7 @@ def test_regression(model: torch.nn.Module, loader):
         batch_labels2 = batch_labels.clone()
         #batch_labels2 += model.gnn_layers[0].eps
         out = model(batch_graphs)
-        loss += loss_func(out.flatten(-1), batch_labels2).item()
+        loss += loss_func(out, batch_labels2).item()
 
     return loss / num_graphs
 
@@ -385,7 +390,9 @@ def test_regression2(model: torch.nn.Module, loader):
         batch_graphs, batch_labels = batch
         num_graphs += 1
         out, hidden = model.forward2(batch_graphs)
-        loss += loss_func(out.flatten(-1), batch_labels).item()
+        print("value out", out)
+        print("value hidden", hidden)
+        loss += loss_func(out, batch_labels).item()
         break
     return loss / num_graphs
 
@@ -476,10 +483,9 @@ def test_regression_sample(model: torch.nn.Module, loader, samples):
 
     print("loss of the samples : ", loss / num_graphs)
     
-from test_stanford_networks2 import run_real_networks
+from test_stanford_networks import run_real_networks
 
 def main(seed=1):
-    print('code2')
     samples = 10
     # Step 1: Prepare graph data and retrieve train/validation/test index ============================= #
     set_random_seed(seed)
@@ -517,14 +523,11 @@ def main(seed=1):
     num_feature, num_classes = k, 1
     set_random_seed(seed)
     #in_dim, hidden_dim, out_dim, num_layers):
-    # model = GNN(
-    #     1,
-    #     1,
-    #     1,
-    #     1
-    # ).to(device)
-    model = GAT(
-        1, 16, 1, 8
+    model = LSTMModel(
+        1,
+        32,
+        4,
+        1
     ).to(device)
 
     # Step 3: Create training components ===================================================== #
@@ -579,7 +582,7 @@ def main(seed=1):
     #         print(f'Biases for {name}: {param}')
 
     # test_regression_sample(model, test_loader_samples, samples)
-    #print('eps that is learned : ', model.gnn_layers[0].eps)
+    print('eps that is learned : ', model.gnn_layers[0].eps)
     return train_loss, test_acc, test_acc2, test_acc3, real_loss
 
 if __name__ == "__main__":

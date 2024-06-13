@@ -17,7 +17,7 @@ from dgl.data import DGLDataset
 from dgl import load_graphs
 from dgl.data.utils import load_info
 from identity import compute_identity
-from dgl.nn import AvgPooling, GINConv
+from dgl.nn import AvgPooling, GINConv, GATConv, SAGEConv
 from torch.nn.functional import relu
 
 class GraphFeatureNormalizer:
@@ -66,14 +66,14 @@ def print_epsilon(model):
 device = "cuda"
 dataset_path  = "../data_folder/data"
 k = 1
-feat_type = "ones_feat"
+feat_type = "degree_feat"
 batch_size = 100
 optimizer_name = "Adam"
-lr = 0.1
+lr = 0.01
 weight_decay = 0.95
-epochs = 500
-hidden_dim = 1  
-num_layers = 1
+epochs = 100
+hidden_dim = 32
+num_layers = 3
 loss_name = "MSELoss"
 
 
@@ -129,13 +129,13 @@ class GraphDataset(DGLDataset):
         self.dim_nfeats = load_info(info_path)['dim_nfeats']
         #self.device = load_info(info_path)['device']
         self.data_path = data_path
-        #self.choose_labels(data_path+'/properties_labels.pt')
+        self.choose_labels(data_path+'/properties_labels.pt')
         
         if self.device == 'cuda':
             self.graphs = [g.to(self.device) for g in self.graphs]
             
-        #self.add_self_loop()
-        self.degree_label()
+        self.add_self_loop()
+        #self.degree_label()
         if self.device == 'cuda': 
             self.labels = self.labels.to(self.device)
 
@@ -148,11 +148,11 @@ class GraphDataset(DGLDataset):
         self.graphs = []
         for idx in range(len(dataset)):
             self.graphs.append(dataset[idx][0])
-        #self.choose_labels(f"../data_folder/dgl_graph_labels/{data_name}_properties_labels.pt")
+        self.choose_labels(f"../data_folder/dgl_graph_labels/{data_name}_properties_labels.pt")
         if self.device == 'cuda':
             self.graphs = [g.to(self.device) for g in self.graphs]
-        #self.add_self_loop()
-        self.degree_label()
+        self.add_self_loop()
+        #self.degree_label()
         if self.device == 'cuda':
             self.labels = self.labels.to(self.device)
 
@@ -179,13 +179,14 @@ class GraphDataset(DGLDataset):
     def choose_labels(self, file_path):
         # started from 1 as the first labels is the original label
         self.labels = torch.load(file_path)
-        self.labels = self.labels[-1].view(-1, 1).float()
+        self.labels = self.labels[6].view(-1, 1).float()
         self.labels += 1
 
     def add_ones_feat(self, k):
         self.dim_nfeats = k
         for g in self.graphs:
             g.ndata['feat'] = torch.ones(g.num_nodes(), k).float().to(self.device)
+            
     def add_noise_feat(self, k):
         self.dim_nfeats = k
         for g in self.graphs: 
@@ -230,7 +231,7 @@ class SimpleGNNLayer(nn.Module):
             # Use DGL's built-in sum aggregation
             g.update_all(fn.copy_u('h', 'm'), fn.sum('m', 'h'))
             #h = g.ndata["h"]
-            h = h +  g.ndata["h"]
+            h = g.ndata["h"]
 
             return self.linear(h)
 
@@ -298,15 +299,16 @@ class GNN(nn.Module):
             else:
                 out_dim1 = hidden_dim
             # 1 100 50 -50 1000 -1000
-            self.gnn_layers.append(GINConv(MLP(in_dim1, hidden_dim, out_dim1), init_eps=1000, learn_eps=True))
+            #self.gnn_layers.append(GINConv(MLP(in_dim1, hidden_dim, out_dim1), init_eps=1, learn_eps=True))
+            #self.gnn_layers.append(GATConv(in_dim1, out_dim1, 1, init_eps=1, learn_eps=True))
             #self.gnn_layers.append(SimpleGNNLayer2(in_dim1, hidden_dim, out_dim1))
             #self.gnn_layers.append(SimpleGNNLayer(in_dim1, out_dim1))
-
+            self.gnn_layers.append(SAGEConv(in_dim1, out_dim1, 'lstm'))
         self.pool = (AvgPooling()) 
 
     def forward(self, g):
         h = g.ndata['feat']
-        for i in range(num_layers):
+        for i in range(self.num_layers):
             h = self.gnn_layers[i](g, h)
         h = self.pool(g, h)
         return h
@@ -330,7 +332,7 @@ def train(model: torch.nn.Module, optimizer, trainloader):
         batch_graphs, batch_labels = batch
         num_graphs += batch_size
         batch_labels2 = batch_labels.clone()
-        batch_labels2 += model.gnn_layers[0].eps
+        #batch_labels2 += model.gnn_layers[0].eps
         out = model(batch_graphs)
         loss = loss_func(out, batch_labels2)
         loss.backward()
@@ -349,7 +351,7 @@ def test_regression(model: torch.nn.Module, loader):
         batch_graphs, batch_labels = batch
         num_graphs += batch_size
         batch_labels2 = batch_labels.clone()
-        batch_labels2 += model.gnn_layers[0].eps
+        #batch_labels2 += model.gnn_layers[0].eps
         out = model(batch_graphs)
         loss += loss_func(out, batch_labels2).item()
 
@@ -498,10 +500,11 @@ def main(seed=1):
     num_feature, num_classes = k, 1
     set_random_seed(seed)
     #in_dim, hidden_dim, out_dim, num_layers):
+
     model = GNN(
         1,
-        1,
-        1,
+        32,
+        3,
         1
     ).to(device)
 
@@ -522,7 +525,7 @@ def main(seed=1):
 
         if (e + 1) % 10 == 0:
             log_format = ("Epoch {}: loss={:f}")
-            #print(log_format.format(e + 1, train_loss))
+            print(log_format.format(e + 1, train_loss))
    
     test_acc = test_regression(model, test_loader)
     test_acc2 = test_regression(model, test_loader2)
@@ -557,11 +560,12 @@ def main(seed=1):
     #         print(f'Biases for {name}: {param}')
 
     # test_regression_sample(model, test_loader_samples, samples)
-    print('eps that is learned : ', model.gnn_layers[0].eps)
+    #print('eps that is learned : ', model.gnn_layers[0].eps)
     return train_loss, test_acc, test_acc2, test_acc3, real_loss
 
 if __name__ == "__main__":
     x1 = x2 =  x3 = x4 = x5 = 0
+    print('job1')
     trials = 1
     for i in range(trials):
         train_loss, test_acc, test_acc2, test_acc3, test_acc4 = main(i)
