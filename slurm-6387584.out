@@ -1,0 +1,22 @@
+/project/p_gnn001/code/gnn_clean_code/simple_code_mlp.py:41: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  data = [torch.tensor(d, dtype=torch.float32) for d in data]
+simple_code_mlp code
+Traceback (most recent call last):
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code_mlp.py", line 174, in <module>
+    main()
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code_mlp.py", line 167, in main
+    train_loss, valid_loss = train_model(model, train_loader, val_loader, num_epochs)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code_mlp.py", line 115, in train_model
+    outputs = model(inputs)
+              ^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/p_gnngw/miniconda3/envs/cuda118/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code_mlp.py", line 95, in forward
+    print(out.shape())
+          ^^^^^^^^^^^
+TypeError: 'torch.Size' object is not callable

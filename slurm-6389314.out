@@ -1,0 +1,15 @@
+simple_code_mlp code
+batch :  torch.Size([32, 100])
+Epoch 1/100, Train Loss: 113.9509, Val Loss: 2.9354
+Epoch 11/100, Train Loss: 0.0070, Val Loss: 0.0093
+Epoch 21/100, Train Loss: 0.0026, Val Loss: 0.0022
+Epoch 31/100, Train Loss: 0.0026, Val Loss: 0.0013
+Epoch 41/100, Train Loss: 0.0605, Val Loss: 0.0300
+Epoch 51/100, Train Loss: 0.0090, Val Loss: 0.0158
+Epoch 61/100, Train Loss: 0.0217, Val Loss: 0.0049
+Epoch 71/100, Train Loss: 0.1026, Val Loss: 0.4363
+Epoch 81/100, Train Loss: 0.0785, Val Loss: 0.0021
+Epoch 91/100, Train Loss: 0.0388, Val Loss: 0.0063
+train_loss :  0.024473200970329345
+Test Loss: 0.0070
+Train loss average: 0.024473200970329345, Valid loss average: 0.007393295153975487, Test loss average: 0.007047823403030634

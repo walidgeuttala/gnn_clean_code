@@ -1,0 +1,17 @@
+simple_code_mlp code
+Traceback (most recent call last):
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code_mlp2.py", line 193, in <module>
+    main()
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code_mlp2.py", line 185, in main
+    train_loss, valid_loss = train_model(model, train_loader, val_loader, num_epochs)
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code_mlp2.py", line 133, in train_model
+    outputs = model(inputs)
+  File "/home/p_gnngw/miniconda3/envs/directed_gnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code_mlp2.py", line 92, in forward
+    x = self.layers[:-1](x)
+  File "/home/p_gnngw/miniconda3/envs/directed_gnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/p_gnngw/miniconda3/envs/directed_gnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 363, in _forward_unimplemented
+    raise NotImplementedError(f"Module [{type(self).__name__}] is missing the required \"forward\" function")
+NotImplementedError: Module [ModuleList] is missing the required "forward" function

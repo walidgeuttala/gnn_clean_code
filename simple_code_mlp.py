@@ -25,7 +25,7 @@ class RandomIntDataset(Dataset):
         self.labels = []
         
         for _ in range(num_samples):
-            n = torch.randint(n_min, n_max + 1, (1,)).item()
+            n = torch.randint(0, 100, 1).item()
             sample = torch.randint(0, 101, (n, 1), dtype=torch.float)  # Add extra dimension for LSTM input
             self.data.append(sample)
             self.labels.append(sample.mean())
@@ -51,10 +51,10 @@ def get_dataloaders(n, batch_size=32, num_samples=5000):
     test_size = num_samples - train_size - val_size
     
     train_dataset, val_dataset, test_dataset = random_split(dataset, [train_size, val_size, test_size])
-    
-    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, collate_fn=collate_fn)
-    val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, collate_fn=collate_fn)
-    test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False, collate_fn=collate_fn)
+    # collate_fn=collate_fn
+    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=False)
+    val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
+    test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
     
     return train_loader, val_loader, test_loader
 
@@ -148,11 +148,12 @@ def evaluate_model(model, test_loader):
     return test_loss
 
 def main():
+    print('simple_code_mlp code')
     n = 100  # Maximum number of random integers in each sample
     num_samples = 5000
     batch_size = 32
     num_epochs = 100
-    trials = 10
+    trials = 1
     train_losses = 0
     valid_losses = 0
     test_losses  = 0

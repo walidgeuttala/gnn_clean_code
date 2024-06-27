@@ -1,0 +1,11 @@
+simple_code_mlp code
+Traceback (most recent call last):
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code_mlp2.py", line 188, in <module>
+    main()
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code_mlp2.py", line 177, in main
+    train_loader, val_loader, test_loader = get_dataloaders(n, batch_size, num_samples)
+                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code_mlp2.py", line 70, in get_dataloaders
+    debug(batch.shape())
+          ^^^^^^^^^^^^^
+TypeError: 'torch.Size' object is not callable

@@ -1,0 +1,14 @@
+simple_code_mlp code
+Epoch 1/100, Train Loss: 1597.2542, Val Loss: 1145.3644
+Epoch 11/100, Train Loss: 67.2955, Val Loss: 31.9290
+Epoch 21/100, Train Loss: 45.0131, Val Loss: 11.5731
+Epoch 31/100, Train Loss: 46.0175, Val Loss: 10.0978
+Epoch 41/100, Train Loss: 47.8549, Val Loss: 9.8719
+Epoch 51/100, Train Loss: 47.1613, Val Loss: 9.7529
+Epoch 61/100, Train Loss: 46.9908, Val Loss: 9.7214
+Epoch 71/100, Train Loss: 48.1925, Val Loss: 9.7054
+Epoch 81/100, Train Loss: 46.3882, Val Loss: 9.7007
+Epoch 91/100, Train Loss: 47.0471, Val Loss: 9.6999
+train_loss :  46.3742666015625
+Test Loss: 9.5234
+Train loss average: 46.374267, Valid loss average: 9.699745, Test loss average: 9.523444
