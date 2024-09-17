@@ -27,7 +27,7 @@ class RandomIntDataset(Dataset):
         
         for _ in range(num_samples):
             # Random sequence length between n_min and n_max
-            n = 1
+            n = random.randint(n_min, n_max)
             
             # Generate sequence with k features
             sample = torch.randint(0, 101, (n, k), dtype=torch.float32)
@@ -50,7 +50,8 @@ def collate_fn(batch):
     data = [torch.tensor(d, dtype=torch.float32) for d in data]
     labels = torch.tensor(labels, dtype=torch.float32)
     data_padded = torch.nn.utils.rnn.pad_sequence(data, batch_first=True)
-    return data_padded, labels
+    lengths = torch.tensor([len(d) for d in data])
+    return data_padded, labels, lengths
 
 def get_dataloaders(n, feat, batch_size=32, num_samples=5000):
     dataset = RandomIntDataset(10, n, feat, num_samples)
@@ -67,65 +68,7 @@ def get_dataloaders(n, feat, batch_size=32, num_samples=5000):
     return train_loader, val_loader, test_loader
 
 import torch.nn as nn
-
-import torch
-import torch.nn as nn
-import math
-
-class TransformerModel(nn.Module):
-    def __init__(self, input_size=1, hidden_size=64, num_layers=3, nhead=8, dim_feedforward=256, dropout=0.3):
-        super(TransformerModel, self).__init__()
-        self.input_size = input_size
-        self.hidden_size = hidden_size
-        self.num_layers = num_layers
-
-        self.embedding = nn.Linear(input_size, hidden_size)
-        self.positional_encoding = PositionalEncoding(hidden_size, dropout)
-        
-        encoder_layers = nn.TransformerEncoderLayer(hidden_size, nhead, dim_feedforward, dropout)
-        self.transformer_encoder = nn.TransformerEncoder(encoder_layers, num_layers)
-        
-        self.fc = nn.Linear(hidden_size, 1)
-
-    def forward(self, x):
-        # x shape: (batch_size, seq_len, input_size)
-        
-        # Apply embedding
-        x = self.embedding(x)
-        
-        # Apply positional encoding
-        x = self.positional_encoding(x)
-        
-        # Transpose for transformer: (seq_len, batch_size, hidden_size)
-        x = x.transpose(0, 1)
-        
-        # Forward propagate through the transformer encoder
-        x = self.transformer_encoder(x)
-        
-        # We are using the output from the last time step
-        x = x[-1, :, :]
-        
-        # Pass through the fully connected layer
-        out = self.fc(x)
-        
-        return out
-
-class PositionalEncoding(nn.Module):
-    def __init__(self, d_model, dropout=0.1, max_len=5000):
-        super(PositionalEncoding, self).__init__()
-        self.dropout = nn.Dropout(p=dropout)
-
-        pe = torch.zeros(max_len, d_model)
-        position = torch.arange(0, max_len, dtype=torch.float).unsqueeze(1)
-        div_term = torch.exp(torch.arange(0, d_model, 2).float() * (-math.log(10000.0) / d_model))
-        pe[:, 0::2] = torch.sin(position * div_term)
-        pe[:, 1::2] = torch.cos(position * div_term)
-        pe = pe.unsqueeze(0).transpose(0, 1)
-        self.register_buffer('pe', pe)
-
-    def forward(self, x):
-        x = x + self.pe[:x.size(0), :]
-        return self.dropout(x)
+import torch.optim as optim
 
 class LSTMModel(nn.Module):
     def __init__(self, input_size=1, hidden_size=32, num_layers=2, dropout=0.):
@@ -146,16 +89,23 @@ class LSTMModel(nn.Module):
         nn.init.xavier_uniform_(self.fc.weight)
         self.fc.bias.data.fill_(0)
 
-    def forward(self, x):
+    def forward(self, x, lengths):
+        # Pack the padded batch of sequences
+        x_packed = torch.nn.utils.rnn.pack_padded_sequence(x, lengths, batch_first=True, enforce_sorted=False)
+        
         # Initialize hidden state and cell state with zeros
         h0 = torch.zeros(self.lstm.num_layers, x.size(0), self.lstm.hidden_size).to(x.device)
         c0 = torch.zeros(self.lstm.num_layers, x.size(0), self.lstm.hidden_size).to(x.device)
         
         # Forward propagate LSTM
-        out, _ = self.lstm(x, (h0, c0))
+        out_packed, _ = self.lstm(x_packed, (h0, c0))
         
-        # We are using the output from the last time step
-        out = out[:, -1, :]
+        # Unpack the output
+        out, _ = torch.nn.utils.rnn.pad_packed_sequence(out_packed, batch_first=True)
+        
+        # Use the output from the last non-padded element in each sequence
+        idx = (lengths - 1).view(-1, 1).expand(len(lengths), out.size(2)).unsqueeze(1)
+        out = out.gather(1, idx).squeeze(1)
         
         # Apply dropout
         out = self.dropout(out)
@@ -164,21 +114,47 @@ class LSTMModel(nn.Module):
         out = self.fc(out)
         
         return out
+    
+from genagg.genagg import GenAgg
 
-import torch.optim as optim
+class GenAggModel(nn.Module):
+    def __init__(self, input_size=1, hidden_size=32, num_layers=2, dropout=0.):
+        super(GenAggModel, self).__init__()
+        # Replace LSTM with GenAgg
+        self.aggregation = GenAgg()
+        self.fc = nn.Linear(input_size, 1)  # Assuming you're aggregating and reducing over input features
+        self.dropout = nn.Dropout(dropout)
+
+        # Initialize the fully connected layer weights
+        nn.init.xavier_uniform_(self.fc.weight)
+        self.fc.bias.data.fill_(0)
+
+    def forward(self, x, lengths):
+        # Use GenAgg for aggregation
+        # No need for packing sequences as we're directly aggregating over the input
+        x_aggregated = self.aggregation(x)
+        
+        # Apply dropout
+        out = self.dropout(x_aggregated)
+        
+        # Pass through the fully connected layer
+        out = self.fc(out)
+        
+        return out
+
 
 def train_model(model, train_loader, val_loader, num_epochs=20):
-    criterion = nn.MSELoss()
+    criterion = nn.L1Loss()
     optimizer = optim.Adam(model.parameters(), lr=0.001)
     scheduler = optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.9)
     
     for epoch in range(num_epochs):
         model.train()
         train_loss = 0.0
-        for inputs, labels in train_loader:
+        for inputs, labels, lengths in train_loader:
             inputs, labels = inputs.float(), labels.float()  # Ensure data is float32
             optimizer.zero_grad()
-            outputs = model(inputs)
+            outputs = model(inputs, lengths)
             loss = criterion(outputs.squeeze(), labels)
             loss.backward()
             optimizer.step()
@@ -190,9 +166,9 @@ def train_model(model, train_loader, val_loader, num_epochs=20):
         model.eval()
         val_loss = 0.0
         with torch.no_grad():
-            for inputs, labels in val_loader:
+            for inputs, labels, lengths in val_loader:
                 inputs, labels = inputs.float(), labels.float()  # Ensure data is float32
-                outputs = model(inputs)
+                outputs = model(inputs, lengths)
                 loss = criterion(outputs.squeeze(), labels)
                 val_loss += loss.item() * inputs.size(0)
         
@@ -209,9 +185,9 @@ def evaluate_model(model, test_loader):
     criterion = nn.MSELoss()
     
     with torch.no_grad():
-        for inputs, labels in test_loader:
+        for inputs, labels, lengths in test_loader:
             inputs, labels = inputs.float(), labels.float()  # Ensure data is float32
-            outputs = model(inputs)
+            outputs = model(inputs, lengths)
             loss = criterion(outputs.squeeze(), labels)
             test_loss += loss.item() * inputs.size(0)
     
@@ -222,8 +198,8 @@ def evaluate_model(model, test_loader):
 def main():
     n = 100  # Maximum number of random integers in each sample
     num_samples = 5000
-    batch_size = 32
-    num_epochs = 100
+    batch_size = 64
+    num_epochs = 50
     trials = 1
     train_losses = 0
     valid_losses = 0
@@ -233,8 +209,8 @@ def main():
     for i in range(trials):
         set_random_seed(i)
         train_loader, val_loader, test_loader = get_dataloaders(n, feat, batch_size, num_samples)
-        
-        model = LSTMModel(input_size=feat)
+        print("GenAggModel")
+        model = GenAggModel(input_size=feat)
         
         train_loss, valid_loss = train_model(model, train_loader, val_loader, num_epochs)
         print("train_loss : ", train_loss)

@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code_mlp2.py", line 118, in <module>
+    from genagg.genagg import GenAgg
+  File "/project/p_gnn001/code/gnn_clean_code/genagg/__init__.py", line 3, in <module>
+    from genagg.GenAgg import GenAgg
+ModuleNotFoundError: No module named 'genagg.GenAgg'

@@ -1,0 +1,11 @@
+/project/p_gnn001/code/gnn_clean_code/simple_code_mlp2.py:50: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  data = [torch.tensor(d, dtype=torch.float32) for d in data]
+GenAggModel
+Epoch 1/50, Train Loss: 50.7049, Val Loss: 50.3354
+Epoch 11/50, Train Loss: 49.7398, Val Loss: 49.4544
+Epoch 21/50, Train Loss: 49.4440, Val Loss: 49.1713
+Epoch 31/50, Train Loss: 49.3091, Val Loss: 49.0421
+Epoch 41/50, Train Loss: 49.2570, Val Loss: 48.9927
+train_loss :  49.239944946289064
+Test Loss: 2506.6329
+Train loss average: 49.239945, Valid loss average: 48.976643, Test loss average: 2506.632906

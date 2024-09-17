@@ -1,0 +1,11 @@
+GenAggModel
+Traceback (most recent call last):
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code_mlp2.py", line 224, in <module>
+    main()
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code_mlp2.py", line 213, in main
+    model = GenAggModel(input_size=feat)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/project/p_gnn001/code/gnn_clean_code/simple_code_mlp2.py", line 124, in __init__
+    self.aggregation = GenAgg()
+                       ^^^^^^
+NameError: name 'GenAgg' is not defined. Did you mean: 'genagg'?
