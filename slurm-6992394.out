@@ -1,0 +1,83 @@
+/project/p_gnn001/code/gnn_clean_code/simple_code_mlp2.py:50: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  data = [torch.tensor(d, dtype=torch.float32) for d in data]
+GenAggModel
+Epoch 1/50, Train Loss: 47.5382, Val Loss: 40.5618
+Epoch 11/50, Train Loss: 0.2720, Val Loss: 0.2558
+Epoch 21/50, Train Loss: 0.1140, Val Loss: 0.1102
+Epoch 31/50, Train Loss: 0.0530, Val Loss: 0.0523
+Epoch 41/50, Train Loss: 0.0300, Val Loss: 0.0298
+train_loss :  0.022087559700012208
+Test Loss: 0.0009
+GenAggModel
+Epoch 1/50, Train Loss: 49.2700, Val Loss: 46.8392
+Epoch 11/50, Train Loss: 0.0397, Val Loss: 0.1012
+Epoch 21/50, Train Loss: 0.0055, Val Loss: 0.0042
+Epoch 31/50, Train Loss: 0.0030, Val Loss: 0.0030
+Epoch 41/50, Train Loss: 0.0028, Val Loss: 0.0032
+train_loss :  0.0027039356231689455
+Test Loss: 0.0000
+GenAggModel
+Epoch 1/50, Train Loss: 49.4769, Val Loss: 48.9953
+Epoch 11/50, Train Loss: 1.4109, Val Loss: 0.9343
+Epoch 21/50, Train Loss: 0.5807, Val Loss: 0.5785
+Epoch 31/50, Train Loss: 0.5232, Val Loss: 0.5260
+Epoch 41/50, Train Loss: 0.4941, Val Loss: 0.5009
+train_loss :  0.4835846707820892
+Test Loss: 0.3528
+GenAggModel
+Epoch 1/50, Train Loss: 49.8785, Val Loss: 49.3184
+Epoch 11/50, Train Loss: 6.2461, Val Loss: 5.8901
+Epoch 21/50, Train Loss: 4.4868, Val Loss: 4.2149
+Epoch 31/50, Train Loss: 3.2532, Val Loss: 3.0744
+Epoch 41/50, Train Loss: 2.6865, Val Loss: 2.5630
+train_loss :  2.4850428276062013
+Test Loss: 9.7865
+GenAggModel
+Epoch 1/50, Train Loss: 49.4594, Val Loss: 48.7268
+Epoch 11/50, Train Loss: 11.0190, Val Loss: 10.6513
+Epoch 21/50, Train Loss: 8.5631, Val Loss: 8.3533
+Epoch 31/50, Train Loss: 7.7456, Val Loss: 7.5866
+Epoch 41/50, Train Loss: 7.4564, Val Loss: 7.3182
+train_loss :  7.360828193664551
+Test Loss: 90.9790
+GenAggModel
+Epoch 1/50, Train Loss: 49.2769, Val Loss: 48.4112
+Epoch 11/50, Train Loss: 43.8093, Val Loss: 43.0943
+Epoch 21/50, Train Loss: 41.4213, Val Loss: 40.8244
+Epoch 31/50, Train Loss: 40.5683, Val Loss: 40.0167
+Epoch 41/50, Train Loss: 40.2733, Val Loss: 39.7374
+train_loss :  40.17747769165039
+Test Loss: 1712.3886
+GenAggModel
+Epoch 1/50, Train Loss: 49.4412, Val Loss: 48.9175
+Epoch 11/50, Train Loss: 37.6096, Val Loss: 36.8001
+Epoch 21/50, Train Loss: 29.4720, Val Loss: 29.0250
+Epoch 31/50, Train Loss: 26.4428, Val Loss: 26.1601
+Epoch 41/50, Train Loss: 25.4020, Val Loss: 25.1761
+train_loss :  25.065393936157225
+Test Loss: 702.5306
+GenAggModel
+Epoch 1/50, Train Loss: 49.8459, Val Loss: 49.6126
+Epoch 11/50, Train Loss: 0.0958, Val Loss: 0.0932
+Epoch 21/50, Train Loss: 0.0153, Val Loss: 0.0131
+Epoch 31/50, Train Loss: 0.0018, Val Loss: 0.0033
+Epoch 41/50, Train Loss: 0.0009, Val Loss: 0.0002
+train_loss :  0.00044610190391540527
+Test Loss: 0.0000
+GenAggModel
+Epoch 1/50, Train Loss: 44.5586, Val Loss: 25.7052
+Epoch 11/50, Train Loss: 0.0294, Val Loss: 0.0040
+Epoch 21/50, Train Loss: 0.0071, Val Loss: 0.0033
+Epoch 31/50, Train Loss: 0.0033, Val Loss: 0.0037
+Epoch 41/50, Train Loss: 0.0031, Val Loss: 0.0030
+train_loss :  0.0029827903509140013
+Test Loss: 0.0000
+GenAggModel
+Epoch 1/50, Train Loss: 49.8562, Val Loss: 49.4205
+Epoch 11/50, Train Loss: 0.0513, Val Loss: 0.0035
+Epoch 21/50, Train Loss: 0.0092, Val Loss: 0.0051
+Epoch 31/50, Train Loss: 0.0030, Val Loss: 0.0017
+Epoch 41/50, Train Loss: 0.0007, Val Loss: 0.0009
+train_loss :  0.0005180907249450684
+Test Loss: 0.0000
+Train loss average: 7.560107, Valid loss average: 7.463535, Test loss average: 251.603835

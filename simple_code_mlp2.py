@@ -196,11 +196,11 @@ def evaluate_model(model, test_loader):
     return test_loss
 
 def main():
-    n = 100  # Maximum number of random integers in each sample
-    num_samples = 5000
+    n = 10  # Maximum number of random integers in each sample
+    num_samples = 10000
     batch_size = 64
-    num_epochs = 50
-    trials = 1
+    num_epochs = 1000
+    trials = 10
     train_losses = 0
     valid_losses = 0
     test_losses = 0
